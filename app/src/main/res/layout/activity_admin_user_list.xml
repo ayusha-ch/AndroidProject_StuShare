@@ -17,7 +17,8 @@
         android:layout_marginRight="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAlLogout" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAlLogout"
+        android:paddingBottom="220dp"/>
 
     <Button
         android:id="@+id/btnAlLogout"

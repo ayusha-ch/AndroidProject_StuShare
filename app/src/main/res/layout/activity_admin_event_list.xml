@@ -20,7 +20,8 @@
         android:background="#FFFFFF"
         android:cacheColorHint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="220dp"/>
 
     <Button
         android:id="@+id/btnAlLogout"
