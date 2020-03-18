@@ -13,9 +13,11 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import static com.example.stu_share.EventList.user3;
+
 
 public class DrawerUtil {
-    private static User user3;
+
     public static void getDrawer(final Activity activity, Toolbar toolbar) {
         //if you want to update the items at a later time it is recommended to keep it in a variable
         PrimaryDrawerItem drawerEmptyItem= new PrimaryDrawerItem().withIdentifier(0).withName("");
@@ -57,9 +59,9 @@ public class DrawerUtil {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem.getIdentifier() == 2 && !(activity instanceof EventCreate)) {
+                        if (drawerItem.getIdentifier() == 2 && !(activity instanceof EventCreateDescription)) {
                             // load tournament screen
-                            Intent intent = new Intent(activity, EventCreate.class);
+                            Intent intent = new Intent(activity, EventCreateDescription.class);
                             intent.putExtra("user",user3);
                             view.getContext().startActivity(intent);
                         }

@@ -53,6 +53,7 @@
         <activity android:name=".RoomDetail" />
         <activity android:name=".RoomList" />
         <activity android:name=".SignUpEmailPass" />
+        <activity android:name=".EmailActivity" />
         <activity android:name=".ResetWithEmail" />
         <activity android:name=".ResetConfirm" />
         <activity android:name=".EventOwnDetail" />

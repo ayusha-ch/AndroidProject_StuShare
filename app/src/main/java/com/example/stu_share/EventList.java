@@ -46,7 +46,7 @@ public class EventList extends AppCompatActivity {
      ListView listView;
      EventAdapter mAdapter;
      Button btnHome, btnLogout12,btnSpinner;
-     private static User user3;
+     public static User user3;
     EditText txtS;
     Spinner spinner;
 
