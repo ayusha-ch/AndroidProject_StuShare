@@ -55,11 +55,11 @@ public class EventRegDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-                    case R.id.action_profile:
-                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-                        i.putExtra("user",user);
-                        startActivity(i);
-                        break;
+//                    case R.id.action_profile:
+//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+//                        i.putExtra("user",user);
+//                        startActivity(i);
+//                        break;
                 }
                 return false;
             }

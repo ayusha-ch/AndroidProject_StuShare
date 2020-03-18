@@ -40,11 +40,11 @@ public class EventMyEvents extends AppCompatActivity {
                     case R.id.action_myevents:
                         break;
 
-                    case R.id.action_profile:
-                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-                        i.putExtra("user",user);
-                        startActivity(i);
-                        break;
+//                    case R.id.action_profile:
+//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+//                        i.putExtra("user",user);
+//                        startActivity(i);
+//                        break;
                 }
                 return false;
             }

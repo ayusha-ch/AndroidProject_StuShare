@@ -111,11 +111,11 @@ public class EventList extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-                    case R.id.action_profile:
-                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-                        i.putExtra("user",user3);
-                        startActivity(i);
-                        break;
+//                    case R.id.action_profile:
+//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+//                        i.putExtra("user",user3);
+//                        startActivity(i);
+//                        break;
                 }
                 return false;
             }
