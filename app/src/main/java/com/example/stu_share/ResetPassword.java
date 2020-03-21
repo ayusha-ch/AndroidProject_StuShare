@@ -12,7 +12,6 @@ public class ResetPassword extends AppCompatActivity {
     Button btnSubmit,btnCancel;
     TextView txtQ;
     EditText txtA;
-    //DBHelper dbHelper = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

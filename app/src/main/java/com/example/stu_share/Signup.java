@@ -31,7 +31,23 @@ public class Signup extends AppCompatActivity {
                         || txtFn.getText().toString().equals("") || txtLn.getText().toString().equals("") || txtQ.getText().toString().equals("") || txtA.getText().toString().equals("")) {
                     Toast.makeText(getBaseContext(), "Can't leave fields empty! ",
                             Toast.LENGTH_LONG).show();
-                } else {
+                }else if(txtFn.length()<2){
+                    Toast.makeText(getBaseContext(), "First name length doesn't meet requirements! ",
+                        Toast.LENGTH_LONG).show();
+                }
+                else if(txtLn.length()<2){
+                    Toast.makeText(getBaseContext(), "Last name length doesn't meet requirements! ",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(txtQ.length()<10){
+                    Toast.makeText(getBaseContext(), "Question length doesn't meet requirements! ",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(txtA.length()<10){
+                    Toast.makeText(getBaseContext(), "Answer length doesn't meet requirements! ",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
                     userReg = (User) getIntent().getSerializableExtra("args");
                     userReg.setFirstName(txtFn.getText().toString());
                     userReg.setLastName(txtLn.getText().toString());

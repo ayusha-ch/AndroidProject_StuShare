@@ -34,11 +34,8 @@ public class ResetWithEmail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_with_email);
-        //dbHelper=new DBHelper(this);
         email=findViewById(R.id.txtEm);
         btnNext=findViewById(R.id.btnNext);
-        //dbHelper=new DBHelper(this);
-        //final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final String userEmail=email.getText().toString();
 
         btnNext.setOnClickListener(new View.OnClickListener() {

@@ -44,11 +44,23 @@ public class Signup2 extends AppCompatActivity {
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                length=Utility.generateCode(20);
-                sendPost();
+                if(txtPC.length()<=2 ||txtPC.length()>10){
+                Toast.makeText(getApplicationContext(),"Program code length doesn't meet requirements",Toast.LENGTH_LONG).show();
+                }
+                else if(txtRY.length()!=4 ){
+                    Toast.makeText(getApplicationContext(),"Registered year must be 4 digits",Toast.LENGTH_LONG).show();
+                }
+                else if(txtExp.length()!=4 ){
+                    Toast.makeText(getApplicationContext(),"Graduation year must be 4 digits",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Registration successful!",Toast.LENGTH_LONG).show();
+                    length=Utility.generateCode(20);
+                    sendPost();
 
-                Utility.send(Utility.fromGmail,Utility.pswdGmail,userReg.email,Utility.subject,Utility.msg,length);
-                logout();
+                    Utility.send(Utility.fromGmail,Utility.pswdGmail,userReg.email,Utility.subject,Utility.msg,length);
+                    logout();
+                }
+
             }
         });
         userReg=(User)getIntent().getSerializableExtra("args");

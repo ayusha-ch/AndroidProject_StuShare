@@ -23,7 +23,6 @@ public class EventCreateDescription extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_description);
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -35,19 +34,12 @@ public class EventCreateDescription extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
-
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
                 }
                 return false;
             }
