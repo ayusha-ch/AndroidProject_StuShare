@@ -292,6 +292,7 @@ public class EventCreate extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    String eventC=Utility.generateCode(6);
                     URL url = new URL("https://w0044421.gblearn.com/stu_share/create_event.php");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -308,6 +309,7 @@ public class EventCreate extends AppCompatActivity {
                     jsonParam.put("startTime", txtStTime.getText().toString());
                     jsonParam.put("endDate", txtEndDate.getText().toString());
                     jsonParam.put("startDate", txtStDate.getText().toString());
+                    jsonParam.put("eventCode", eventC);
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(

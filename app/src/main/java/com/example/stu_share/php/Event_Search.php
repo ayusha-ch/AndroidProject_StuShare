@@ -6,7 +6,7 @@
     if(empty($title)){
     $sql="SELECT * FROM event WHERE status LIKE 'active';";
     }else{
-	$sql = "SELECT * FROM  event WHERE title like '%$title%' AND status LIKE 'active' or detail like '%$title%' ;";}
+	$sql = "SELECT * FROM  event WHERE title like '%$title%' AND status LIKE 'active' or detail like '%$title%' or eventCode like '%$title%';";}
 
 // echo $sql;
 	if ($result = mysqli_query($con, $sql)){
