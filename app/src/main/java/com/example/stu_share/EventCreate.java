@@ -74,19 +74,12 @@ public class EventCreate extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
-
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
                 }
                 return false;
             }
@@ -103,7 +96,6 @@ public class EventCreate extends AppCompatActivity {
                 calendar = Calendar.getInstance();
                 currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
-
                 timePickerSt = new TimePickerDialog(EventCreate.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
@@ -158,6 +150,7 @@ public class EventCreate extends AppCompatActivity {
                 month = month + 1;
                 String date = ""+year +month +dayOfMonth;
                 startDisplayDate.setText(date);
+                endDisplayDate.setText(date);
             }
         };
 
@@ -186,9 +179,6 @@ public class EventCreate extends AppCompatActivity {
                 endDisplayDate.setText(date);
             }
         };
-
-//        dbHelper = new DBHelper(this);
-//        final SQLiteDatabase db = dbHelper.getWritableDatabase();
         btnLogout = findViewById(R.id.btnAlLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,20 +186,10 @@ public class EventCreate extends AppCompatActivity {
                 logout();
             }
         });
-//        txtStDate=findViewById(R.id.txtStDate);
-//        txtStTime=findViewById(R.id.txtStTime);
-//        txtEndTime=findViewById(R.id.txtEndTime);
         user=(User)getIntent().getSerializableExtra("user");
-//        final EventCoordinator.Event event1=(EventCoordinator.Event)getIntent().getSerializableExtra("event");
         final Calendar myCalendar = Calendar.getInstance();
         final Calendar myCalendar1 = Calendar.getInstance();
-//        txtEndDate= findViewById(R.id.txtEndDate);
-//        event1.setStartDate(txtStDate.getText().toString());
-//        event1.setEndDate(txtEndDate.getText().toString());
-//        event1.setStartTime(txtStTime.getText().toString());
-//        event1.setEndTime(txtEndTime.getText().toString());
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
@@ -224,7 +204,6 @@ public class EventCreate extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.CANADA);
                 txtEndDate.setText(sdf.format(myCalendar.getTime()));
             }
-
         };
 
         txtEndDate.setOnClickListener(new View.OnClickListener() {
