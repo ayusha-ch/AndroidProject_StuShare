@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,13 +52,20 @@ public class EventCreateDescription extends AppCompatActivity {
         btnNextCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventCoordinator.Event event=new EventCoordinator.Event();
-                event.setEventTitle(txtEvtTitle.getText().toString());
-                event.setEventDetail(txtEvtDetail.getText().toString());
-                Intent intent =new Intent(getBaseContext(), EventCreate.class);
-                intent.putExtra("user",user);
-                intent.putExtra("event",event);
-                startActivity(intent);
+                if(txtEvtTitle.length()<2||txtEvtTitle.length()>20){
+                    Toast.makeText(getApplicationContext(),"Event title length doesn't meet requirement!",Toast.LENGTH_LONG).show();
+                }
+                else if(txtEvtDetail.length()<10||txtEvtTitle.length()>100){
+                    Toast.makeText(getApplicationContext(),"Event detail length doesn't meet requirement!",Toast.LENGTH_LONG).show();
+                }else{
+                    EventCoordinator.Event event=new EventCoordinator.Event();
+                    event.setEventTitle(txtEvtTitle.getText().toString());
+                    event.setEventDetail(txtEvtDetail.getText().toString());
+                    Intent intent =new Intent(getBaseContext(), EventCreate.class);
+                    intent.putExtra("user",user);
+                    intent.putExtra("event",event);
+                    startActivity(intent);
+                }
             }
         });
 
