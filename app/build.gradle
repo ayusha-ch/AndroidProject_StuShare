@@ -33,9 +33,15 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'com.android.support:support-annotations:28.0.0'
+    //implementation files('libs/javax.mail.jar')
+    //implementation 'javax.mail:mail:1.4.1'
     compile('com.mikepenz:materialdrawer:5.9.5@aar') {
         transitive = true
         exclude group: 'com.android.support'
     }
+    implementation files('lib/activation.jar')
+    //implementation files('lib/mail.jar')
+    implementation files('lib/additionnal.jar')
+    implementation files('lib/javax.mail.jar')
 
 }

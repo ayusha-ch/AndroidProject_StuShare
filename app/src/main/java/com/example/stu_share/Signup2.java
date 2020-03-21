@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Signup2 extends AppCompatActivity {
+    private static String length;
     Button btnSign;
     EditText txtPC,txtRY,txtExp;
     private User userReg;
@@ -43,7 +44,10 @@ public class Signup2 extends AppCompatActivity {
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                length=Utility.generateCode(20);
                 sendPost();
+
+                Utility.send(Utility.fromGmail,Utility.pswdGmail,userReg.email,Utility.subject,Utility.msg,length);
                 logout();
             }
         });
@@ -83,9 +87,7 @@ public class Signup2 extends AppCompatActivity {
                     jsonParam.put("lastName", userReg.lastName);
                     jsonParam.put("question", userReg.question);
                     jsonParam.put("answer", userReg.answer);
-
-
-
+                    jsonParam.put("activationCode",Signup2.length);
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(

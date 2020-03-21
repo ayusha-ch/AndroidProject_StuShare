@@ -16,10 +16,10 @@
 	$question = $nameJ->{'question'};	
 	$answer = $nameJ->{'answer'};
 	$role = $nameJ->{'role'};
+	$activationCode=$nameJ->{'activationCode'};
 
-			$sql = "INSERT INTO user(email, password, firstName, lastName,
-			collegeCode, programCode, registeredYear, expireYear, status, question, answer, role) VALUES ('$email','$password','$firstName','$lastName','$collegeCode','$programCode','$registeredYear','$exprireYear','active','$question','$answer','student')";
-			
+			$sql = "INSERT INTO user(email, password, firstName, lastName,collegeCode, programCode, registeredYear, expireYear, status, question, answer, role,activationCode) VALUES ('$email','$password','$firstName','$lastName','$collegeCode','$programCode','$registeredYear','$exprireYear','pending','$question','$answer','student','$activationCode')";
+
 			if(mysqli_query($con,$sql)){
 			    echo $sql;
 				echo 'successfully registered';	
