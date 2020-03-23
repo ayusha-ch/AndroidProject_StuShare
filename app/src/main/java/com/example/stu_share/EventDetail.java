@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +34,7 @@ public class EventDetail extends AppCompatActivity {
     private Button btnLogout, btnJoin,btnContact1, btnHome3;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
     private User user2;
-    //DBHelper dbHelper = null;
+    private ImageView shareImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,8 @@ public class EventDetail extends AppCompatActivity {
                 return false;
             }
         });
+        shareImage=findViewById(R.id.shareImage1);
+
         btnJoin = findViewById(R.id.btnJoin);
         btnLogout = findViewById(R.id.btnLogout2);
         btnHome3 = findViewById(R.id.btnHome3);
@@ -125,6 +129,7 @@ public class EventDetail extends AppCompatActivity {
             }
         });
         btnContact1=findViewById(R.id.btnContact);
+
         btnContact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +138,21 @@ public class EventDetail extends AppCompatActivity {
                 i.putExtra("id","admin");
                 startActivity(i);
 
+            }
+        });
+        shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/html");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, user2.firstName+" "+user2.lastName+" Has share an Event: "+event.eventTitle);
+                share.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+                (new StringBuilder()
+                        .append("<p style=“color:blue;”><b>Exciting events are recommended to you!</b></p>")
+                        .append("<small><p>"+event.toString()+"</p></small>")).toString()));
+
+                startActivity(Intent.createChooser(share, "Share link!"));
             }
         });
     }
