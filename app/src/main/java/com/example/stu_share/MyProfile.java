@@ -55,7 +55,7 @@ public class MyProfile extends AppCompatActivity {
     }
     public void OpenMenuActivity() {
         if(userTemp.role.equals("admin")){
-            Intent intent = new Intent(this, AdminDashboard.class);
+            Intent intent = new Intent(this, AdminUserList.class);
             intent.putExtra("user",userTemp);
             startActivity(intent);
         }else  if(userTemp.role.equals("alumni")){
@@ -77,6 +77,9 @@ public class MyProfile extends AppCompatActivity {
 
     //To allow swipe left or right gesure
     public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
+        if(userTemp.role.equals("admin")){
+
+        }
         switch(touchEvent.getAction()){
             //Start point
             case MotionEvent.ACTION_DOWN:
@@ -90,7 +93,7 @@ public class MyProfile extends AppCompatActivity {
                 Class cc;
                 if(x1 < x2){
                     if(userTemp.role.equals("admin")){
-                        cc = AdminDashboard.class;
+                        cc = AdminEventList.class;
                     }else{
                         cc=EventMyEvents.class;
                     }
@@ -100,7 +103,12 @@ public class MyProfile extends AppCompatActivity {
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }else if(x1 >  x2){
-                    Intent i = new Intent(context, EventList.class);
+                    if(userTemp.role.equals("admin")){
+                        cc = AdminMessageList.class;
+                    }else{
+                        cc=EventMyEvents.class;
+                    }
+                    Intent i = new Intent(context, cc);
                     i.putExtra("user",userTemp);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);

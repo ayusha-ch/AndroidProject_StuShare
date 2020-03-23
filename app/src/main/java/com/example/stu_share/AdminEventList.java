@@ -2,9 +2,11 @@ package com.example.stu_share;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,16 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminEventList extends AppCompatActivity {
-    Button btnLogout, btnHome;
+    Button btnLogout;
     EventAdapter mAdapter;
     ListView listView;
-    DBHelper dbHelper=null;
-    private User user;
+    private static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_list);
-
         downloadJSON("https://w0044421.gblearn.com/stu_share/read_all_events.php");
         btnLogout = findViewById(R.id.btnAlLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -44,21 +44,9 @@ public class AdminEventList extends AppCompatActivity {
                 logout();
             }
         });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                home();
-            }
-        });
-//        dbHelper=new DBHelper(this);
-//        final SQLiteDatabase db = dbHelper.getReadableDatabase();
-//        dbHelper.updateEventList(db,dbHelper.getAllEvent(db));
+
       user=(User)getIntent().getSerializableExtra("user");
         listView = (ListView) findViewById(R.id.eventList);
-//        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,EventCoordinator.EVENTS);
-//
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -73,16 +61,46 @@ public class AdminEventList extends AppCompatActivity {
 
             }
         });
+
+    }
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        return onTouchEvent(touchEvent,getApplicationContext());
+    }
+    public static float x1,x2,y1,y2;
+
+    //To allow swipe left or right gesure
+    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
+        switch(touchEvent.getAction()){
+            //Start point
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            //End point
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 < x2){
+                    Intent i = new Intent(context, AdminUserList.class);
+                    i.putExtra("user",user);
+                    //Regular class call activity need use .setFlags method
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }else if(x1 >  x2){
+                    Intent i = new Intent(context, MyProfile.class);
+                    i.putExtra("user",user);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+                break;
+        }
+        return false;
     }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    public void home(){
-        Intent intent = new Intent(this, AdminDashboard.class);
-        intent.putExtra("user",user);
-        startActivity(intent);
-    }
+
 
     private void downloadJSON(final String urlWebService) {
 

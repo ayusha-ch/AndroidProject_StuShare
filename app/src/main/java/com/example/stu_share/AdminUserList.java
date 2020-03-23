@@ -2,9 +2,11 @@ package com.example.stu_share;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,11 +26,13 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.stu_share.EventList.user3;
+
 public class AdminUserList extends AppCompatActivity {
     Button btnLogout, btnHome;
     UserAdapter mAdapter;
     ListView listView;
-    private User user1;
+    private static User user1;
     TextView txt;
 
     public static List<User> userList;
@@ -70,13 +74,46 @@ public class AdminUserList extends AppCompatActivity {
             }
         });
     }
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        return onTouchEvent(touchEvent,getApplicationContext());
+    }
+    public static float x1,x2,y1,y2;
+
+    //To allow swipe left or right gesure
+    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
+        switch(touchEvent.getAction()){
+            //Start point
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            //End point
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 < x2){
+                    Intent i = new Intent(context, AdminMessageList.class);
+                    i.putExtra("user",user1);
+                    //Regular class call activity need use .setFlags method
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }else if(x1 >  x2){
+                    Intent i = new Intent(context, AdminEventList.class);
+                    i.putExtra("user",user1);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+                break;
+        }
+        return false;
+    }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user",user1);
         startActivity(intent);
     }
     public void home(){
-        Intent intent = new Intent(this, AdminDashboard.class);
+        Intent intent = new Intent(this, AdminEventList.class);
         intent.putExtra("user",user1);
         startActivity(intent);
     }
@@ -154,8 +191,7 @@ public class AdminUserList extends AppCompatActivity {
             stocks[i] = user1.getFirstName() ;
 
         }
-//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, userL);
-//        listView.setAdapter(arrayAdapter);
+
         mAdapter = new UserAdapter(this, userL);
         listView.setAdapter(mAdapter);
 

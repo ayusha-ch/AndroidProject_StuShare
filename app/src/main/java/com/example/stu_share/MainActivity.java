@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             txtErr.setText("Wrong password provided!");
                         }
                         else if(user1.role.equals("admin")){
-                            Intent i=new Intent(getBaseContext(), AdminDashboard.class);
+                            Intent i=new Intent(getBaseContext(), AdminEventList.class);
                             createCars();
                             createMessageList();
                             createRooms();

@@ -131,11 +131,7 @@ public class AdminEventDetail extends AppCompatActivity {
                     Log.d("TAG", "Server Response is: " + total.toString() + ": ");
 
 
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -147,7 +143,7 @@ public class AdminEventDetail extends AppCompatActivity {
 
     }
     public void OpenMenuActivity(){
-        Intent intent = new Intent(this, AdminDashboard.class);
+        Intent intent = new Intent(this, AdminEventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

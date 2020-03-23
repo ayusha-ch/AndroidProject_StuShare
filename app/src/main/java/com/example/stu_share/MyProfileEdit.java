@@ -76,7 +76,7 @@ public class MyProfileEdit extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Profile has been updated",
                             Toast.LENGTH_LONG).show();
                     updateUser(user,urlWebService);
-                    Intent intent = new Intent(getBaseContext(), AdminDashboard.class);
+                    Intent intent = new Intent(getBaseContext(), MyProfile.class);
                     intent.putExtra("user",user);
                     startActivity(intent);
                 }else{
@@ -152,7 +152,7 @@ public class MyProfileEdit extends AppCompatActivity {
     }
     public void OpenMenuActivity() {
         if(user.role.equals("admin")){
-            Intent intent = new Intent(this, AdminDashboard.class);
+            Intent intent = new Intent(this, AdminEventList.class);
             intent.putExtra("user",user);
             startActivity(intent);
         }else{Intent intent = new Intent(this, MainMenu.class);
