@@ -43,5 +43,6 @@ dependencies {
     //implementation files('lib/mail.jar')
     implementation files('lib/additionnal.jar')
     implementation files('lib/javax.mail.jar')
+    implementation 'com.jackandphantom.android:androidlikebutton:1.2.0'
 
 }

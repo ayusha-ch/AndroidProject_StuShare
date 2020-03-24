@@ -9,18 +9,21 @@
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="wrap_content"
-        android:layout_height="49dp"
+        android:layout_height="33dp"
         android:entries="@array/column_name"
         android:prompt="@string/country_prompt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView39"
+        app:layout_constraintStart_toEndOf="@+id/textView39"
+        app:layout_constraintTop_toTopOf="@+id/textView39" />
 
-    <Button
-        android:id="@+id/btnSpinnerSelect"
-        android:layout_width="60dp"
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sort"
-        app:layout_constraintStart_toEndOf="@+id/spinner1"
+        android:layout_marginStart="5dp"
+        android:text="Sort By  "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

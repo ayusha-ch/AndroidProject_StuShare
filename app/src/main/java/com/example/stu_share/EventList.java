@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
 public class EventList extends AppCompatActivity {
      ListView listView;
      EventAdapter mAdapter;
-     Button btnHome, btnLogout12,btnSpinner;
+     Button btnHome, btnLogout12;
      public static User user3;
     EditText txtS;
     Spinner spinner;
@@ -67,16 +67,22 @@ public class EventList extends AppCompatActivity {
 
         txtS=findViewById(R.id.txtSearch);
         spinner=findViewById(R.id.spinner1);
-        btnSpinner=findViewById(R.id.btnSpinnerSelect);
-        btnSpinner.setOnClickListener(new View.OnClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = spinner.getSelectedItem().toString();
                 String url="https://w0044421.gblearn.com/stu_share/EventView_Sort.php";
                 downloadJSON(url,text);
-                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                String text = "createdAt";
+                String url="https://w0044421.gblearn.com/stu_share/EventView_Sort.php";
+                downloadJSON(url,text);
             }
         });
+
         String url="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
         downloadJSON(url,"");
         listView = (ListView) findViewById(R.id.listview);

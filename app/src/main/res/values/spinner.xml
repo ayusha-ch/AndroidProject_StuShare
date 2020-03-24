@@ -2,8 +2,8 @@
 <resources>
     <string name="country_prompt">Choose a country</string>
     <string-array name="column_name">
-        <item>Title</item>
-        <item>Start Date</item>
         <item>Most recent</item>
+        <item>Start Date</item>
+        <item>Title</item>
     </string-array>
 </resources>
