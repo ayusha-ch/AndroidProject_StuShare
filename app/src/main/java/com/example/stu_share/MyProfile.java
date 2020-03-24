@@ -62,7 +62,7 @@ public class MyProfile extends AppCompatActivity {
             Intent intent = new Intent(this, AlumnaiDashboard.class);
             intent.putExtra("user",userTemp);
             startActivity(intent);
-        }else{Intent intent = new Intent(this, MainMenu.class);
+        }else{Intent intent = new Intent(this, EventList.class);
             intent.putExtra("user",userTemp);
             startActivity(intent);}
     }

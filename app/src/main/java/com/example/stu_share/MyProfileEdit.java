@@ -155,7 +155,7 @@ public class MyProfileEdit extends AppCompatActivity {
             Intent intent = new Intent(this, AdminEventList.class);
             intent.putExtra("user",user);
             startActivity(intent);
-        }else{Intent intent = new Intent(this, MainMenu.class);
+        }else{Intent intent = new Intent(this, MyProfile.class);
             intent.putExtra("user",user);
             startActivity(intent);}
     }

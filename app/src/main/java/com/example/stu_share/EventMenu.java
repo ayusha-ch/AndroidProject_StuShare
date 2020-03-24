@@ -45,7 +45,7 @@ public class EventMenu extends AppCompatActivity {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(),MainMenu.class);
+                Intent i = new Intent(getBaseContext(),EventList.class);
                 i.putExtra("user",user1);
                 startActivity(i);
             }

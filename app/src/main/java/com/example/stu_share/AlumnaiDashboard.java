@@ -24,7 +24,7 @@ public class AlumnaiDashboard extends AppCompatActivity {
         buttonBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getBaseContext(),BookMenu.class);
+                Intent i= new Intent(getBaseContext(),MyProfile.class);
                 i.putExtra("user",user);
                 startActivity(i);
 

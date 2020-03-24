@@ -19,7 +19,7 @@ public class MessageCreate extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainMenu.class);
+                Intent intent = new Intent(getBaseContext(), MessageList.class);
 //              intent.putExtra("args", userReg);
                 startActivity(intent);
             }

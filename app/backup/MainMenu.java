@@ -3,7 +3,6 @@ package com.example.stu_share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 //import static com.example.stu_share.CarCoordinator.CAR_LIST;

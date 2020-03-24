@@ -40,7 +40,7 @@ public class MessageList extends AppCompatActivity {
        msgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainMenu.class);
+                Intent intent = new Intent(getBaseContext(), EventList.class);
 //              intent.putExtra("args", userReg);
                 startActivity(intent);
             }
