@@ -1,12 +1,14 @@
 package com.example.stu_share;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -42,10 +44,13 @@ public class EventAdapter extends ArrayAdapter<EventCoordinator.Event> {
         PicassoClient.downloadImage(mContext,currentEvent.getmImageDrawable(), image);
         TextView name = (TextView) listItem.findViewById(R.id.textView_name);
         name.setText(currentEvent.getEventTitle());
-        TextView release = (TextView) listItem.findViewById(R.id.textView_release);
-        release.setText(currentEvent.getEventDetail());
+        ImageView likeImage=(ImageView)listItem.findViewById(R.id.imgLike);
+        likeImage.setImageResource(R.drawable.ic_thumbs_up);
+        TextView detail = (TextView) listItem.findViewById(R.id.textView_release);
+        detail.setText(currentEvent.getEventDetail());
         return listItem;
     }
+
 }
 
 

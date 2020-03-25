@@ -9,4 +9,6 @@
     <color name="colorGradientStart">#89d6e6</color>
     <color name="colorGradientCenter">#8091d8</color>
     <color name="colorGradientEnd">#2d68c4</color>
+    <color name="red">#f44336</color>
+
 </resources>

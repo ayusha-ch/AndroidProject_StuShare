@@ -18,10 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -216,6 +218,15 @@ public class EventList extends AppCompatActivity {
 //        });
 
 
+    }
+    public void likeClick(View v)
+    {
+        ConstraintLayout vwParentRow = (ConstraintLayout) v.getParent();
+        //reset all the listView items background colours
+        //before we set the clicked one..
+        ImageView likeClick= (ImageView) vwParentRow.getChildAt(3);
+        likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
+        Log.i("LIKE","like is clicked");
     }
    /* public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
