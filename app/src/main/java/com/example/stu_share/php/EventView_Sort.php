@@ -7,7 +7,7 @@
 // echo $today;
 // echo $title;
     if(empty($title)){
-    $sql="SELECT * FROM event WHERE status LIKE 'active';";
+    $sql="SELECT * FROM  event WHERE status LIKE 'active' and endDate > '$today' ORDER BY createdAt DESC;";
     }else{
     if(strcmp($title,"Most recent")==0){
     $title="createdAt DESC";

@@ -6,9 +6,9 @@ require 'connection.php';
 
 
 $con = $con = mysqli_connect($host, $user_name,$user_password, $db_name);
- 
+ $today=date('Ymd');
 // Select all of our stocks from table 'stock_tracker'
-$sql = "SELECT * FROM event WHERE status LIKE 'active'";
+$sql="SELECT * FROM  event WHERE status LIKE 'active' and endDate > '$today' ORDER BY createdAt DESC;";
  
 // Confirm there are results
 if ($result = mysqli_query($con, $sql))

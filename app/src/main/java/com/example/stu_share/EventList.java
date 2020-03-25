@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,28 +45,87 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventList extends AppCompatActivity {
-     ListView listView;
-     EventAdapter mAdapter;
-     Button btnHome, btnLogout12;
-     public static User user3;
+    ListView listView;
+    EventAdapter mAdapter;
+    Button btnHome, btnLogout12;
+    public static User user3;
     EditText txtS;
     Spinner spinner;
-
+    SwipeRefreshLayout swipeLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+        View myview=findViewById(R.id.masterView);
+        myview.setOnTouchListener(new View.OnTouchListener() {
+             float x1;
+              float x2;
+              float y1;
+              float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent touchEvent) {
+                switch(touchEvent.getAction()){
+                    //Start point
 
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = touchEvent.getX();
+                        Log.i("X1down",String.valueOf(x1));
+                        y1 = touchEvent.getY();
+                        break;
+                    //End point
+                    case MotionEvent.ACTION_UP:
+                        x2 = touchEvent.getX();
+                        y2 = touchEvent.getY();
+                        Log.i("X2up",String.valueOf(x2));
+
+                        if(x2 - x1>30){
+                            Log.i("X2-X11",String.valueOf(x1));
+                            Log.i("X2-X12",String.valueOf(x2));
+                            Intent i = new Intent(getApplicationContext(), MyProfile.class);
+                            i.putExtra("user",user3);
+                            //Regular class call activity need use .setFlags method
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }else if(x1 -  x2>30){
+                            Log.i("X1-X21",String.valueOf(x1));
+                            Log.i("X1-X22",String.valueOf(x2));
+                            Intent i = new Intent(getApplicationContext(), EventMyEvents.class);
+                            i.putExtra("user",user3);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+
+
+
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
-
+        final String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
 
         DrawerUtil.getDrawer(this,toolBar);
-
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadJSON(url1,"");
+                //Toast.makeText(getApplicationContext(), "Works!", Toast.LENGTH_LONG).show();
+                // To keep animation for 4 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000); // Delay in millis
+            }
+        });
         txtS=findViewById(R.id.txtSearch);
         spinner=findViewById(R.id.spinner1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,10 +144,10 @@ public class EventList extends AppCompatActivity {
             }
         });
 
-        String url="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
-        downloadJSON(url,"");
-        listView = (ListView) findViewById(R.id.listview);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        downloadJSON(url1,"");
+        listView = findViewById(R.id.listview);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         txtS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -145,7 +206,7 @@ public class EventList extends AppCompatActivity {
             }
         });
 
-//        btnHome = findViewById(R.id.btnHome);
+
 //        btnLogout12 = findViewById(R.id.btnLogout12);
 //        btnLogout12.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -154,15 +215,9 @@ public class EventList extends AppCompatActivity {
 //            }
 //        });
 
-//        btnHome.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                OpenMenuActivity();
-//            }
-//        });
 
     }
-    public boolean onTouchEvent(MotionEvent touchEvent){
+   /* public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
     public static float x1,x2,y1,y2;
@@ -173,19 +228,26 @@ public class EventList extends AppCompatActivity {
             //Start point
             case MotionEvent.ACTION_DOWN:
                 x1 = touchEvent.getX();
+                Log.i("X1down",String.valueOf(x1));
                 y1 = touchEvent.getY();
                 break;
             //End point
             case MotionEvent.ACTION_UP:
                 x2 = touchEvent.getX();
                 y2 = touchEvent.getY();
-                if(x1 < x2){
+                Log.i("X2up",String.valueOf(x2));
+                Log.i("X2-X12",String.valueOf(x2));
+                if(x2 - x1>20){
+                    Log.i("X2-X11",String.valueOf(x1));
+                    Log.i("X2-X12",String.valueOf(x2));
                     Intent i = new Intent(context, MyProfile.class);
                     i.putExtra("user",user3);
                     //Regular class call activity need use .setFlags method
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
-                }else if(x1 >  x2){
+                }else if(x1 -  x2>20){
+                    Log.i("X1-X21",String.valueOf(x1));
+                    Log.i("X1-X22",String.valueOf(x2));
                     Intent i = new Intent(context, EventMyEvents.class);
                     i.putExtra("user",user3);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -194,7 +256,7 @@ public class EventList extends AppCompatActivity {
                 break;
         }
         return false;
-    }
+    }*/
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user",user3);

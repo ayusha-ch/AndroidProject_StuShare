@@ -24,6 +24,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
+
     implementation 'com.squareup.picasso:picasso:2.5.2'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0-alpha1'
@@ -43,6 +44,7 @@ dependencies {
     //implementation files('lib/mail.jar')
     implementation files('lib/additionnal.jar')
     implementation files('lib/javax.mail.jar')
-    implementation 'com.jackandphantom.android:androidlikebutton:1.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
 
 }
