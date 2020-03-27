@@ -111,6 +111,7 @@ public class EventDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MessageCreate.class);
+                intent.putExtra("user",user2);
                 startActivity(intent);
             }
         });
