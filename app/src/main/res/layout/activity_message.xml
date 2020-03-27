@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:id="@+id/txtSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Subject:"
@@ -28,14 +29,14 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
-        android:id="@+id/textMessageBody"
+        android:id="@+id/textMessageDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|top"
         android:lines="10" />
 
     <Button
-        android:id="@+id/btnReply"
+        android:id="@+id/btnSendMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="send" />

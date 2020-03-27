@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textMsgSubject" />
 
     <TextView
-        android:id="@+id/textMessageBody"
+        android:id="@+id/textMessageDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|top"
@@ -62,13 +62,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView55" />
 
     <Button
-        android:id="@+id/btnReply"
+        android:id="@+id/btnSendMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="reply"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textMessageBody" />
+        app:layout_constraintTop_toBottomOf="@+id/textMessageDetails" />
 
     <Button
         android:id="@+id/btnMsg_Delete"
@@ -78,6 +78,6 @@
         android:text="delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnReply" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSendMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

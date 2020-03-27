@@ -14,7 +14,7 @@ public class MessageReceivedDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_received_detail);
 
-        btnReply = findViewById(R.id.btnReply);
+        btnReply = findViewById(R.id.btnSendMessage);
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

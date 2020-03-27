@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textMsgSubject" />
 
     <TextView
-        android:id="@+id/textMessageBody"
+        android:id="@+id/textMessageDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|top"
@@ -69,6 +69,6 @@
         android:text="delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textMessageBody" />
+        app:layout_constraintTop_toBottomOf="@+id/textMessageDetails" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

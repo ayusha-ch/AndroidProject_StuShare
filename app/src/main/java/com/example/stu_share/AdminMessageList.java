@@ -2,10 +2,8 @@ package com.example.stu_share;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +15,7 @@ import static com.example.stu_share.MessageCordinator.MESSAGE_LIST;
 public class AdminMessageList extends AppCompatActivity {
     Button btnLogout, btnHome;
     ListView msgListView;
-    private static User user;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,7 @@ public class AdminMessageList extends AppCompatActivity {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("user",user);
                 startActivity(intent);
             }
@@ -53,41 +51,9 @@ public class AdminMessageList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
+//              intent.putExtra("args", userReg);
                 startActivity(intent);
             }
         });
-    }
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
-    public static float x1,x2,y1,y2;
-
-    //To allow swipe left or right gesure
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){
-                    Intent i = new Intent(context, MyProfile.class);
-                    i.putExtra("user",user);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }else if(x1 >  x2){
-                    Intent i = new Intent(context, AdminUserList.class);
-                    i.putExtra("user",user);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
     }
 }
