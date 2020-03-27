@@ -40,6 +40,7 @@ public class EventDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        user2=(User)getIntent().getSerializableExtra("user");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -103,6 +104,7 @@ public class EventDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),EmailActivity.class);
+                intent.putExtra("args",user2);
                 startActivity(intent);
             }
         });
@@ -111,6 +113,7 @@ public class EventDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MessageCreate.class);
+                intent.putExtra("user",user2);
                 startActivity(intent);
             }
         });
