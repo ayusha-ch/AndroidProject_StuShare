@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import static com.example.stu_share.MessageCordinator.MESSAGE_LIST;
+import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 
 public class AdminMessageList extends AppCompatActivity {
     Button btnLogout, btnHome;
@@ -30,7 +30,7 @@ public class AdminMessageList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
-                MessageCordinator.Message message =(MessageCordinator.Message) adapter.getItemAtPosition(position);
+                MessageCoordinator.Message message =(MessageCoordinator.Message) adapter.getItemAtPosition(position);
                 Intent intent =new Intent(getBaseContext(), MessageReceivedDetail.class);
                 intent.putExtra("user",user);
                 intent.putExtra("message",message);

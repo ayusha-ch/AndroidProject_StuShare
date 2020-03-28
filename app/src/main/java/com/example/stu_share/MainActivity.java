@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,30 +27,38 @@ import java.net.URL;
 
 
 
-import static com.example.stu_share.MessageCordinator.MESSAGE_LIST;
+import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnCreateAcc, btnLogin, btnFgtPswd;
-    private EditText txtEm, txtPswd;
+    private Button btnCreateAcc, btnLogin, btnFgtPswd,btnPopLogin;
+    private EditText txtPEm,txtPPwd;
     private TextView txtErr;
     private User user=new User();
     private String userString;
+    private View popV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final View main=findViewById(R.id.main);
+        popV=findViewById(R.id.popView);
         btnCreateAcc = findViewById(R.id.btnReg);
         btnFgtPswd = findViewById(R.id.btnResetPassword);
-        txtEm = findViewById(R.id.txtRegEm);
-        txtPswd = findViewById(R.id.txtPswd);
-
-        final String txtEmail = txtEm.getText().toString();
-        final String txtPassword = txtPswd.getText().toString();
-        final String txtE = txtEm.getText().toString();
-        final String txtP = txtPswd.getText().toString();
-        txtErr = findViewById(R.id.txtWrong);
+        txtPEm=findViewById(R.id.txtPopName);
+        txtPPwd=findViewById(R.id.txtPopPswd);
+        btnPopLogin=findViewById(R.id.btnPopLogin);
+        btnPopLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user=sendPost();
+            }
+        });
+        final String txtEmail = txtPEm.getText().toString();
+        final String txtPassword = txtPPwd.getText().toString();
+        final String txtE = txtPEm.getText().toString();
+        final String txtP = txtPPwd.getText().toString();
+        txtErr = findViewById(R.id.txtWrong2);
         user=(User)getIntent().getSerializableExtra("user");
 
         btnFgtPswd.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtErr = findViewById(R.id.txtWrong);
         btnCreateAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,9 +78,18 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user=sendPost();
+                didTapButton(v);
             }
         });
+    }
+    public void didTapButton(View view) {
+        //btnLogin.setVisibility(popV.VISIBLE);
+        popV.setVisibility(View.VISIBLE);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        popV.bringToFront();
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+        btnLogin.startAnimation(myAnim);
     }
 
     public void openSignupActivity() {
@@ -93,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     conn.setDoInput(true);
 
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("email", txtEm.getText().toString());
+                    jsonParam.put("email", txtPEm.getText().toString());
 
                     user=(User) getIntent().getSerializableExtra("user");
 
@@ -124,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if (user1 == null) {
                             txtErr.setText("No such a user exists!");
-                        } else if (!txtPswd.getText().toString().equals(user1.password)) {
+                        } else if (!txtPPwd.getText().toString().equals(user1.password)) {
                             txtErr.setText("Wrong password provided!");
                         }
                         else if(user1.role.equals("admin")){
@@ -169,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void createMessageList() {
-        MessageCordinator.Message message1=new MessageCordinator.Message(1,"Android Programming Book for Sell");
-        MessageCordinator.Message message2=new MessageCordinator.Message(2,"Come Learn Resume Writing!");
-        MessageCordinator.Message message3=new MessageCordinator.Message(3,"Ride-share Available from Scarborough!");
-        MessageCordinator.Message message4=new MessageCordinator.Message(4,"Looking for Rental Room Share?");
+        MessageCoordinator.Message message1=new MessageCoordinator.Message(1,"Android Programming Book for Sell");
+        MessageCoordinator.Message message2=new MessageCoordinator.Message(2,"Come Learn Resume Writing!");
+        MessageCoordinator.Message message3=new MessageCoordinator.Message(3,"Ride-share Available from Scarborough!");
+        MessageCoordinator.Message message4=new MessageCoordinator.Message(4,"Looking for Rental Room Share?");
         MESSAGE_LIST.add(message1);
         MESSAGE_LIST.add(message2);
         MESSAGE_LIST.add(message3);

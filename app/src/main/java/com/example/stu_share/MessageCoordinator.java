@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageCordinator {
+public class MessageCoordinator {
     public final static List<Message> MESSAGE_LIST=new ArrayList<Message>();
 
     public static class Message implements Serializable {
