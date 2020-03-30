@@ -34,12 +34,21 @@ public class EventCoordinator {
         public  String eventTitle;
         public  String eventDetail;
 
+
+
+        public Float rating;
         public String mImageDrawable;
 
         public Event() {
 
         }
+        public Float getRating() {
+            return rating;
+        }
 
+        public void setRating(Float rating) {
+            this.rating = rating;
+        }
 
         public void setId(String id) {
             this.id = id;
@@ -117,7 +126,7 @@ public class EventCoordinator {
 
         public Event( String id, String orgID, String status, String startDate,
                      String startTime, String endDate, String endTime,
-                      String eventTitle, String eventDetail, String mImageDrawable) {
+                      String eventTitle, String eventDetail, String mImageDrawable,Float rating) {
             this.id=id;
             this.orgID = orgID;
             this.status = status;
@@ -128,6 +137,7 @@ public class EventCoordinator {
             this.eventTitle = eventTitle;
             this.eventDetail = eventDetail;
             this.mImageDrawable = mImageDrawable;
+            this.rating=rating;
         }
         public String getmImageDrawable() {
             return mImageDrawable;

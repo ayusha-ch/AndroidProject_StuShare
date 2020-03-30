@@ -33,9 +33,9 @@ import java.net.URL;
 public class EventDetail extends AppCompatActivity {
     private Button btnLogout, btnJoin,btnContact1, btnHome3;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
-    private User user2;
+    private  User user2;
     private ImageView shareImage;
-
+    public static String url_update="https://w0044421.gblearn.com/stu_share/EventReg.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,6 @@ public class EventDetail extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user2);
                         startActivity(intent);
                         break;
@@ -95,7 +94,7 @@ public class EventDetail extends AppCompatActivity {
 
                 Toast.makeText(getBaseContext(), "you have successfully joined the event",
                         Toast.LENGTH_LONG).show();
-                update("https://w0044421.gblearn.com/stu_share/EventReg.php");
+                update(url_update,user2,event);
 
             }
         });
@@ -159,7 +158,7 @@ public class EventDetail extends AppCompatActivity {
             }
         });
     }
-    private void update(final String urlWebService) {
+    public void update(final String urlWebService, final User user, final EventCoordinator.Event event1) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -174,9 +173,8 @@ public class EventDetail extends AppCompatActivity {
                     conn.setDoInput(true);
 
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("userId", user2.id);
-                    final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
-                    jsonParam.put("eventId", event.id);
+                    jsonParam.put("userId", user.id);
+                    jsonParam.put("eventId", event1.id);
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -213,9 +211,6 @@ public class EventDetail extends AppCompatActivity {
             }
         });
         thread.start();
-
-
-
  }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
@@ -233,6 +228,8 @@ public class EventDetail extends AppCompatActivity {
         Log.d("TAG","Menu to MyEvent"+user2.id);
         startActivity(intent);
     }
+
+
 }
 
 

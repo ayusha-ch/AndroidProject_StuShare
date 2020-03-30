@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/imageView_poster"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
+        android:layout_width="169dp"
+        android:layout_height="145dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:contentDescription="View Events Image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="View Events Image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView_name"
@@ -23,6 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:isScrollContainer="true"
+        android:scrollHorizontally="true"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -31,15 +33,17 @@
 
     <TextView
         android:id="@+id/textView_release"
-        android:layout_width="168dp"
-        android:layout_height="177dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@id/textView_name"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:fadeScrollbars="true"
         android:scrollbars="vertical"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_poster"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView_name"
         app:layout_constraintTop_toTopOf="@id/textView_name" />
 
@@ -47,11 +51,29 @@
         android:id="@+id/imgLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_release"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_thumbs_up"
         android:contentDescription="Like/Thumbs up"
-        android:onClick="likeClick"/>
+        android:onClick="likeClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_release"
+        app:srcCompat="@drawable/ic_thumbs_up" />
+
+    <Button
+        android:id="@+id/buttonRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+        app:layout_constraintStart_toStartOf="@+id/textView_release" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_poster"
+        app:layout_constraintStart_toStartOf="@+id/imageView_poster"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_poster" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

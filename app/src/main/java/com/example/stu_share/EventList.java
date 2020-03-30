@@ -2,8 +2,6 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,11 +9,12 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,13 +24,10 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -41,21 +37,21 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import static com.example.stu_share.EventDetail.url_update;
 
 public class EventList extends AppCompatActivity {
     ListView listView;
     EventAdapter mAdapter;
-    Button btnHome, btnLogout12;
+    Button  btnLogout12;
     public static User user3;
     EditText txtS;
     Spinner spinner;
     SwipeRefreshLayout swipeLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,10 +99,6 @@ public class EventList extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
         final String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
@@ -149,6 +141,7 @@ public class EventList extends AppCompatActivity {
 
         downloadJSON(url1,"");
         listView = findViewById(R.id.listview);
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         txtS.addTextChangedListener(new TextWatcher() {
             @Override
@@ -189,8 +182,6 @@ public class EventList extends AppCompatActivity {
                 return false;
             }
         });
-
-
         user3=(User)getIntent().getSerializableExtra("user");
         Log.d("MYMENU","my menu user ID"+user3.id);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -207,67 +198,44 @@ public class EventList extends AppCompatActivity {
 
             }
         });
-
-
-//        btnLogout12 = findViewById(R.id.btnLogout12);
-//        btnLogout12.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                logout();
-//            }
-//        });
-
-
+        registerForContextMenu(listView);
+    }
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+        menu.setHeaderTitle("Select The Action");
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item){
+        if(item.getItemId()==R.id.join){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            int position = (int) info.id;
+            Toast.makeText(getApplicationContext(),"You have successfully registered this event!",Toast.LENGTH_SHORT).show();
+            EventDetail abc=new EventDetail();
+            abc.update(url_update,user3,mAdapter.getItem(position));
+        }
+        else if(item.getItemId()==R.id.like){
+            ImageView likeClick= (ImageView)findViewById(R.id.imgLike);
+            likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
+            Toast.makeText(getApplicationContext(),"Liked",Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId()==R.id.favourite){
+            Toast.makeText(getApplicationContext(),"Faved!",Toast.LENGTH_SHORT).show();
+        }else{
+            return false;
+        }
+        return true;
     }
     public void likeClick(View v)
     {
         ConstraintLayout vwParentRow = (ConstraintLayout) v.getParent();
-        //reset all the listView items background colours
-        //before we set the clicked one..
         ImageView likeClick= (ImageView) vwParentRow.getChildAt(3);
         likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
         Log.i("LIKE","like is clicked");
     }
-   /* public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
-    public static float x1,x2,y1,y2;
 
-    //To allow swipe left or right gesure
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                Log.i("X1down",String.valueOf(x1));
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                Log.i("X2up",String.valueOf(x2));
-                Log.i("X2-X12",String.valueOf(x2));
-                if(x2 - x1>20){
-                    Log.i("X2-X11",String.valueOf(x1));
-                    Log.i("X2-X12",String.valueOf(x2));
-                    Intent i = new Intent(context, MyProfile.class);
-                    i.putExtra("user",user3);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }else if(x1 -  x2>20){
-                    Log.i("X1-X21",String.valueOf(x1));
-                    Log.i("X1-X22",String.valueOf(x2));
-                    Intent i = new Intent(context, EventMyEvents.class);
-                    i.putExtra("user",user3);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }*/
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user",user3);
@@ -367,6 +335,7 @@ public class EventList extends AppCompatActivity {
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
+            event1.setRating(Float.parseFloat(obj.getString("rating")));
             eventL.add(event1);
         }
         mAdapter = new EventAdapter(this, eventL);
