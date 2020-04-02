@@ -25,6 +25,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.willy.ratingbar.RotationRatingBar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,17 +34,22 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.stu_share.EventAdapter.eventList;
 import static com.example.stu_share.EventDetail.url_update;
 
 public class EventList extends AppCompatActivity {
     ListView listView;
+    Boolean likeFlag=false;
     EventAdapter mAdapter;
     Button  btnLogout12;
     public static User user3;
@@ -51,11 +58,11 @@ public class EventList extends AppCompatActivity {
     SwipeRefreshLayout swipeLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+        user3=(User)getIntent().getSerializableExtra("user");
         View myview=findViewById(R.id.masterView);
         myview.setOnTouchListener(new View.OnTouchListener() {
              float x1;
@@ -99,6 +106,7 @@ public class EventList extends AppCompatActivity {
                 return true;
             }
         });
+
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
         final String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
@@ -109,7 +117,7 @@ public class EventList extends AppCompatActivity {
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                downloadJSON(url1,"");
+                downloadJSON(url1,user3,"");
                 //Toast.makeText(getApplicationContext(), "Works!", Toast.LENGTH_LONG).show();
                 // To keep animation for 4 seconds
                 new Handler().postDelayed(new Runnable() {
@@ -127,19 +135,19 @@ public class EventList extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = spinner.getSelectedItem().toString();
                 String url="https://w0044421.gblearn.com/stu_share/EventView_Sort.php";
-                downloadJSON(url,text);
+                downloadJSON(url,user3,text);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 String text = "createdAt";
                 String url="https://w0044421.gblearn.com/stu_share/EventView_Sort.php";
-                downloadJSON(url,text);
+                downloadJSON(url,user3,text);
             }
         });
 
 
-        downloadJSON(url1,"");
+        downloadJSON(url1,user3,"");
         listView = findViewById(R.id.listview);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -154,7 +162,7 @@ public class EventList extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String url="https://w0044421.gblearn.com/stu_share/Event_Search.php";
-                downloadJSON(url,s.toString());
+                downloadJSON(url,user3,s.toString());
             }
         });
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -182,7 +190,7 @@ public class EventList extends AppCompatActivity {
                 return false;
             }
         });
-        user3=(User)getIntent().getSerializableExtra("user");
+
         Log.d("MYMENU","my menu user ID"+user3.id);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -232,19 +240,74 @@ public class EventList extends AppCompatActivity {
     {
         ConstraintLayout vwParentRow = (ConstraintLayout) v.getParent();
         ImageView likeClick= (ImageView) vwParentRow.getChildAt(3);
-        likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
-        Log.i("LIKE","like is clicked");
+        String url="https://w0044421.gblearn.com/stu_share/Event_Like.php";
+        EventCoordinator.Event event2=eventList.get((Integer)likeClick.getTag());
+        updateLike(url,user3,event2,likeFlag);
+        likeFlag=!likeFlag;
+        String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
+        downloadJSON(url1,user3,"");
     }
 
+    public void updateLike(final String urlWebService, final User user6, final EventCoordinator.Event event4,final Boolean flag) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(urlWebService);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("user_id", user6.id);
+                    jsonParam.put("event_id", event4.id);
+                    jsonParam.put("flag",flag);
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    os.close();
+                    conn.connect();
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG", conn.getResponseMessage());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    DataInputStream is = new DataInputStream(conn.getInputStream());
+                    final StringBuilder total = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        total.append(line).append('\n');
+                    }
+                    Log.d("TAG", "Server Response is(updateLike): " + total.toString() + ": ");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //rotationRatingBar.setRating(Float.parseFloat(total.toString()));
+                            //imageCheck.setVisibility(View.GONE);
+                            String url2="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
+                            downloadJSON(url2,user3,"");
+                        }
+                    });
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user",user3);
         startActivity(intent);
     }
+
     public void openMyEventsActivity(){
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user3);
-        Log.d("TAG","Menu to MyEvent"+user3.id);
         startActivity(intent);
     }
 
@@ -254,7 +317,7 @@ public class EventList extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void downloadJSON(final String urlWebService,final String keywords) {
+    private void downloadJSON(final String urlWebService,final User user4,final String keywords) {
         Log.i("KEYWORDS","Keyword is: "+keywords);
 
         class DownloadJSON extends AsyncTask<Void, Void, String> {
@@ -288,6 +351,7 @@ public class EventList extends AppCompatActivity {
 
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("keyword", keywords);
+                    jsonParam.put("user_id", user4.id);
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
@@ -327,6 +391,8 @@ public class EventList extends AppCompatActivity {
             EventCoordinator.Event event1 = new EventCoordinator.Event();
             event1.setId( obj.getString("id"));
             event1.setOrgID(obj.getString("organizerId"));
+            event1.setOrgEmail(obj.getString("orgEmail"));
+            event1.setEventCode(obj.getString("eventCode"));
             event1.setStatus(obj.getString("status"));
             event1.setStartDate(obj.getString("startDate"));
             event1.setStartTime(obj.getString("startTime"));
@@ -336,6 +402,8 @@ public class EventList extends AppCompatActivity {
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
             event1.setRating(Float.parseFloat(obj.getString("rating")));
+            event1.setLiked(Integer.parseInt(obj.getString("isLike")));
+            event1.setLikeCount(Integer.parseInt(obj.getString("sum")));
             eventL.add(event1);
         }
         mAdapter = new EventAdapter(this, eventL);

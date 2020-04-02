@@ -45,6 +45,6 @@ dependencies {
     implementation files('lib/additionnal.jar')
     implementation files('lib/javax.mail.jar')
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-
-
+    implementation 'com.neberox.library:animatedstar:0.0.2'
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.0'
 }

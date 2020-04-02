@@ -8,6 +8,51 @@
     tools:context=".EventDetail"
     tools:layout_editor_absoluteY="81dp">
 
+    <com.willy.ratingbar.RotationRatingBar
+
+        android:id="@+id/ratingBarDetail"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_width="170dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#A50202"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:isIndicator="true"
+        android:max="5"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="0.5"
+        android:theme="@style/RatingBar"
+        app:layout_constraintHeight_max="10dp"
+        app:layout_constraintHeight_min="wrap"
+        app:layout_constraintStart_toStartOf="@+id/txtEventCode"
+        app:layout_constraintTop_toBottomOf="@+id/txtEventCode" />
+
+    <TextView
+        android:id="@+id/txtEventCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="EventCode"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ECE9E5"
+        app:layout_constraintStart_toStartOf="@+id/txtEventCode2"
+        app:layout_constraintTop_toBottomOf="@+id/txtEventCode2" />
+
+    <TextView
+        android:id="@+id/txtEventCode2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Event Code"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#ECE9E5"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="@+id/txtEvtDetail"
+        app:layout_constraintTop_toBottomOf="@+id/txtEvtDetail" />
+
     <Button
         android:id="@+id/btnContact"
         android:layout_width="wrap_content"
@@ -151,6 +196,7 @@
         android:id="@+id/txtEvtDetail"
         android:layout_width="280dp"
         android:layout_height="78dp"
+        android:layout_marginTop="10dp"
         android:text="deatils of the evnts"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ECE9E5"
@@ -224,4 +270,16 @@
         app:layout_constraintTop_toTopOf="@+id/btnJoin"
         app:srcCompat="@drawable/share"
         android:contentDescription="Share content" />
+
+    <ImageView
+        android:id="@+id/imgChecked"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="15dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBarDetail"
+        app:layout_constraintStart_toEndOf="@+id/ratingBarDetail"
+        app:layout_constraintTop_toTopOf="@+id/ratingBarDetail"
+        app:srcCompat="@drawable/checked" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

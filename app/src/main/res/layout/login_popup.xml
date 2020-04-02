@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/corner_round_pop">
+    android:background="@drawable/corner_round_pop"
+    android:visibility="visible"
+    tools:visibility="visible">
 
     <TextView
         android:id="@+id/txtWrong2"

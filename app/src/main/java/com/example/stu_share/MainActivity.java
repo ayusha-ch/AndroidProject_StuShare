@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final View main=findViewById(R.id.main);
         popV=findViewById(R.id.popView);
+        ImageView img=findViewById(R.id.imageView2);
         btnCreateAcc = findViewById(R.id.btnReg);
         btnFgtPswd = findViewById(R.id.btnResetPassword);
         txtPEm=findViewById(R.id.txtPopName);

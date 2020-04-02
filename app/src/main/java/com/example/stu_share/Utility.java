@@ -18,6 +18,8 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.security.auth.Subject;
 
+import static com.example.stu_share.EventList.user3;
+
 public class Utility {
     static String fromGmail="shy0105030229@gmail.com";
     static String pswdGmail="Oakwood123";
@@ -89,5 +91,49 @@ public class Utility {
         getJSON.execute();
 
 
+    }
+    public void updateRating(final String url, final EventCoordinator.Event event,final User user,final float rating) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url1 = new URL(url);
+                    HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept","application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("event_id", event.id);
+                    jsonParam.put("user_id", user3.id);
+                    jsonParam.put("rating", rating);
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    os.close();
+                    conn.connect();
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    DataInputStream is=new DataInputStream(conn.getInputStream());
+                    StringBuilder total = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null)
+                    {
+                        total.append(line).append('\n');
+                    }
+                    Log.d("TAG", "Server Response is: " + total.toString() + ": " );
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }

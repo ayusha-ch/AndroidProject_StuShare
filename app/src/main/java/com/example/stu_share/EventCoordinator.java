@@ -26,6 +26,7 @@ public class EventCoordinator {
     public static class Event implements Serializable {
         public String id;
         public  String orgID;
+        public  String orgEmail;
         public  String status;
         public  String startDate;
         public  String startTime;
@@ -35,17 +36,47 @@ public class EventCoordinator {
         public  String eventDetail;
 
 
-
-        public Float rating;
+        public String eventCode;
+        public Float rating=0.00f;
         public String mImageDrawable;
 
+        public Integer isLiked() {
+            return liked;
+        }
+
+        public void setLiked(Integer liked) {
+            this.liked = liked;
+        }
+
+        public Integer getLikeCount() {
+            return likeCount;
+        }
+
+        public void setLikeCount(Integer likeCount) {
+            this.likeCount = likeCount;
+        }
+
+        public Integer liked=0;
+        public Integer likeCount=0;
         public Event() {
 
         }
         public Float getRating() {
             return rating;
         }
+        public String getEventCode() {
+            return eventCode;
+        }
+        public void setEventCode(String eventCode) {
+            this.eventCode = eventCode;
+        }
+        public String getOrgEmail() {
+            return orgEmail;
+        }
 
+        public void setOrgEmail(String orgEmail) {
+            this.orgEmail = orgEmail;
+        }
         public void setRating(Float rating) {
             this.rating = rating;
         }
@@ -124,9 +155,9 @@ public class EventCoordinator {
 
 
 
-        public Event( String id, String orgID, String status, String startDate,
+        public Event( String id, String orgID, String orgEmail,String status, String startDate,
                      String startTime, String endDate, String endTime,
-                      String eventTitle, String eventDetail, String mImageDrawable,Float rating) {
+                      String eventTitle, String eventDetail, String mImageDrawable,Float rating,String eventCode,Integer liked,Integer likeCount) {
             this.id=id;
             this.orgID = orgID;
             this.status = status;
@@ -138,6 +169,10 @@ public class EventCoordinator {
             this.eventDetail = eventDetail;
             this.mImageDrawable = mImageDrawable;
             this.rating=rating;
+            this.eventCode=eventCode;
+            this.orgEmail=orgEmail;
+            this.liked=liked;
+            this.likeCount=likeCount;
         }
         public String getmImageDrawable() {
             return mImageDrawable;

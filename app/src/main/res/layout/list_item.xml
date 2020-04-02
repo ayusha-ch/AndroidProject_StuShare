@@ -39,6 +39,10 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:fadeScrollbars="true"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="8"
+        android:minLines="6"
         android:scrollbars="vertical"
         android:textColor="#000000"
         android:textSize="20sp"
@@ -51,29 +55,45 @@
         android:id="@+id/imgLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="30dp"
         android:contentDescription="Like/Thumbs up"
         android:onClick="likeClick"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_release"
         app:srcCompat="@drawable/ic_thumbs_up" />
 
-    <Button
-        android:id="@+id/buttonRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rate"
-        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-        app:layout_constraintStart_toStartOf="@+id/textView_release" />
+    <com.willy.ratingbar.RotationRatingBar
 
-    <RatingBar
         android:id="@+id/ratingBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_width="170dp"
+        android:layout_height="37dp"
         android:layout_marginTop="5dp"
+        android:backgroundTint="#A50202"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:focusable="false"
+        android:isIndicator="true"
+        android:max="5"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="0.2"
+        android:theme="@style/RatingBar"
         app:layout_constraintEnd_toEndOf="@+id/imageView_poster"
+        app:layout_constraintHeight_max="10dp"
+        app:layout_constraintHeight_min="wrap"
         app:layout_constraintStart_toStartOf="@+id/imageView_poster"
         app:layout_constraintTop_toBottomOf="@+id/imageView_poster" />
+
+    <TextView
+        android:id="@+id/likeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:textColor="#D55E75"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgLike"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

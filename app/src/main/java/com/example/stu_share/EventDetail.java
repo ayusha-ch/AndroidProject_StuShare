@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.willy.ratingbar.BaseRatingBar;
+import com.willy.ratingbar.RotationRatingBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,10 +36,12 @@ import java.net.URL;
 
 public class EventDetail extends AppCompatActivity {
     private Button btnLogout, btnJoin,btnContact1, btnHome3;
-    private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
+    private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
-    private ImageView shareImage;
+    private ImageView shareImage,imageCheck;
+    private RotationRatingBar rotationRatingBar;
     public static String url_update="https://w0044421.gblearn.com/stu_share/EventReg.php";
+    public static String url_update_rate="https://w0044421.gblearn.com/stu_share/Event_Rate.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +74,26 @@ public class EventDetail extends AppCompatActivity {
                 return false;
             }
         });
+        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
+        imageCheck=findViewById(R.id.imgChecked);
+        txtEventC=findViewById(R.id.txtEventCode);
+        txtEventC.setText(event.eventCode);
         shareImage=findViewById(R.id.shareImage1);
+        rotationRatingBar=findViewById(R.id.ratingBarDetail);
+        rotationRatingBar.setRating(event.rating);
+        rotationRatingBar.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(BaseRatingBar ratingBar, float rating, boolean fromUser) {
+                imageCheck.setVisibility(View.VISIBLE);
+            }
+        });
+        imageCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateRating(url_update_rate,user2,event,rotationRatingBar.getRating());
+                Toast.makeText(getApplicationContext(),"Rate event successfully with "+rotationRatingBar.getRating()+" !",Toast.LENGTH_LONG).show();
+            }
+        });
 
         btnJoin = findViewById(R.id.btnJoin);
         btnLogout = findViewById(R.id.btnLogout2);
@@ -80,7 +105,6 @@ public class EventDetail extends AppCompatActivity {
         txtEndDate = findViewById(R.id.txtEndDate);
         txtEndTime = findViewById(R.id.txtEndTime);
         user2=(User)getIntent().getSerializableExtra("user");
-        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         txtEvtTitle.setText(event.eventTitle);
         txtEvtDetail.setText(event.eventDetail);
         txtStTime.setText(event.startTime);
@@ -116,14 +140,12 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logout();
             }
         });
-
         btnHome3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +153,6 @@ public class EventDetail extends AppCompatActivity {
             }
         });
         btnContact1=findViewById(R.id.btnContact);
-
         btnContact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +160,6 @@ public class EventDetail extends AppCompatActivity {
                 i.putExtra("user",user2);
                 i.putExtra("id","admin");
                 startActivity(i);
-
             }
         });
         shareImage.setOnClickListener(new View.OnClickListener() {
@@ -153,10 +173,62 @@ public class EventDetail extends AppCompatActivity {
                 (new StringBuilder()
                         .append("<p style=“color:blue;”><b>Exciting events are recommended to you!</b></p>")
                         .append("<small><p>"+event.toString()+"</p></small>")).toString()));
-
                 startActivity(Intent.createChooser(share, "Share link!"));
             }
         });
+    }
+    public void updateRating(final String urlWebService, final User user, final EventCoordinator.Event event1,final Float rate) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(urlWebService);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("user_id", user.id);
+                    jsonParam.put("event_id", event1.id);
+                    jsonParam.put("rating",rate);
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    os.close();
+                    conn.connect();
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG", conn.getResponseMessage());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    DataInputStream is = new DataInputStream(conn.getInputStream());
+                    final StringBuilder total = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        total.append(line).append('\n');
+                    }
+                    Log.d("TAG", "Server Response is: " + total.toString() + ": ");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            rotationRatingBar.setRating(Float.parseFloat(total.toString()));
+                            imageCheck.setVisibility(View.GONE);
+                        }
+                    });
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
     public void update(final String urlWebService, final User user, final EventCoordinator.Event event1) {
 
@@ -211,12 +283,11 @@ public class EventDetail extends AppCompatActivity {
             }
         });
         thread.start();
- }
+    }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventMenu.class);
         intent.putExtra("user",user2);
@@ -228,8 +299,6 @@ public class EventDetail extends AppCompatActivity {
         Log.d("TAG","Menu to MyEvent"+user2.id);
         startActivity(intent);
     }
-
-
 }
 
 

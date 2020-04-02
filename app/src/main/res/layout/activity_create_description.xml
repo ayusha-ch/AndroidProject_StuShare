@@ -71,12 +71,15 @@
 
     <EditText
         android:id="@+id/txtEvtDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:layout_height="125dp"
         android:layout_marginStart="68dp"
         android:ems="10"
         android:hint="Please enter event detail"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="4"
+        android:scrollbars="vertical"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#ECE9E5"
         android:textSize="18sp"

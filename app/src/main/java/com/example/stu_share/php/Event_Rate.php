@@ -18,16 +18,17 @@
            $qry=mysqli_query($con,"INSERT INTO event_rated (event_id,user_id,rating) VALUES($eventID,$userID,$rating)");
        }
 
- $getSumSQL="SELECT sum(rating) as sum,count(rating) as count,avg(rating) as avg from event_rated WHERE event_id='$eventID' AND user_id='$userID';";
+ $getSumSQL="SELECT sum(rating) as sum,count(rating) as count,avg(rating) as avg from event_rated WHERE event_id='$eventID' ;";
  $qry2=mysqli_query($con,$getSumSQL);
  $data=mysqli_fetch_assoc($qry2);
  $rate_updated=floatval($data[avg]);
  function updateEventTable($con,$event_ID,$rating){
     $updateSQL="UPDATE `event` SET rating='$rating' WHERE id='$event_ID' ;";
-    echo $updateSQL;
+
  	$qry=mysqli_query($con,$updateSQL);
  }
  updateEventTable($con,$eventID,$rate_updated);
+ echo $rate_updated;
 mysqli_close($con);
 
 ?>

@@ -228,7 +228,7 @@ public class EventCreate extends AppCompatActivity {
                 updateLabel();
             }
             private void updateLabel() {
-                String myFormat = "yyMMdd";
+                String myFormat = "yyyyMMdd";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.CANADA);
                 txtStDate.setText(sdf.format(myCalendar1.getTime()));
                 txtEndDate.setText(sdf.format(myCalendar.getTime()));
@@ -289,6 +289,7 @@ public class EventCreate extends AppCompatActivity {
                     jsonParam.put("endDate", txtEndDate.getText().toString());
                     jsonParam.put("startDate", txtStDate.getText().toString());
                     jsonParam.put("eventCode", eventC);
+                    jsonParam.put("orgEmail", user.getEmail());
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
