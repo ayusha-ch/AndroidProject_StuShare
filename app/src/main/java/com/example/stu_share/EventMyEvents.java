@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EventMyEvents extends AppCompatActivity {
-    //private Button  btnOwnedEvents, btnPstEvt,btnJoin,btnCreateEvent,btnHome, btnLogout,btnReg;
+    private Button  btnOwnedEvents, btnPstEvt,btnJoin,btnCreateEvent,btnHome, btnLogout,btnReg;
     private static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class EventMyEvents extends AppCompatActivity {
             }
         });
 
-/*        btnCreateEvent=findViewById(R.id.btnCreate);
+        btnCreateEvent=findViewById(R.id.btnCreate);
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +100,7 @@ public class EventMyEvents extends AppCompatActivity {
             public void onClick(View v) {
                 OpenMenuActivity();
             }
-        });*/
+        });
     }
 
     private void openRegActivity() {
