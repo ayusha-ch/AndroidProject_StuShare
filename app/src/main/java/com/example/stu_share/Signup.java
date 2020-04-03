@@ -43,7 +43,7 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Question length doesn't meet requirements! ",
                             Toast.LENGTH_LONG).show();
                 }
-                else if(txtA.length()<10){
+                else if(txtA.length()<1){
                     Toast.makeText(getBaseContext(), "Answer length doesn't meet requirements! ",
                             Toast.LENGTH_LONG).show();
                 }

@@ -27,9 +27,7 @@ public class MessageCreate extends AppCompatActivity {
     private static final String TAG = "Create";
     private User userReg;
     private static String length;
-//    private EventCoordinator.Event event1;
-    private User user;
-//    Button btnCreate, btnHome, btnLogout;
+    private EventCoordinator.Event event1;
 
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/createMessage.php";
     @Override
@@ -37,37 +35,43 @@ public class MessageCreate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         userReg=(User)getIntent().getSerializableExtra("user");
+        event1=(EventCoordinator.Event) getIntent().getSerializableExtra("event");
         txtTitle = findViewById(R.id.textMsgSubject);
+        String msgTitle="Re: About your events post:" +event1.eventTitle;
+        String msgBody="I just saw your post regarding:\n" +event1.toString()+"\n\n\n"+userReg.firstName+" "+userReg.lastName;
+        txtTitle.setText(msgTitle);
         txtDetails = findViewById(R.id.textMessageBody);
-
+        txtDetails.setText(msgBody);
         btnSendMessage = findViewById(R.id.btnReply);
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtTitle.length() < 4  || txtTitle.length() > 25){
-                    Toast.makeText(getApplicationContext(),"Message title characters must be between 4 and 25", Toast.LENGTH_LONG).show();
+                if(txtTitle.length() < 4  || txtTitle.length() > 100){
+                    Toast.makeText(getApplicationContext(),"Message title length doesn't meet requirement!", Toast.LENGTH_LONG).show();
                 }
                 else if(txtDetails.length() < 15  || txtTitle.length() >  100){
-                    Toast.makeText(getApplicationContext(),"Message detail characters must be between 15 and 100", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Message detail length doesn't meet requirement!", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Registration successful!",Toast.LENGTH_LONG).show();
-//                    length=Utility.generateCode(20);
+                    Toast.makeText(getApplicationContext(),"Message sent successfully!",Toast.LENGTH_LONG).show();
                     sendPost();
-
-//                    Utility.send(Utility.fromGmail,Utility.pswdGmail,userReg.email,Utility.subject,Utility.msg,length);
-//                    logout();
+                    Intent intent = new Intent();
+                    intent.putExtra("event",event1);
+                    intent.putExtra("user",userReg);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             }
         });
-
-
         Button btnCancel = findViewById(R.id.btnMsg_Delete);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("event",event1);
+                intent.putExtra("user",userReg);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
@@ -92,6 +96,8 @@ public class MessageCreate extends AppCompatActivity {
                     jsonParam.put("email", userReg.email);
                     jsonParam.put("activationCode",MessageCreate.length);
                     jsonParam.put("messageCode", messageCode);
+                    jsonParam.put("receiver", event1.orgEmail);
+
 
                     Log.i("JSON", jsonParam.toString());
 

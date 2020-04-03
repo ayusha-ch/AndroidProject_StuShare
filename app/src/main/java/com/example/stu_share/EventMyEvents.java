@@ -120,8 +120,6 @@ public class EventMyEvents extends AppCompatActivity {
     }
     public void openPstEvtAct(){
         Intent intent =new Intent(this, EventPastList.class);
-        String[] tt=new String[]{"2","2"};
-        //intent.putExtra("args",tt);
         intent.putExtra("user",user);
         Log.d("TAG","MyEvent to Regged event"+user.id);
         startActivity(intent);

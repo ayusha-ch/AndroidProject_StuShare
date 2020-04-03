@@ -149,21 +149,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else if(user1.role.equals("admin")){
                             Intent i=new Intent(getBaseContext(), AdminEventList.class);
-
-                            createMessageList();
                             i.putExtra("user",user1);
                             startActivity(i);
-
                         }  else if(user1.role.equals("alumni")){
                             Intent i=new Intent(getBaseContext(), AlumnaiDashboard.class);
-                            createMessageList();
-
                             i.putExtra("user",user1);
                             startActivity(i);
                         }
                         else{
                             Intent i=new Intent(getBaseContext(), EventList.class);
-                            createMessageList();
                             i.putExtra("user",user1);
                             startActivity(i);
                         }
@@ -188,16 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void createMessageList() {
-        MessageCoordinator.Message message1=new MessageCoordinator.Message(1,"Android Programming Book for Sell");
-        MessageCoordinator.Message message2=new MessageCoordinator.Message(2,"Come Learn Resume Writing!");
-        MessageCoordinator.Message message3=new MessageCoordinator.Message(3,"Ride-share Available from Scarborough!");
-        MessageCoordinator.Message message4=new MessageCoordinator.Message(4,"Looking for Rental Room Share?");
-        MESSAGE_LIST.add(message1);
-        MESSAGE_LIST.add(message2);
-        MESSAGE_LIST.add(message3);
-        MESSAGE_LIST.add(message4);
-    }
+
     private User jsonToUser(String json, User user) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         for (int i = 0; i < jsonArray.length(); i++) {
