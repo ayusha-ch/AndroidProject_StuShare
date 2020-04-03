@@ -74,12 +74,8 @@ public class MyProfile extends AppCompatActivity {
         return onTouchEvent(touchEvent,getApplicationContext());
     }
     public static float x1,x2,y1,y2;
-
     //To allow swipe left or right gesure
     public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        if(userTemp.role.equals("admin")){
-
-        }
         switch(touchEvent.getAction()){
             //Start point
             case MotionEvent.ACTION_DOWN:
@@ -106,7 +102,7 @@ public class MyProfile extends AppCompatActivity {
                     if(userTemp.role.equals("admin")){
                         cc = AdminMessageList.class;
                     }else{
-                        cc=EventMyEvents.class;
+                        cc= MessageList.class;
                     }
                     Intent i = new Intent(context, cc);
                     i.putExtra("user",userTemp);

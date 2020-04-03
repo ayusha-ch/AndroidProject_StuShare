@@ -83,11 +83,7 @@ public class EventList extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         x2 = touchEvent.getX();
                         y2 = touchEvent.getY();
-                        Log.i("X2up",String.valueOf(x2));
-
                         if(x2 - x1>30){
-                            Log.i("X2-X11",String.valueOf(x1));
-                            Log.i("X2-X12",String.valueOf(x2));
                             Intent i = new Intent(getApplicationContext(), MyProfile.class);
                             i.putExtra("user",user3);
                             //Regular class call activity need use .setFlags method
@@ -195,16 +191,13 @@ public class EventList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> adapter, View v, int position,long arg3)
             {
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
                 Intent intent =new Intent(getBaseContext(), EventDetail.class);
                 intent.putExtra("args",event2);
                 intent.putExtra("user",user3);
-                startActivity(intent);
-
-            }
+                startActivity(intent);  }
         });
         registerForContextMenu(listView);
     }

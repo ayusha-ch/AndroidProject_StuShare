@@ -15,13 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EventMyEvents extends AppCompatActivity {
-    private Button  btnOwnedEvents, btnPstEvt,btnJoin,btnCreateEvent,btnHome, btnLogout,btnReg;
+    //private Button  btnOwnedEvents, btnPstEvt,btnJoin,btnCreateEvent,btnHome, btnLogout,btnReg;
     private static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_my_events);
-
+        user=(User)getIntent().getSerializableExtra("user");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -50,7 +50,7 @@ public class EventMyEvents extends AppCompatActivity {
             }
         });
 
-        btnCreateEvent=findViewById(R.id.btnCreate);
+/*        btnCreateEvent=findViewById(R.id.btnCreate);
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,14 +93,14 @@ public class EventMyEvents extends AppCompatActivity {
                 logout();
             }
         });
-        user=(User)getIntent().getSerializableExtra("user");
+
         btnHome = findViewById(R.id.btnHome);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OpenMenuActivity();
             }
-        });
+        });*/
     }
 
     private void openRegActivity() {
