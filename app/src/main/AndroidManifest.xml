@@ -68,7 +68,6 @@
         <activity android:name=".EventPastDetail" />
         <activity android:name=".MyProfile" />
         <activity android:name=".ResetPassword" />
-        <activity android:name=".EventRegDetail" />
         <activity android:name=".EventListJoined" />
         <activity android:name=".EventDetail" />
         <activity android:name=".EventPastList" />

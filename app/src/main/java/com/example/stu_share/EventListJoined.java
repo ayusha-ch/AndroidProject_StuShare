@@ -43,6 +43,7 @@ public class EventListJoined extends AppCompatActivity {
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+    private String url2="https://w0044421.gblearn.com/stu_share/EventsRegistered.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,7 @@ public class EventListJoined extends AppCompatActivity {
             }
         });
         DrawerUtil.getDrawer(this,toolBar);
-        downloadJSON("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
+        downloadJSON(url2);
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -67,7 +68,7 @@ public class EventListJoined extends AppCompatActivity {
             {
                 Log.i("POSITIONINJOINED",position+" clicked!");
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
-                Intent intent =new Intent(getBaseContext(), EventRegDetail.class);
+                Intent intent =new Intent(getBaseContext(), EventJoinedDetail.class);
                 intent.putExtra("args",event2);
                 intent.putExtra("user",user);
                 startActivity(intent);
@@ -98,6 +99,11 @@ public class EventListJoined extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        downloadJSON(url2);
     }
     private void downloadJSON(final String urlWebService) {
 
@@ -181,7 +187,6 @@ public class EventListJoined extends AppCompatActivity {
         }
         mAdapter = new EventAdapter(getApplicationContext(), eventL);
         listView1.setAdapter(mAdapter);
-        Log.i("MADAPTER",listView1.getAdapter().getItem(0).toString());
     }
 
     public void logout(){
@@ -191,7 +196,6 @@ public class EventListJoined extends AppCompatActivity {
     public void openMyEventsActivity(){
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user);
-        Log.d("TAG","Menu to MyEvent"+user.id);
         startActivity(intent);
     }
     public void OpenMenuActivity() {
