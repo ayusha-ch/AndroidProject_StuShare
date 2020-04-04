@@ -4,14 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,17 +33,66 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 
 public class MessageList extends AppCompatActivity {
-    Button msgHome, msgLogout;
     ListView messageList;
     private static User userTemp;
     public static ArrayAdapter arrayAdapter;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.messageList));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_home:
+                        OpenMenuActivity();
+                        break;
+                    case R.id.action_message:
+                        Intent intent = new Intent(getBaseContext(), MessageList.class);
+                        intent.putExtra("user",userTemp);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myevents:
+                        openMyEventsActivity();
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",userTemp);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         userTemp=(User)getIntent().getSerializableExtra("user");
         messageList=findViewById(R.id.messageList);
         getMsgList();
@@ -56,30 +111,9 @@ public class MessageList extends AppCompatActivity {
         });
 
 
-       msgHome = findViewById(R.id.btnMsgHome);
-       msgHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), EventList.class);
-                intent.putExtra("user", userTemp);
-                startActivity(intent);
-            }
-        });
 
-        msgLogout = findViewById(R.id.btnMsgLogout);
-        msgLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("user", userTemp);
-                startActivity(intent);
-
-
-
-            }
-
-        });
     }
+
     @Override
     public void onResume() {
 
@@ -171,6 +205,7 @@ public class MessageList extends AppCompatActivity {
             }});
 
     }
+
     public static float x1,x2,y1,y2;
     public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
         switch(touchEvent.getAction()){
@@ -202,5 +237,24 @@ public class MessageList extends AppCompatActivity {
                 break;
         }
         return false;
+    }
+
+    public void OpenMenuActivity() {
+        Intent intent = new Intent(this, EventMenu.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
+    }
+
+    public void openMyEventsActivity(){
+        Intent intent =new Intent(this, EventMyEvents.class);
+        intent.putExtra("user",userTemp);
+        Log.d("TAG","Menu to MyEvent"+userTemp.id);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -20,64 +21,65 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.example.stu_share.MessageList.arrayAdapter;
+public class AdminMessageCreate extends AppCompatActivity {
+    Button home,logout, btnSendMessage;
+    TextView txtTitle, txtDetails;
+    private static final String TAG = "Create";
+    private User userReg;
+    private static String length;
+    private MessageCoordinator.Message message;
 
-public class MessageReceivedDetail extends AppCompatActivity {
-    Button btnReply, btnDelete, btnCancel;
-    TextView msgT,msgB;
-    MessageCoordinator.Message message1;
-    private User user1;
+    private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/createMessage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_received_detail);
-        user1=(User)getIntent().getSerializableExtra("user") ;
-        message1=(MessageCoordinator.Message)getIntent().getSerializableExtra("message");
-        msgT=findViewById(R.id.textMsgSubject);
-        msgB=findViewById(R.id.textMessageBody);
-        msgT.setText(message1.title);
-        msgB.setText(message1.detail);
-        btnReply = findViewById(R.id.btnReply);
-        final MessageCoordinator.Message message=new MessageCoordinator.Message();
-        message.id=message1.id;
-        message.title="Re: "+message1.title;
-        message.detail="In you previous message, you mentioned:\n"+message1.detail+"\n";
-        message.receiver_email=message1.sender_email;
-        message.sender_email=user1.email;
-        btnReply.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_message);
+        userReg=(User)getIntent().getSerializableExtra("user");
+        message=(MessageCoordinator.Message) getIntent().getSerializableExtra("message");
+        txtTitle = findViewById(R.id.textMsgSubject);
+        Log.i("MESSAGE1",message.toString());
+        txtTitle.setText(message.title);
+        txtDetails = findViewById(R.id.textMessageBody);
+        txtDetails.setText(message.detail);
+        btnSendMessage = findViewById(R.id.btnReply);
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MessageCreate.class);
-                intent.putExtra("message",message);
-                intent.putExtra("user",user1);
-                startActivity(intent);
+                if(txtTitle.length() < 4  || txtTitle.length() > 100){
+                    Toast.makeText(getApplicationContext(),"Message title length doesn't meet requirement!", Toast.LENGTH_LONG).show();
+                }
+                else if(txtDetails.length() < 15  || txtTitle.length() >  100){
+                    Toast.makeText(getApplicationContext(),"Message detail length doesn't meet requirement!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Message sent successfully!",Toast.LENGTH_LONG).show();
+                    sendPost();
+                    Intent intent = new Intent();
+                    intent.putExtra("user",userReg);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
-        btnCancel = findViewById(R.id.btnMsg_CancelReply);
+        Button btnCancel = findViewById(R.id.btnMsg_Delete1);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MessageList.class);
-                intent.putExtra("user",user1);
+                Intent intent = new Intent();
+                intent.putExtra("user",userReg);
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
-        btnDelete=findViewById(R.id.btnMsg_Delete);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteMessage(message1.id);
-            }
-        });
     }
-    public void deleteMessage(Integer id) {
+    public void sendPost() {
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("https://w0044421.gblearn.com/stu_share/MessageDelete.php");
+                    String messageCode=Utility.generateCode(6);
+                    URL url = new URL("https://w0044421.gblearn.com/stu_share/createMessage.php");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -86,9 +88,16 @@ public class MessageReceivedDetail extends AppCompatActivity {
                     conn.setDoInput(true);
 
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("messageID", message1.id);
+                    jsonParam.put("title", txtTitle.getText().toString());
+                    jsonParam.put("details", txtDetails.getText().toString());
+                    jsonParam.put("email", userReg.id);
+                    jsonParam.put("activationCode",AdminMessageCreate.length);
+                    jsonParam.put("messageCode", messageCode);
+                    jsonParam.put("receiver", message.receiver_email);
+
 
                     Log.i("JSON", jsonParam.toString());
+
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
                             new OutputStreamWriter(os, "UTF-8"));
@@ -109,22 +118,23 @@ public class MessageReceivedDetail extends AppCompatActivity {
                         total.append(line).append('\n');
                     }
                     Log.d("TAG", "Server Response is: " + total.toString() + ": " );
-                    conn.disconnect();
-                    runOnUiThread(new Runnable() {
-                        public void run()
-                        {
 
-                            Intent intent=new Intent();
-                            intent.putExtra("user",user1);
-                            setResult(RESULT_OK,intent);
-                            finish();
-                        }});
+
+                    conn.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
         });
         thread.start();
 
+
+
+
+    }
+    public void logout() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
