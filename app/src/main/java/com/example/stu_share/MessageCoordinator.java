@@ -20,6 +20,9 @@ public class MessageCoordinator {
             this.type = type;
             this.status = status;
         }
+        public Message(){
+
+        }
         public Message(int id, String title){
             this.id = id;
             this.title = title;
@@ -80,9 +83,15 @@ public class MessageCoordinator {
         public void setStatus(String status) {
             this.status = status;
         }
+
         @Override
         public String toString() {
-            return title  ;
+            return  "id=" + id +
+                    "\ntitle: " + title +
+                    "\ndetail: " + detail +
+                    "\nreceiver_email: " + receiver_email +
+                    "\nsender_email: " + sender_email +
+                    "\n";
         }
     }
 }

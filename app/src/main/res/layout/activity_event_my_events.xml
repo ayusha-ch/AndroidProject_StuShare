@@ -140,12 +140,4 @@
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgPast"
-        android:layout_width="230dp"
-        android:layout_height="115dp"
-        app:srcCompat="@drawable/past_event"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="416dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
