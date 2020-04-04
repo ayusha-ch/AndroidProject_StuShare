@@ -1,5 +1,6 @@
 package com.example.stu_share;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -52,6 +53,7 @@ public class EventList extends AppCompatActivity {
     Boolean likeFlag=false;
     EventAdapter mAdapter;
     Button  btnLogout12;
+    ImageView buttonImg;
     public static User user3;
     EditText txtS;
     Spinner spinner;
@@ -108,6 +110,13 @@ public class EventList extends AppCompatActivity {
         final String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
 
         DrawerUtil.getDrawer(this,toolBar);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -177,11 +186,11 @@ public class EventList extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user3);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user3);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
@@ -229,6 +238,10 @@ public class EventList extends AppCompatActivity {
         }
         return true;
     }
+
+    ////////*****like feature start****//////////
+
+    ///////////lke function continiues
     public void likeClick(View v)
     {
         ConstraintLayout vwParentRow = (ConstraintLayout) v.getParent();
@@ -241,6 +254,9 @@ public class EventList extends AppCompatActivity {
         downloadJSON(url1,user3,"");
     }
 
+
+
+    /////////// for like update from database
     public void updateLike(final String urlWebService, final User user6, final EventCoordinator.Event event4,final Boolean flag) {
 
         Thread thread = new Thread(new Runnable() {
@@ -292,24 +308,10 @@ public class EventList extends AppCompatActivity {
         });
         thread.start();
     }
-    public void logout(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("user",user3);
-        startActivity(intent);
-    }
 
-    public void openMyEventsActivity(){
-        Intent intent =new Intent(this, EventMyEvents.class);
-        intent.putExtra("user",user3);
-        startActivity(intent);
-    }
+    ////////*****like feature ends ****//////////
 
-    public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
-        intent.putExtra("user",user3);
-        startActivity(intent);
-    }
-
+/////////function related to database
     private void downloadJSON(final String urlWebService,final User user4,final String keywords) {
         Log.i("KEYWORDS","Keyword is: "+keywords);
 
@@ -403,4 +405,28 @@ public class EventList extends AppCompatActivity {
         listView.setAdapter(mAdapter);
     }
 
+///////////////functions to open different activities:
+    public void logout(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("user",user3);
+        startActivity(intent);
+    }
+
+    public void openMyEventsActivity(){
+        Intent intent =new Intent(this, EventMyEvents.class);
+        intent.putExtra("user",user3);
+        startActivity(intent);
+    }
+
+    public void OpenMenuActivity() {
+        Intent intent = new Intent(this, EventMenu.class);
+        intent.putExtra("user",user3);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user3);
+        startActivity(intent);
+    }
 }
