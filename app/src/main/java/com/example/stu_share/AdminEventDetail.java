@@ -3,10 +3,17 @@ package com.example.stu_share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,12 +36,54 @@ public class AdminEventDetail extends AppCompatActivity {
     private TextView txtEvtTitle,txtEvtDetail,txtStDate,txtStTime,txtEndTime,txtEndDate;
    // DBHelper dbHelper = null;
     private User user;
+
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
+
         btnJoin=findViewById(R.id.btnSus);
-        btnLogout=findViewById(R.id.btnLogout111);
+
         txtEvtTitle=findViewById(R.id.txtEventTitle);
         txtEvtDetail=findViewById(R.id.txtEvtDetail);
         txtStDate=findViewById(R.id.txtStDate);
@@ -49,13 +98,7 @@ public class AdminEventDetail extends AppCompatActivity {
         txtStDate.setText(event.startDate);
         txtEndDate.setText(event.endDate);
         txtEndTime.setText(event.endTime);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,13 +114,7 @@ public class AdminEventDetail extends AppCompatActivity {
         });
 
 
-        btnHome = findViewById(R.id.btnHome8);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
 
     }
 

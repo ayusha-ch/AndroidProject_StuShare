@@ -1,10 +1,12 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +22,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AdminMessageCreate extends AppCompatActivity {
     Button home,logout, btnSendMessage;
@@ -29,11 +35,55 @@ public class AdminMessageCreate extends AppCompatActivity {
     private static String length;
     private MessageCoordinator.Message message;
 
+
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/createMessage.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+
+        ButterKnife.bind(this);
+        toolBar.setTitle("Message Create");
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",userReg);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",userReg);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",userReg);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",userReg);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
+
         userReg=(User)getIntent().getSerializableExtra("user");
         message=(MessageCoordinator.Message) getIntent().getSerializableExtra("message");
         txtTitle = findViewById(R.id.textMsgSubject);

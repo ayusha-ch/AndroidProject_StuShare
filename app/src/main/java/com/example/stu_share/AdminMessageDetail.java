@@ -1,10 +1,12 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,17 +20,67 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
 
 public class AdminMessageDetail extends AppCompatActivity {
     Button btnDelete, btnCancel,btnReply;
     private User user;
     private  MessageCoordinator.Message message1;
     MessageCoordinator.Message message;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_message_detail);
         user=(User)getIntent().getSerializableExtra("user") ;
+
+
+
+
+        ButterKnife.bind(this);
+        toolBar.setTitle("Message Details");
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
+
         message1 =(MessageCoordinator.Message)getIntent().getSerializableExtra("message");
         btnCancel = findViewById(R.id.btnCancel_Admin);
         btnCancel.setOnClickListener(new View.OnClickListener() {

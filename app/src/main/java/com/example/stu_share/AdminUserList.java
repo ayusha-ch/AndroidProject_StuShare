@@ -1,11 +1,13 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +27,12 @@ import java.net.URL;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
 
 import static com.example.stu_share.EventList.user3;
 
@@ -34,6 +42,8 @@ public class AdminUserList extends AppCompatActivity {
     ListView listView;
     private static User user1;
     TextView txt;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
 
     public static List<User> userList;
     @Override
@@ -41,23 +51,50 @@ public class AdminUserList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_list);
 
+        user1=(User)getIntent().getSerializableExtra("user");
+
+        ButterKnife.bind(this);
+        toolBar.setTitle("Users List");
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user1);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user1);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user1);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user1);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
+
         listView = (ListView) findViewById(R.id.listUser);
         downloadJSON("https://w0044421.gblearn.com/stu_share/read_all_users.php");
-        btnLogout = findViewById(R.id.btnAlLogout);
-        user1=(User)getIntent().getSerializableExtra("user");
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                home();
-            }
-        });
+
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
