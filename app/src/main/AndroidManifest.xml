@@ -59,7 +59,6 @@
         <activity android:name=".ResetConfirm" />
         <activity android:name=".EventOwnDetail" />
         <activity android:name=".AdminEventDetail" />
-        <activity android:name=".EventMenu" />
         <activity android:name=".AdminEventList" />
         <activity android:name=".AdUserDetail" />
         <activity android:name=".AdminUserList" />
