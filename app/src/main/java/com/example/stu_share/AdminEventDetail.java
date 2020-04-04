@@ -53,17 +53,20 @@ public class AdminEventDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("user",user);
                 startActivity(intent);
             }
         });
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "you have successfully suspended the event",
+                Toast.makeText(getBaseContext(), "you have successfully suspended the event"+event.status,
                         Toast.LENGTH_LONG).show();
                 update("https://w0044421.gblearn.com/stu_share/EventSuspended.php");
                 //update("https://w0044421.gblearn.com/stu_share/eventRegDeleteByAdmin.php");
+                Intent intent = new Intent();
+                intent.putExtra("user",user);
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
 
@@ -75,17 +78,7 @@ public class AdminEventDetail extends AppCompatActivity {
                 OpenMenuActivity();
             }
         });
-        btnContact1=findViewById(R.id.btnContact);
-        btnContact1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i= new Intent(getBaseContext(), MessageCreate.class);
-                i.putExtra("user",user);
-                i.putExtra("id","admin");
-                startActivity(i);
 
-            }
-        });
     }
 
     private void update(final String urlWebService) {
@@ -106,6 +99,7 @@ public class AdminEventDetail extends AppCompatActivity {
                     //jsonParam.put("userId", user2.id);
                     final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
                     jsonParam.put("eventId", event.id);
+                    jsonParam.put("status", event.status);
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
