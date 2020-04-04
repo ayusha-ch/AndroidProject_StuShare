@@ -53,7 +53,11 @@ public class EventDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(getApplicationContext(),MessageCreate.class);
-                i.putExtra("event",event);
+                MessageCoordinator.Message message=new MessageCoordinator.Message();
+                message.title="Re: About your events post:" +event.eventTitle;
+                message.detail="I just saw your post regarding:\n" +event.toString()+"\n\n\n"+user2.firstName+" "+user2.lastName;
+                message.receiver_email=event.orgEmail;
+                i.putExtra("message",message);
                 i.putExtra("user",user2);
                 startActivityForResult(i,2);
             }
