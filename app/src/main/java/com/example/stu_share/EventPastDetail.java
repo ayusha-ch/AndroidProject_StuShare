@@ -40,7 +40,7 @@ public class EventPastDetail extends AppCompatActivity {
         buttonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OpenCreateActivity();
             }
         });
 
@@ -112,6 +112,12 @@ public class EventPastDetail extends AppCompatActivity {
     }
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventList.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }
