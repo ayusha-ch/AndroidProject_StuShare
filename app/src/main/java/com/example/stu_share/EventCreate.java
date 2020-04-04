@@ -353,9 +353,15 @@ public class EventCreate extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void OpenCreateActivity() {
-        Intent intent = new Intent(this, EventCreateDescription.class);
+    public void OpenEventList() {
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
+        startActivity(intent); }
+
 }
