@@ -67,7 +67,7 @@ public class EventListJoined extends AppCompatActivity {
             {
                 Log.i("POSITIONINJOINED",position+" clicked!");
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
-                Intent intent =new Intent(getBaseContext(), EventRegDetail.class);
+                Intent intent =new Intent(getBaseContext(), EventListJoined.class);
                 intent.putExtra("args",event2);
                 intent.putExtra("user",user);
                 startActivity(intent);
