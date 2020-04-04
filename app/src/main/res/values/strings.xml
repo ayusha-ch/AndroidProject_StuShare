@@ -34,5 +34,7 @@
     <string name="create">Create a new Event</string>
     <string name="contact">Contact Us</string>
     <string name="upcoming">Upcoming Events</string>
+    <string name="eventJoinedDetail">Joined Event Details</string>
+    <string name="messageList">Message List</string>
 
 </resources>
