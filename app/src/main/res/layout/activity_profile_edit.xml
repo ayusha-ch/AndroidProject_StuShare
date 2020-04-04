@@ -100,31 +100,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#ECE9E5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHome7" />
-
-    <Button
-        android:id="@+id/btnHome7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#ECE9E5"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnLogout8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#ECE9E5"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/editFirstName"

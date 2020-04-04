@@ -30,7 +30,7 @@ import java.net.URL;
 
 
 public class MyProfileEdit extends AppCompatActivity {
-    Button btnSubmit, btnHome7, btnLogout8;
+    Button btnSubmit;
     TextView editFn,editLn,editQ,editA;
     private User user;
     private final String urlWebService="https://w0044421.gblearn.com/stu_share/user_update.php";
@@ -49,22 +49,6 @@ public class MyProfileEdit extends AppCompatActivity {
         editA=findViewById(R.id.editAnswer);
         editA.setText(user.answer);
         btnSubmit = findViewById(R.id.btnSubmit);
-        btnHome7 = findViewById(R.id.btnHome7);
-        btnLogout8 = findViewById(R.id.btnLogout8);
-
-        btnLogout8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-
-        btnHome7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
