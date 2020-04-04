@@ -3,12 +3,19 @@ package com.example.stu_share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +33,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MyProfileEdit extends AppCompatActivity {
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     Button btnSubmit;
     TextView editFn,editLn,editQ,editA;
     private User user;
@@ -40,6 +51,35 @@ public class MyProfileEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         user=(User)getIntent().getSerializableExtra("user");
         setContentView(R.layout.activity_profile_edit);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_home:
+                        OpenMenuActivity();
+                        break;
+                    case R.id.action_message:
+                        Intent intent = new Intent(getBaseContext(), MessageList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myevents:
+                        openMyEventsActivity();
+                        break;
+
+//                    case R.id.action_profile:
+//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+//                        i.putExtra("user",user3);
+//                        startActivity(i);
+//                        break;
+                }
+                return false;
+            }
+        });
+
         editFn=findViewById(R.id.editFirstName);
         editFn.setText(user.firstName);
         editLn=findViewById(R.id.editLastName);
@@ -80,7 +120,21 @@ public class MyProfileEdit extends AppCompatActivity {
             }
         });
 
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
     }
+
 
     private void updateUser(final User user, final String urlWebService) {
         Thread thread = new Thread(new Runnable() {
@@ -147,6 +201,13 @@ public class MyProfileEdit extends AppCompatActivity {
     public void logout(){
         Intent intent =new Intent(this, MainActivity.class);
         intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void openMyEventsActivity(){
+        Intent intent =new Intent(this, EventMyEvents.class);
+        intent.putExtra("user",user);
+        Log.d("TAG","Menu to MyEvent"+user.id);
         startActivity(intent);
     }
 }
