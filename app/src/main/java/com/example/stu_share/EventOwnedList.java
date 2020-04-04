@@ -2,6 +2,7 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,17 +34,30 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventOwnedList extends AppCompatActivity {
     private Button btnCancel, btnEdit, btnViewAttend, btnCheckIn, btnLogout, btnHome;
     ListView listView;
     EventAdapter mAdapter;
     //DBHelper dbHelper=null;
     private User user;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     public static  List<EventCoordinator.Event> evt = new ArrayList<EventCoordinator.Event>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_owned_list);
+
+        ButterKnife.bind(this);
+
+        toolBar.setTitle("My Owned Events");
+        setSupportActionBar(toolBar);
+        ImageView buttonImg;
+        buttonImg = findViewById(R.id.buttonImg) ;
+
         user=(User)getIntent().getSerializableExtra("user");
         listView = (ListView) findViewById(R.id.listV1);
         downloadJSON("https://w0044421.gblearn.com/stu_share/EventView_Owned_Events.php");
@@ -88,6 +103,8 @@ public class EventOwnedList extends AppCompatActivity {
                 return false;
             }
         });
+
+        DrawerUtil.getDrawer(this,toolBar);
     }
 
     @Override
