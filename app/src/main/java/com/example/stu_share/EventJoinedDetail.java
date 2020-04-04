@@ -2,6 +2,7 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,20 +10,42 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventJoinedDetail extends AppCompatActivity {
-    private Button btnLogout,btnDeReg;
+    private Button btnDeReg;
     private TextView txtEvtTitle,txtEvtDetail,txtStDate,txtStTime,txtEndTime,txtEndDate;
     //DBHelper dbHelper = null;
     private User user;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_joined_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.eventJoinedDetail));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -42,17 +65,16 @@ public class EventJoinedDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-////                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-////                        i.putExtra("user",user);
-////                        startActivity(i);
-////                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
         });
         btnDeReg=findViewById(R.id.btnDereg);
-        btnLogout=findViewById(R.id.btnLogout111);
         txtEvtTitle=findViewById(R.id.txtEventTitle99);
         txtEvtDetail=findViewById(R.id.txtEvtDetail9);
         txtStDate=findViewById(R.id.txtStDate99);
@@ -90,6 +112,11 @@ public class EventJoinedDetail extends AppCompatActivity {
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user);
         Log.d("TAG","Menu to MyEvent"+user.id);
+        startActivity(intent);
+    }
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
         startActivity(intent);
     }
 }

@@ -7,6 +7,43 @@
     android:background="@drawable/bkgimg"
     tools:context=".EventJoinedDetail">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#2F3C81"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/buttonImg"
+                android:layout_width="200px"
+                android:layout_height="150px"
+                android:foregroundGravity="right"
+                android:src="@drawable/ic_create" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <include
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/txtEndTime99"
         android:layout_width="70dp"
@@ -43,32 +80,15 @@
         app:layout_constraintStart_toEndOf="@+id/textView199"
         app:layout_constraintTop_toBottomOf="@+id/textView189" />
 
-    <Button
-        android:id="@+id/btnLogout111"
-        android:layout_width="152dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="242dp"
-        android:layout_marginLeft="242dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
-        android:text="Logout"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textView109"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="34dp"
         android:text="Event"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout111" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/txtEventTitle99"
@@ -130,11 +150,10 @@
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="34dp"
         android:text="Start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout111" />
+        app:layout_constraintTop_toBottomOf="@+id/textView109" />
 
     <TextView
         android:id="@+id/textView199"
