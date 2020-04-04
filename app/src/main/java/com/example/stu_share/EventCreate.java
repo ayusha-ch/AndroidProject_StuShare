@@ -55,7 +55,7 @@ public class EventCreate extends AppCompatActivity {
     private EventCoordinator.Event event1;
     EditText txtStTime,txtEndTime;
     private User user;
-    Button btnCreate, btnHome, btnLogout;
+    Button btnCreate;
     //    DBHelper dbHelper = null;
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/create_event.php";
     @Override
@@ -179,13 +179,7 @@ public class EventCreate extends AppCompatActivity {
                 endDisplayDate.setText(date);
             }
         };
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
         user=(User)getIntent().getSerializableExtra("user");
         final Calendar myCalendar = Calendar.getInstance();
         final Calendar myCalendar1 = Calendar.getInstance();
@@ -247,13 +241,7 @@ public class EventCreate extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnCreate=findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
