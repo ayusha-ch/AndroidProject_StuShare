@@ -38,16 +38,16 @@ public class MessageReceivedDetail extends AppCompatActivity {
         msgT.setText(message1.title);
         msgB.setText(message1.detail);
         btnReply = findViewById(R.id.btnReply);
+        final MessageCoordinator.Message message=new MessageCoordinator.Message();
+        message.title="Re: "+message1.title;
+        message.detail="In you previous message, you mentioned:\n"+message1.detail+"\n";
+        message.receiver_email=message1.sender_email;
+        message.sender_email=user1.email;
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MessageCreate.class);
-                MessageCoordinator.Message message=new MessageCoordinator.Message();
-                message.title="Re: "+message1.title;
-                message.detail="In you previous message, you mentioned:\n"+message1.detail+"\n";
-                message.receiver_email=message1.sender_email;
-                message.sender_email=user1.email;
-                intent.putExtra("message",intent);
+                Intent intent = new Intent(getApplicationContext(),MessageCreate.class);
+                intent.putExtra("message",message);
                 intent.putExtra("user",user1);
                 startActivity(intent);
             }
@@ -58,7 +58,8 @@ public class MessageReceivedDetail extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MessageList.class);
                 intent.putExtra("user",user1);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
         btnDelete=findViewById(R.id.btnMsg_Delete);
