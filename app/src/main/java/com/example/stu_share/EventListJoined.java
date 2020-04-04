@@ -2,6 +2,7 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,17 +35,37 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventListJoined extends AppCompatActivity {
     Button btnLogout, btnHome;
     ListView listView;
     EventAdapter mAdapter;
     private User user ;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
 
     public static  List<EventCoordinator.Event> evt = new ArrayList<EventCoordinator.Event>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list_joined);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.eventJoinedDetail));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         btnLogout = findViewById(R.id.btnAlLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +119,11 @@ public class EventListJoined extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
@@ -259,6 +281,12 @@ public class EventListJoined extends AppCompatActivity {
     }
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventMenu.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

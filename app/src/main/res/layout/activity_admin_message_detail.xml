@@ -75,14 +75,14 @@
         android:text="delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEdit_admin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnReply_admin" />
 
     <Button
-        android:id="@+id/btnEdit_admin"
+        android:id="@+id/btnReply_admin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Edit"
+        android:text="Reply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textMessageBody_admin" />

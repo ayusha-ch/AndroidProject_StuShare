@@ -28,15 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminEventList extends AppCompatActivity {
-    Button btnLogout;
+    Button btnLogout,btnMsg;
     EventAdapter mAdapter;
     ListView listView;
     private static User user;
+    private String url1="https://w0044421.gblearn.com/stu_share/read_all_events.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_list);
-        downloadJSON("https://w0044421.gblearn.com/stu_share/read_all_events.php");
+        downloadJSON(url1);
         btnLogout = findViewById(R.id.btnAlLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +46,16 @@ public class AdminEventList extends AppCompatActivity {
             }
         });
 
-      user=(User)getIntent().getSerializableExtra("user");
+        user=(User)getIntent().getSerializableExtra("user");
+        btnMsg=findViewById(R.id.button145);
+        btnMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),AdminMessageList.class);
+                intent.putExtra("user",user);
+                startActivity(intent);
+            }
+        });
         listView = (ListView) findViewById(R.id.eventList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -57,11 +67,17 @@ public class AdminEventList extends AppCompatActivity {
                 Intent intent =new Intent(getBaseContext(), AdminEventDetail.class);
                 intent.putExtra("args",event2);
                 intent.putExtra("user",user);
-                startActivity(intent);
+                startActivityForResult(intent,2);
 
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        downloadJSON(url1);
     }
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
