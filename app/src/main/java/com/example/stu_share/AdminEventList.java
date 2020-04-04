@@ -1,20 +1,26 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.os.AsyncTask;
 
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,35 +33,71 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AdminEventList extends AppCompatActivity {
     Button btnLogout,btnMsg;
     EventAdapter mAdapter;
     ListView listView;
     private static User user;
+
+
+    @BindView(R.id.toolbar)
+    Toolbar toolBar1;
     private String url1="https://w0044421.gblearn.com/stu_share/read_all_events.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_list);
-        downloadJSON(url1);
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+
+        ButterKnife.bind(this);
+        toolBar1.setTitle("Admin Events List");
+        setSupportActionBar(toolBar1);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar1);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                logout();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+                }
+                return false;
             }
         });
 
+
+
+
+
+        downloadJSON(url1);
+
+
         user=(User)getIntent().getSerializableExtra("user");
-        btnMsg=findViewById(R.id.button145);
-        btnMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),AdminMessageList.class);
-                intent.putExtra("user",user);
-                startActivity(intent);
-            }
-        });
+
         listView = (ListView) findViewById(R.id.eventList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {

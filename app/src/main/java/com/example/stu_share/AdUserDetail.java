@@ -1,10 +1,12 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,30 +22,69 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class AdUserDetail extends AppCompatActivity {
     TextView txtDetail;
-    Button btnDeact,btnLogout,btnAct, btnHome;
+    Button btnDeact,btnAct;
     //DBHelper dbHelper = null;
     private User userDetail;
     private User user;
+
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_detail);
         userDetail=(User)getIntent().getSerializableExtra("args");
         user=(User)getIntent().getSerializableExtra("user");
-        txtDetail=findViewById(R.id.txtAcctDerail);
-        btnAct=findViewById(R.id.btnAct);
-        btnLogout=findViewById(R.id.btnLogout2);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+
+        ButterKnife.bind(this);
+        toolBar.setTitle("User Details");
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent =new Intent(getBaseContext(),MainActivity.class);
-                intent.putExtra("user",user);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+                }
+                return false;
             }
         });
+        txtDetail=findViewById(R.id.txtAcctDerail);
+        btnAct=findViewById(R.id.btnAct);
+
         btnDeact=findViewById(R.id.btnDeAct);
         txtDetail.setText(userDetail.toString());
         btnAct.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +112,7 @@ public class AdUserDetail extends AppCompatActivity {
 
             }
         });
-        btnHome = findViewById(R.id.btnHome19);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
     }
     public void sendPost(final String status) {
 

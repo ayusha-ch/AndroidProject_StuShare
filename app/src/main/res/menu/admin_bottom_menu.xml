@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <?xml version="1.0" encoding="utf-8"?>
     <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 <!--        <item-->
@@ -11,29 +8,24 @@
 <!--            android:title="@string/home"-->
 <!--            app:showAsAction="ifRoom" />-->
         <item
-        android:id="@+id/action_adminprofile"
+        android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
         android:title="My profile"
         app:showAsAction="ifRoom" />
-        <!--    /// <item-->
-        <!--        android:id="@+id/action_register"-->
-        <!--        android:enabled="true"-->
-        <!--        android:icon="@drawable/ic_join"-->
-        <!--        android:title="Join"-->
-        <!--        app:showAsAction="ifRoom" />-->
+
         <item
             android:id="@+id/action_adminEventList"
             android:enabled="true"
-            android:icon="@drawable/ic_profile"
-            android:title="My profile"
+            android:icon="@drawable/ic_myevents"
+            android:title="Events List"
             app:showAsAction="ifRoom" />
 
         <item
             android:id="@+id/action_adminUserList"
             android:enabled="true"
-            android:icon="@drawable/ic_myevents"
-            android:title="My Events"
+            android:icon="@drawable/ic_users"
+            android:title="Users List"
             app:showAsAction="ifRoom" />
         <item
             android:id="@+id/action_message"
@@ -42,5 +34,3 @@
             android:title="Messages"
             app:showAsAction="ifRoom" />
     </menu>
-
-</menu>

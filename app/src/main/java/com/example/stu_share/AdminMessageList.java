@@ -1,17 +1,26 @@
 package com.example.stu_share;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +35,15 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import butterknife.ButterKnife;
+
 import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 
 public class AdminMessageList extends AppCompatActivity {
+
+
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     Button btnLogout, btnHome;
     ListView msgListView;
     private static User user;
@@ -37,7 +52,48 @@ public class AdminMessageList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_message_list);
+
+
         user=(User)getIntent().getSerializableExtra("user");
+
+
+        ButterKnife.bind(this);
+        toolBar.setTitle("Messages List");
+        setSupportActionBar(toolBar);
+
+
+        AdminDrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_adminEventList:
+                        Intent intent = new Intent(getBaseContext(), AdminEventList.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_message:
+                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
+                        intent1.putExtra("user",user);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_adminUserList:
+                        Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
+                        intent2.putExtra("user",user);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+                }
+                return false;
+            }
+        });
         msgListView=findViewById(R.id.adminMessageList);
         arrayAdapter_msg= new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
         msgListView.setAdapter(arrayAdapter_msg);
@@ -53,24 +109,7 @@ public class AdminMessageList extends AppCompatActivity {
             }
         });
 
-        btnHome = findViewById(R.id.btnAdminMsgHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), AdminEventList.class);
-                intent.putExtra("user",user);
-                startActivity(intent);
-            }
-        });
 
-        btnLogout = findViewById(R.id.btnAdminMsgLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
         getMsgList();
     }
     @Override
