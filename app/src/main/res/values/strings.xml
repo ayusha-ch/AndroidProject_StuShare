@@ -16,8 +16,9 @@
     <string name="Title">Title of Book</string>
     <string name="author">Author</string>
     <string name="bookAuthor">Author of Book</string>
-    <string name="edition">Edition</string>
-    <string name="bookEdition">Book Edition</string>
+    <string name="eventsList">Events List</string>
+    <string name="edition">Events List</string>
+    <string name="bookEdition">Users List</string>
     <string name="isbn">ISBN Number</string>
     <string name="numberISBN">Book ISBN Number</string>
     <string name="viewCurBook">View Current Book Postings</string>
@@ -33,6 +34,8 @@
     <string name="my_car_share">My Car Share</string>
     <string name="price">Price</string>
     <string name="profile">My Profile</string>
+    <string name="joined">Joined Events List</string>
+    <string name="usersList">Users List</string>
     <string name="Price">Price of Book</string>
     <string name="Events">Join Available Events</string>
     <string name="create">Create a new Event</string>
@@ -40,5 +43,6 @@
     <string name="upcoming">Upcoming Events</string>
     <string name="eventJoinedDetail">Joined Event Details</string>
     <string name="messageList">Message List</string>
+
 
 </resources>

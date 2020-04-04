@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,15 +36,23 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventDetail extends AppCompatActivity {
+
+    private Button  btnJoin,btnContact1,btnMsg,btnAddCalendar;
+
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-    private Button btnJoin,btnContact1, btnMsg;
+
+
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -109,6 +118,17 @@ public class EventDetail extends AppCompatActivity {
                         break;
                 }
                 return false;
+            }
+        });
+        btnAddCalendar=findViewById(R.id.btnCal);
+        btnAddCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    addEvent(event);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         imageCheck=findViewById(R.id.imgChecked);
@@ -194,6 +214,24 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(Intent.createChooser(share, "Share link!"));
             }
         });
+    }
+    public void addEvent(EventCoordinator.Event event) throws ParseException {
+
+        String stDate = event.startDate+" "+event.startTime;
+        String edDate=event.endDate+" "+event.endTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
+        Date startDate = sdf.parse(stDate);
+        Date endDate = sdf.parse(edDate);
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, event.eventTitle)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate.getTime())
+                .putExtra(CalendarContract.Events.DESCRIPTION, event.eventDetail)
+                .putExtra(Intent.EXTRA_EMAIL, event.orgEmail)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate.getTime());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
     public void updateRating(final String urlWebService, final User user, final EventCoordinator.Event event1,final Float rate) {
 
@@ -307,7 +345,7 @@ public class EventDetail extends AppCompatActivity {
         startActivity(intent);
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user2);
         startActivity(intent);
     }

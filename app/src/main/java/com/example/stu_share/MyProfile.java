@@ -178,26 +178,14 @@ public class MyProfile extends AppCompatActivity {
         intent.putExtra("user",userTemp);
         startActivity(intent);
     }
-//    public void OpenMenuActivity() {
-//        if(userTemp.role.equals("admin")){
-//            Intent intent = new Intent(this, AdminUserList.class);
-//            intent.putExtra("user",userTemp);
-//            startActivity(intent);
-//        }else  if(userTemp.role.equals("alumni")){
-//            Intent intent = new Intent(this, AlumnaiDashboard.class);
-//            intent.putExtra("user",userTemp);
-//            startActivity(intent);
-//        }else{Intent intent = new Intent(this, EventList.class);
-//            intent.putExtra("user",userTemp);
-//            startActivity(intent);}
-//    }
+
     public void logout(){
         Intent intent =new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",userTemp);
         startActivity(intent);
     }

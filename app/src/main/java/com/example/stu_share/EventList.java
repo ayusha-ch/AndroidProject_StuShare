@@ -27,7 +27,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.willy.ratingbar.RotationRatingBar;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +43,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static com.example.stu_share.EventAdapter.eventList;
 import static com.example.stu_share.EventDetail.url_update;
 
@@ -52,7 +50,6 @@ public class EventList extends AppCompatActivity {
     ListView listView;
     Boolean likeFlag=false;
     EventAdapter mAdapter;
-    Button  btnLogout12;
     ImageView buttonImg;
     public static User user3;
     EditText txtS;
@@ -155,7 +152,7 @@ public class EventList extends AppCompatActivity {
         downloadJSON(url1,user3,"");
         listView = findViewById(R.id.listview);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.include12);
         txtS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -239,9 +236,6 @@ public class EventList extends AppCompatActivity {
         return true;
     }
 
-    ////////*****like feature start****//////////
-
-    ///////////lke function continiues
     public void likeClick(View v)
     {
         ConstraintLayout vwParentRow = (ConstraintLayout) v.getParent();
@@ -253,10 +247,6 @@ public class EventList extends AppCompatActivity {
         String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
         downloadJSON(url1,user3,"");
     }
-
-
-
-    /////////// for like update from database
     public void updateLike(final String urlWebService, final User user6, final EventCoordinator.Event event4,final Boolean flag) {
 
         Thread thread = new Thread(new Runnable() {
@@ -308,20 +298,13 @@ public class EventList extends AppCompatActivity {
         });
         thread.start();
     }
-
-    ////////*****like feature ends ****//////////
-
-/////////function related to database
     private void downloadJSON(final String urlWebService,final User user4,final String keywords) {
         Log.i("KEYWORDS","Keyword is: "+keywords);
-
         class DownloadJSON extends AsyncTask<Void, Void, String> {
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
             }
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
@@ -332,7 +315,6 @@ public class EventList extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
             @Override
             protected String doInBackground(Void... voids) {
                 try {
@@ -380,7 +362,6 @@ public class EventList extends AppCompatActivity {
     private void loadIntoListView(String json) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         ArrayList<EventCoordinator.Event> eventL = new ArrayList<EventCoordinator.Event>();
-
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             EventCoordinator.Event event1 = new EventCoordinator.Event();
@@ -411,19 +392,16 @@ public class EventList extends AppCompatActivity {
         intent.putExtra("user",user3);
         startActivity(intent);
     }
-
     public void openMyEventsActivity(){
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user3);
         startActivity(intent);
     }
-
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user3);
         startActivity(intent);
     }
-
     public void OpenCreateActivity() {
         Intent intent = new Intent(this, EventCreateDescription.class);
         intent.putExtra("user",user3);

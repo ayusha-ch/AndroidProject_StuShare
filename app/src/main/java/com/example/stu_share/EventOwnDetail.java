@@ -42,13 +42,13 @@ public class EventOwnDetail extends AppCompatActivity {
     public Toolbar toolBar;
     private Button btnUpdate,btnTerminate;
     private EditText txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
-    //DBHelper dbHelper = null;
     private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_own_detail);
-
+        final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
+        Toast.makeText(getApplicationContext(),event.toString(),Toast.LENGTH_LONG).show();
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
@@ -59,9 +59,7 @@ public class EventOwnDetail extends AppCompatActivity {
 
             }
         });
-
         DrawerUtil.getDrawer(this,toolBar);
-
         btnUpdate=findViewById(R.id.btnUpdateOwn);
         btnTerminate=findViewById(R.id.btnTereminate);
         txtEvtTitle=findViewById(R.id.txtEventTitle);
@@ -70,7 +68,6 @@ public class EventOwnDetail extends AppCompatActivity {
         txtStTime=findViewById(R.id.txtStTime6);
         txtEndDate=findViewById(R.id.txtEndDate6);
         txtEndTime=findViewById(R.id.txtEndTime6);
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -82,7 +79,6 @@ public class EventOwnDetail extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
@@ -90,17 +86,15 @@ public class EventOwnDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
         });
-
-        final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
         txtEvtTitle.setText(event.eventTitle);
         txtEvtDetail.setText(event.eventDetail);
         txtStTime.setText(event.startTime);
@@ -111,7 +105,6 @@ public class EventOwnDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //add to database table with event id and participante id
-
                 event.setEventTitle(txtEvtTitle.getText().toString());
                 event.setEventDetail(txtEvtDetail.getText().toString());
                 event.setStartDate(txtStDate.getText().toString());
@@ -129,8 +122,8 @@ public class EventOwnDetail extends AppCompatActivity {
         btnTerminate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update("https://w0044421.gblearn.com/stu_share/EventSuspended.php");
-                update("https://w0044421.gblearn.com/stu_share/eventRegDeleteByAdmin.php");
+                suspendEvent(event,"https://w0044421.gblearn.com/stu_share/EventSuspended.php","active");
+                suspendEvent(event,"https://w0044421.gblearn.com/stu_share/eventRegDeleteByAdmin.php","active");
 
                 event.setStatus("not active");
 
@@ -199,7 +192,7 @@ public class EventOwnDetail extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    private void update(final String urlWebService) {
+    private void suspendEvent(final EventCoordinator.Event event,final String urlWebService, final String status) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -215,8 +208,9 @@ public class EventOwnDetail extends AppCompatActivity {
 
                     JSONObject jsonParam = new JSONObject();
                     //jsonParam.put("userId", user2.id);
-                    final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
+
                     jsonParam.put("eventId", event.id);
+                    jsonParam.put("status", status);
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -259,7 +253,7 @@ public class EventOwnDetail extends AppCompatActivity {
     }
 
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }
