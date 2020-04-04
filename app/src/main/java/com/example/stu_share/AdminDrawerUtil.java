@@ -16,7 +16,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import static com.example.stu_share.EventList.user3;
+import static com.example.stu_share.AdminEventList.userAdm;
 
 
 public class AdminDrawerUtil {
@@ -75,25 +75,25 @@ public class AdminDrawerUtil {
                         if (drawerItem.getIdentifier() == 8 && !(activity instanceof AdminUserList)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, AdminUserList.class);
-                            intent.putExtra("user",user3);
+                            intent.putExtra("user",userAdm);
                             view.getContext().startActivity(intent);
                         }
                         else if (drawerItem.getIdentifier() == 13 && !(activity instanceof MyProfile)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, MyProfile.class);
-                            intent.putExtra("user",user3);
+                            intent.putExtra("user",userAdm);
                             view.getContext().startActivity(intent);
                         }
                         else if (drawerItem.getIdentifier() == 11 && !(activity instanceof MainActivity)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, MainActivity.class);
-                            intent.putExtra("user",user3);
+                            intent.putExtra("user",userAdm);
                             view.getContext().startActivity(intent);
                         }
                         else if (drawerItem.getIdentifier() == 10 && !(activity instanceof AdminMessageList)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, AdminMessageList.class);
-                            intent.putExtra("user",user3);
+                            intent.putExtra("user",userAdm);
                             view.getContext().startActivity(intent);
                         }
 //                        else if (drawerItem.getIdentifier() == 4 && !(activity instanceof EmailActivity)) {
@@ -105,7 +105,7 @@ public class AdminDrawerUtil {
                         else if (drawerItem.getIdentifier() == 9 && !(activity instanceof AdminEventList)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, AdminEventList.class);
-                            intent.putExtra("user",user3);
+                            intent.putExtra("user",userAdm);
                             view.getContext().startActivity(intent);
                         }
 

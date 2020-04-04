@@ -5,7 +5,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
-
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -15,10 +14,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
 import static com.example.stu_share.EventList.user3;
-
-
 public class DrawerUtil {
 
     public static void getDrawer(final Activity activity, Toolbar toolbar) {
@@ -46,7 +42,6 @@ public class DrawerUtil {
                 .withName(R.string.message).withIcon(R.drawable.ic_message);
         SecondaryDrawerItem drawerItemDonate = new SecondaryDrawerItem().withIdentifier(6)
                 .withName(R.string.logout).withIcon(R.drawable.ic_logout);
-
         //create the drawer and remember the `Drawer` result object
         Drawer result = new DrawerBuilder()
                 .withActivity(activity)

@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         final String txtE = txtPEm.getText().toString();
         final String txtP = txtPPwd.getText().toString();
         txtErr = findViewById(R.id.txtWrong2);
-        user=(User)getIntent().getSerializableExtra("user");
 
         btnFgtPswd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("email", txtPEm.getText().toString());
 
-                    user=(User) getIntent().getSerializableExtra("user");
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
