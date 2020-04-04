@@ -21,43 +21,43 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/buttonImg"
-                android:layout_width="200px"
-                android:layout_height="150px"
-                android:foregroundGravity="right"
-                android:src="@drawable/ic_create" />
-        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/buttonImg"
+            android:layout_width="200px"
+            android:layout_height="150px"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+
+
+            android:src="@drawable/ic_create" />
+
 
     </androidx.appcompat.widget.Toolbar>
 
     <ListView
-        android:id="@+id/listView2323"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/listV1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#FFFFFF"
-        android:cacheColorHint="#FFFFFF"
+        android:layout_marginBottom="10dp"
+        android:background="#00000000"
+        android:cacheColorHint="#00000000"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/include5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="220dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <include
+        android:id="@+id/include5"
         layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

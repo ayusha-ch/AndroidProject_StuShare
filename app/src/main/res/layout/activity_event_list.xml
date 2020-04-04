@@ -23,17 +23,17 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right">
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/buttonImg"
                 android:layout_width="200px"
                 android:layout_height="150px"
-                android:foregroundGravity="right"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+
+
+
                 android:src="@drawable/ic_create" />
-        </LinearLayout>
+
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -54,6 +54,7 @@
 
 
     <include
+        android:id="@+id/include12"
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,9 +84,10 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/include2"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/include12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sortSpinner"
@@ -100,7 +102,7 @@
             android:layout_marginEnd="20dp"
             android:background="#00000000"
             android:cacheColorHint="#00000000"
-            android:paddingBottom="220dp"
+            android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

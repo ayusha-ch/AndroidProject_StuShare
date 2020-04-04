@@ -112,7 +112,7 @@ public class MyProfileEdit extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Profile has been updated",
                             Toast.LENGTH_LONG).show();
                     updateUser(user,urlWebService);
-                    Intent intent = new Intent(getBaseContext(), EventMenu.class);
+                    Intent intent = new Intent(getBaseContext(), EventList.class);
                     intent.putExtra("user",user);
                     startActivity(intent);
                 }

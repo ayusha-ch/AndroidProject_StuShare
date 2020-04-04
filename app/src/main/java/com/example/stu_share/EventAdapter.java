@@ -42,7 +42,6 @@ public class EventAdapter extends ArrayAdapter<EventCoordinator.Event> {
 
     private Context mContext;
     public static List<EventCoordinator.Event> eventList = new ArrayList<>();
-    final String urlRate="https://w0044421.gblearn.com/stu_share/Event_Rate.php";
     public EventAdapter(@NonNull Context context, ArrayList<EventCoordinator.Event> list) {
         super(context, 0 , list);
         mContext = context;
@@ -78,7 +77,10 @@ public class EventAdapter extends ArrayAdapter<EventCoordinator.Event> {
         rtBar.setFocusable(false);
         return listItem;
     }
-
+    @Override
+    public int getCount(){
+        return eventList.size();
+    }
 
 }
 

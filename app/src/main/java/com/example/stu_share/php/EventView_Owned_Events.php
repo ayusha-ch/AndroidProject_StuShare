@@ -6,8 +6,8 @@ $nameJ=json_decode(file_get_contents('php://input'));
 $userID=$nameJ->{'userid'};
  
 // Select all of our stocks from table 'stock_tracker'
-$sql = "SELECT * FROM event WHERE id='$userID';";
- 
+$sql = "SELECT * FROM event WHERE organizerId='$userID' AND status like 'active';";
+ //echo $sql;
 // Confirm there are results
 if ($result = mysqli_query($con, $sql)){
 		 

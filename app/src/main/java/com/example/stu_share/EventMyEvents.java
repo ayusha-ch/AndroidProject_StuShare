@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,18 +32,17 @@ public class EventMyEvents extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
                     case R.id.action_myevents:
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
@@ -86,21 +84,7 @@ public class EventMyEvents extends AppCompatActivity {
                 openPstEvtAct();
             }
         });
-        btnLogout = findViewById(R.id.btnLogout2);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
 
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
     }
 
     private void openRegActivity() {
@@ -112,22 +96,17 @@ public class EventMyEvents extends AppCompatActivity {
     }
 
     public void openOwnedEventActivity(){
-        Intent intent =new Intent(this, EventOwnedList.class);
-        String[] tt=new String[]{"2","2"};
-        //intent.putExtra("args",tt);
+        Intent intent =new Intent(this, EventOwnedList.class);;
         intent.putExtra("user",user);
         startActivity(intent);
     }
     public void openPstEvtAct(){
         Intent intent =new Intent(this, EventPastList.class);
         intent.putExtra("user",user);
-        Log.d("TAG","MyEvent to Regged event"+user.id);
         startActivity(intent);
     }
     public void openJoinActivity(){
         Intent intent =new Intent(this, EventList.class);
-        //String[] tt=new String[]{"2","2"};
-        //intent.putExtra("args",tt);
         intent.putExtra("user",user);
         startActivity(intent);
     }
@@ -143,7 +122,7 @@ public class EventMyEvents extends AppCompatActivity {
         startActivity(intent);
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }
