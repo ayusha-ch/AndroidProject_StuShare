@@ -11,12 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.willy.ratingbar.RotationRatingBar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventPastDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnHome;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+    private Button btnJoin,btnContact1;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user;
     private ImageView shareImage,imageCheck;
@@ -25,6 +32,19 @@ public class EventPastDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_past_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.PastEventD));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,25 +63,18 @@ public class EventPastDetail extends AppCompatActivity {
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
         });
-        btnLogout = findViewById(R.id.btnLogout2);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
         user=(User)getIntent().getSerializableExtra("user");
-        btnHome = findViewById(R.id.btnHome3);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenHome();
-            }
-        });
         txtEvtTitle = findViewById(R.id.txtEventTitle);
         txtEvtDetail = findViewById(R.id.txtEvtDetail);
         txtStDate = findViewById(R.id.txtStDate);
