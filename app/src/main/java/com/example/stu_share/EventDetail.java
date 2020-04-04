@@ -35,7 +35,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 public class EventDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3;
+    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -47,7 +47,18 @@ public class EventDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
         user2=(User)getIntent().getSerializableExtra("user");
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
+        btnMsg=findViewById(R.id.btnMessage);
+        btnMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getApplicationContext(),MessageCreate.class);
+                i.putExtra("event",event);
+                i.putExtra("user",user2);
+                startActivityForResult(i,2);
+            }
+        });
+        BottomNavigationView navigation = findViewById(R.id.include);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -74,7 +85,6 @@ public class EventDetail extends AppCompatActivity {
                 return false;
             }
         });
-        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         imageCheck=findViewById(R.id.imgChecked);
         txtEventC=findViewById(R.id.txtEventCode);
         txtEventC.setText(event.eventCode);
@@ -114,8 +124,6 @@ public class EventDetail extends AppCompatActivity {
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //add to database table with event id and participante id
-
                 Toast.makeText(getBaseContext(), "you have successfully joined the event",
                         Toast.LENGTH_LONG).show();
                 update(url_update,user2,event);
@@ -128,15 +136,6 @@ public class EventDetail extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),EmailActivity.class);
                 intent.putExtra("args",user2);
-                startActivity(intent);
-            }
-        });
-        Button btnMessage = findViewById(R.id.btnMessage);
-        btnMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MessageCreate.class);
-                intent.putExtra("user",user2);
                 startActivity(intent);
             }
         });

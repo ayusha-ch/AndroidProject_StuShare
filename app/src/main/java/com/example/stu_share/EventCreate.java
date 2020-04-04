@@ -200,7 +200,7 @@ public class EventCreate extends AppCompatActivity {
                 updateLabel();
             }
             private void updateLabel() {
-                String myFormat = "yyMMdd";
+                String myFormat = "yyyyMMdd";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.CANADA);
                 txtEndDate.setText(sdf.format(myCalendar.getTime()));
             }

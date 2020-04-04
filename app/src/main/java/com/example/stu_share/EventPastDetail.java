@@ -9,21 +9,24 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.willy.ratingbar.RotationRatingBar;
 
 public class EventPastDetail extends AppCompatActivity {
-    private Button btnLogout, btnHome, btnDeReg;
-    private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
-    //DBHelper dbHelper = null;
-    private User user;
+    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnHome;
+    private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
+    private  User user;
+    private ImageView shareImage,imageCheck;
+    private RotationRatingBar rotationRatingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_past_detail);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -34,25 +37,17 @@ public class EventPastDetail extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
-
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
                 }
                 return false;
             }
         });
-        //btnDeReg = findViewById(R.id.btnReg123);
-        btnLogout = findViewById(R.id.btnAlLogout);
+        btnLogout = findViewById(R.id.btnLogout2);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +55,7 @@ public class EventPastDetail extends AppCompatActivity {
             }
         });
         user=(User)getIntent().getSerializableExtra("user");
-        btnHome = findViewById(R.id.btnHome);
+        btnHome = findViewById(R.id.btnHome3);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,26 +76,12 @@ public class EventPastDetail extends AppCompatActivity {
         txtStDate.setText(event1.startDate);
         txtEndDate.setText(event1.endDate);
         txtEndTime.setText(event1.endTime);
-        /*btnDeReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //delete from evenreg table
-                dbHelper = new DBHelper(getBaseContext());
-                final SQLiteDatabase db = dbHelper.getWritableDatabase();
-                if(dbHelper.eventDeReg(db, event1.id, "2")){
-                    evt.remove(Integer.valueOf(position));
-                    Toast.makeText(getBaseContext(),"selected"+position,Toast.LENGTH_LONG);
-
-                }
-                else {
-                    evt.remove(Integer.valueOf(position));
-                    Toast.makeText(getBaseContext(),"Not"+position,Toast.LENGTH_LONG);
-
-                }
-            }
-        });
-    }*/
+        rotationRatingBar=findViewById(R.id.ratingBarDetail);
+        rotationRatingBar.setRating(event1.rating);
+        txtEventC=findViewById(R.id.txtEventCode);
+        txtEventC.setText(event1.eventCode);
     }
+
         public void OpenHome () {
             Intent intent = new Intent(this, EventMenu.class);
             intent.putExtra("user",user);

@@ -15,8 +15,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         card_view:cardBackgroundColor="@color/colorTransparent"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
@@ -24,31 +27,33 @@
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="409dp"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView_poster"
-                android:layout_width="169dp"
-                android:layout_height="145dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="162dp"
+                android:layout_height="127dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="View Events Image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:focusableInTouchMode="false"
                 android:isScrollContainer="true"
                 android:scrollHorizontally="true"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView_poster"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_below="@id/textView_name"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:fadeScrollbars="true"
                 android:focusableInTouchMode="false"
@@ -71,7 +76,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView_poster"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView_name"
-                app:layout_constraintTop_toTopOf="@id/textView_name" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 
             <ImageView
                 android:id="@+id/imgLike"
@@ -91,6 +96,7 @@
                 android:layout_width="170dp"
                 android:layout_height="37dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="#A50202"
                 android:clickable="false"
                 android:focusable="false"
@@ -101,6 +107,7 @@
                 android:rating="0"
                 android:stepSize="0.2"
                 android:theme="@style/RatingBar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageView_poster"
                 app:layout_constraintHeight_max="10dp"
                 app:layout_constraintHeight_min="wrap"
@@ -111,12 +118,12 @@
                 android:id="@+id/likeCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
                 android:textColor="#D55E75"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imgLike"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/imgLike" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

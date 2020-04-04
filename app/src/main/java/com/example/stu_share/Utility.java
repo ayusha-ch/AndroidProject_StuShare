@@ -22,7 +22,7 @@ import static com.example.stu_share.EventList.user3;
 
 public class Utility {
     static String fromGmail="shy0105030229@gmail.com";
-    static String pswdGmail="Oakwood123";
+    static String pswdGmail="Shy811127";
     static String subject="Thank you for registration";
     static String msg="Please check your code: ";
     public static String generateCode(int n)
