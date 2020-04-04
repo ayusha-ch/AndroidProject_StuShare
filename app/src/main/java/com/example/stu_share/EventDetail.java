@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,9 +34,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Calendar;
 
 public class EventDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg;
+    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg,btnAddCalendar;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -80,13 +82,20 @@ public class EventDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user2);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user2);
+                        startActivity(i);
+                        break;
                 }
                 return false;
+            }
+        });
+        btnAddCalendar=findViewById(R.id.btnCal);
+        btnAddCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         imageCheck=findViewById(R.id.imgChecked);
@@ -185,6 +194,18 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(Intent.createChooser(share, "Share link!"));
             }
         });
+    }
+    public void addEvent(EventCoordinator.Event event) {
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2012, 0, 19, 7, 30);
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, event.eventTitle)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
     public void updateRating(final String urlWebService, final User user, final EventCoordinator.Event event1,final Float rate) {
 
