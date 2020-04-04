@@ -121,7 +121,7 @@ public class MyProfileEdit extends AppCompatActivity {
         });
 
         ButterKnife.bind(this);
-        toolBar.setTitle(getResources().getString(R.string.Events));
+        toolBar.setTitle(getResources().getString(R.string.EditProfile));
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
         buttonImg.setOnClickListener(new View.OnClickListener() {

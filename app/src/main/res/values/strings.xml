@@ -1,4 +1,5 @@
 <resources>
+    <string name="EditProfile">Edit My Profile</string>
     <string name="PastEventD">Past Event Details</string>
     <string name="app_name">Stu-Share</string>
     <string name="Logout">Logout</string>
