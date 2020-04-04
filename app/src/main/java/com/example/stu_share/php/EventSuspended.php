@@ -3,12 +3,18 @@
     require 'connection.php';
     
     $nameJ=json_decode(file_get_contents('php://input'));
-    $userID=$nameJ->{'userId'};
     $eventID = $nameJ->{'eventId'};
-	//$sql1 = "delete from event_reg where eventId='$eventID';";
-	$sql = "UPDATE event SET status='suspended' where id='$eventID';delete from event_reg where eventId='$eventID';";
-";
-    echo $eventID;
+    $status = $nameJ->{'status'};
+    echo $status."status";
+    if (strcmp($status,"suspended")==0){
+    echo("active");
+        $status="active";
+    }else  if (strcmp($status,"active")==0){
+                  $status="suspended";
+                  echo("suspended");
+              }
+	$sql = "UPDATE event SET status='$status' where id='$eventID';";
+
 	echo $sql;
     mysqli_query($con, $sql);
 

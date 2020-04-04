@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +39,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventCreate extends AppCompatActivity {
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     TimePickerDialog timePickerSt,timePickerEnd;
     Calendar calendar;
     int currentHour;
@@ -55,13 +63,26 @@ public class EventCreate extends AppCompatActivity {
     private EventCoordinator.Event event1;
     EditText txtStTime,txtEndTime;
     private User user;
-    Button btnCreate, btnHome, btnLogout;
+    Button btnCreate;
     //    DBHelper dbHelper = null;
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/create_event.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.EventCreate));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -79,6 +100,12 @@ public class EventCreate extends AppCompatActivity {
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
                         break;
                 }
                 return false;
@@ -179,13 +206,7 @@ public class EventCreate extends AppCompatActivity {
                 endDisplayDate.setText(date);
             }
         };
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
         user=(User)getIntent().getSerializableExtra("user");
         final Calendar myCalendar = Calendar.getInstance();
         final Calendar myCalendar1 = Calendar.getInstance();
@@ -247,13 +268,7 @@ public class EventCreate extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnCreate=findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,4 +352,16 @@ public class EventCreate extends AppCompatActivity {
         Log.d("TAG","Menu to MyEvent"+user.id);
         startActivity(intent);
     }
+
+    public void OpenEventList() {
+        Intent intent = new Intent(this, EventList.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
+        startActivity(intent); }
+
 }
