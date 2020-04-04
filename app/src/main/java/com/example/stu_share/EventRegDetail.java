@@ -35,7 +35,8 @@ public class EventRegDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_reg_detail);
-
+        final User user = (User) getIntent().getSerializableExtra("user");
+        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -47,7 +48,6 @@ public class EventRegDetail extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
@@ -55,39 +55,23 @@ public class EventRegDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
         });
 
         btnDeReg = findViewById(R.id.btnReg123);
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
         txtEvtTitle = findViewById(R.id.txtEventTitle123);
         txtEvtDetail = findViewById(R.id.txtEvtDetail123);
         txtStDate = findViewById(R.id.txtStDate123);
         txtStTime = findViewById(R.id.txtStTime123);
         txtEndDate = findViewById(R.id.txtEndDate123);
         txtEndTime = findViewById(R.id.txtEndTime123);
-        final User user = (User) getIntent().getSerializableExtra("user");
-        final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         txtEvtTitle.setText(event.eventTitle);
         txtEvtDetail.setText(event.eventDetail);
         txtStTime.setText(event.startTime);
@@ -165,7 +149,7 @@ public class EventRegDetail extends AppCompatActivity {
         startActivity(intent);
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

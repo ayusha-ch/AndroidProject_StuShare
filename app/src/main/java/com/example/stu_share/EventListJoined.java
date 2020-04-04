@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,7 +27,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,23 +37,18 @@ import butterknife.ButterKnife;
 
 public class EventListJoined extends AppCompatActivity {
 
-    ListView listView;
+    ListView listView1;
     EventAdapter mAdapter;
     private User user ;
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-
-    public static  List<EventCoordinator.Event> evt = new ArrayList<EventCoordinator.Event>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list_joined);
-
-
         user=(User)getIntent().getSerializableExtra("user");
-        listView = (ListView) findViewById(R.id.listView2323);
-
+        listView1 =  findViewById(R.id.listV1);
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.joined));
         setSupportActionBar(toolBar);
@@ -64,26 +56,16 @@ public class EventListJoined extends AppCompatActivity {
         buttonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
             }
         });
-
         DrawerUtil.getDrawer(this,toolBar);
-
-
-
-
         downloadJSON("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
-        //final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,evt);
-        //listView.setAdapter(arrayAdapter);
-        Log.d("TAG","LISTJOINEVENT"+user.id);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> adapter, View v, int position,long arg3)
             {
+                Log.i("POSITIONINJOINED",position+" clicked!");
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
                 Intent intent =new Intent(getBaseContext(), EventRegDetail.class);
                 intent.putExtra("args",event2);
@@ -91,10 +73,8 @@ public class EventListJoined extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include5);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -103,14 +83,12 @@ public class EventListJoined extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
-
                     case R.id.action_profile:
                         Intent i= new Intent(getBaseContext(),MyProfile.class);
                         i.putExtra("user",user);
@@ -120,7 +98,6 @@ public class EventListJoined extends AppCompatActivity {
                 return false;
             }
         });
-
     }
     private void downloadJSON(final String urlWebService) {
 
@@ -130,24 +107,19 @@ public class EventListJoined extends AppCompatActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
             }
-
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                 try {
                     loadIntoListView(s);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-                    URL url = new URL("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
+                    URL url = new URL(urlWebService);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -187,80 +159,31 @@ public class EventListJoined extends AppCompatActivity {
         DownloadJSON getJSON = new DownloadJSON();
         getJSON.execute();
     }
-
     private void loadIntoListView(String json) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         ArrayList<EventCoordinator.Event> eventL = new ArrayList<EventCoordinator.Event>();
-
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             EventCoordinator.Event event1 = new EventCoordinator.Event();
-
-            event1.setId( obj.getString("eventId"));
+            event1.setId( obj.getString("id"));
             event1.setOrgID(obj.getString("organizerId"));
+            event1.setOrgEmail(obj.getString("orgEmail"));
+            event1.setEventCode(obj.getString("eventCode"));
             event1.setStatus(obj.getString("status"));
-
             event1.setStartDate(obj.getString("startDate"));
             event1.setStartTime(obj.getString("startTime"));
             event1.setEndDate(obj.getString("endDate"));
-
             event1.setEndTime(obj.getString("endTime"));
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
             eventL.add(event1);
-
         }
-//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, eventL);
-//        listView.setAdapter(arrayAdapter);
-        mAdapter = new EventAdapter(this, eventL);
-        listView.setAdapter(mAdapter);
+        mAdapter = new EventAdapter(getApplicationContext(), eventL);
+        listView1.setAdapter(mAdapter);
+        Log.i("MADAPTER",listView1.getAdapter().getItem(0).toString());
     }
 
-    public void sendPost(final List<EventCoordinator.Event>evt) {
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept","application/json");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-
-                    JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("userid", user.id);
-                    Log.i("JSON", jsonParam.toString());
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    BufferedWriter writer = new BufferedWriter(
-                            new OutputStreamWriter(os, "UTF-8"));
-                    os.writeBytes(jsonParam.toString());
-                    os.flush();
-                    os.close();
-                    conn.connect();
-                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-                    Log.i("MSG" , conn.getResponseMessage());
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    DataInputStream is=new DataInputStream(conn.getInputStream());
-                    StringBuilder total = new StringBuilder();
-                    String line;
-                    while ((line = in.readLine()) != null)
-                    {
-                        total.append(line).append('\n');
-                    }
-                    Log.d("TAG", "Server Response is: " + total.toString() + ": " );
-                    //loadIntoListView(total.toString().trim(),evt);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-
-    }
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -272,7 +195,7 @@ public class EventListJoined extends AppCompatActivity {
         startActivity(intent);
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

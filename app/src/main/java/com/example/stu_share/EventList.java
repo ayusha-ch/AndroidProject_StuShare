@@ -152,7 +152,7 @@ public class EventList extends AppCompatActivity {
         downloadJSON(url1,user3,"");
         listView = findViewById(R.id.listview);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.include12);
         txtS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -398,7 +398,7 @@ public class EventList extends AppCompatActivity {
         startActivity(intent);
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user3);
         startActivity(intent);
     }

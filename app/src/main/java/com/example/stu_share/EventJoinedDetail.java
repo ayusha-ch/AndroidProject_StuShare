@@ -96,7 +96,7 @@ public class EventJoinedDetail extends AppCompatActivity {
 
                 Toast.makeText(getBaseContext(), "Deregister successfully!",
                         Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(getBaseContext(),EventMenu.class);
+                Intent intent=new Intent(getBaseContext(),EventList.class);
                 intent.putExtra("user",user);
                 intent.putExtra("event",event);
                 startActivity(intent);
@@ -104,7 +104,7 @@ public class EventJoinedDetail extends AppCompatActivity {
         });
     }
     public void OpenMenuActivity() {
-        Intent intent = new Intent(this, EventMenu.class);
+        Intent intent = new Intent(this, EventList.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }
