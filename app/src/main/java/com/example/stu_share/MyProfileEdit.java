@@ -127,7 +127,7 @@ public class MyProfileEdit extends AppCompatActivity {
         buttonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OpenCreateActivity();
             }
         });
 
@@ -208,6 +208,12 @@ public class MyProfileEdit extends AppCompatActivity {
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user);
         Log.d("TAG","Menu to MyEvent"+user.id);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
         startActivity(intent);
     }
 }
