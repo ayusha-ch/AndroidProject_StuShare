@@ -185,7 +185,7 @@ public class EventCoordinator {
 
 
         public String toString(){
-            return "Event:"+eventTitle+"\nDetails about this event:"+eventDetail
+            return "Event:"+id+eventTitle+"\nDetails about this event:"+eventDetail
                     +"\nStart date & time:"+getStartDate()+" "+getStartTime()
                     +"\nEnd date & time:"+getEndDate()+" "+getEndTime();
         }

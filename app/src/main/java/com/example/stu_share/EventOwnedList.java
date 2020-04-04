@@ -90,7 +90,11 @@ public class EventOwnedList extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        downloadJSON("https://w0044421.gblearn.com/stu_share/EventView_Owned_Events.php");
+    }
     public void logout(){
         Intent intent =new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -133,7 +137,7 @@ public class EventOwnedList extends AppCompatActivity {
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            URL url = new URL("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
+            URL url = new URL("https://w0044421.gblearn.com/stu_share/EventView_Owned_Events.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
