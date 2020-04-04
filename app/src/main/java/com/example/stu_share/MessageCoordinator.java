@@ -89,8 +89,6 @@ public class MessageCoordinator {
             return  "id=" + id +
                     "\ntitle: " + title +
                     "\ndetail: " + detail +
-                    "\nreceiver_email: " + receiver_email +
-                    "\nsender_email: " + sender_email +
                     "\n";
         }
     }
