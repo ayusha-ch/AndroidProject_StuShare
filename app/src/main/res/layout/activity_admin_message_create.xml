@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminMessageCreate">
+
+    <TextView
+        android:id="@+id/txtSubAdm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Subject:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/textMsgSubject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="textEmailSubject"
+        app:layout_constraintEnd_toEndOf="@+id/txtSubAdm"
+        app:layout_constraintStart_toStartOf="@+id/txtSubAdm"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubAdm" />
+
+    <TextView
+        android:id="@+id/textView43"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Message:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="@+id/textMsgSubject"
+        app:layout_constraintStart_toStartOf="@+id/textMsgSubject"
+        app:layout_constraintTop_toBottomOf="@+id/textMsgSubject" />
+
+    <EditText
+        android:id="@+id/textMessageBody"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="start|top"
+        android:lines="10"
+        app:layout_constraintEnd_toEndOf="@+id/textView43"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView43"
+        app:layout_constraintTop_toBottomOf="@+id/textView43" />
+
+    <Button
+        android:id="@+id/btnReply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="send"
+        app:layout_constraintEnd_toEndOf="@+id/textMessageBody"
+        app:layout_constraintStart_toStartOf="@+id/textMessageBody"
+        app:layout_constraintTop_toBottomOf="@+id/textMessageBody" />
+
+    <Button
+        android:id="@+id/btnMsg_Delete1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="cancel"
+        app:layout_constraintEnd_toEndOf="@+id/btnReply"
+        app:layout_constraintStart_toStartOf="@+id/btnReply"
+        app:layout_constraintTop_toBottomOf="@+id/btnReply" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
