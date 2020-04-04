@@ -47,11 +47,10 @@ public class AdminEventDetail extends AppCompatActivity {
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
-
-
+        user=(User)getIntent().getSerializableExtra("user");
+        final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
         AdminDrawerUtil.getDrawer(this,toolBar);
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.include4);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,17 +80,14 @@ public class AdminEventDetail extends AppCompatActivity {
                 return false;
             }
         });
-
         btnJoin=findViewById(R.id.btnSus);
-
         txtEvtTitle=findViewById(R.id.txtEventTitle);
         txtEvtDetail=findViewById(R.id.txtEvtDetail);
         txtStDate=findViewById(R.id.txtStDate);
         txtStTime=findViewById(R.id.txtStTime);
         txtEndDate=findViewById(R.id.txtEndDate);
         txtEndTime=findViewById(R.id.txtEndTime);
-        user=(User)getIntent().getSerializableExtra("user");
-        final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
+
         txtEvtTitle.setText(event.eventTitle);
         txtEvtDetail.setText(event.eventDetail);
         txtStTime.setText(event.startTime);
@@ -102,10 +98,9 @@ public class AdminEventDetail extends AppCompatActivity {
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "you have successfully suspended the event"+event.status,
+                Toast.makeText(getBaseContext(), "you have successfully change the event status!",
                         Toast.LENGTH_LONG).show();
                 update("https://w0044421.gblearn.com/stu_share/EventSuspended.php");
-                //update("https://w0044421.gblearn.com/stu_share/eventRegDeleteByAdmin.php");
                 Intent intent = new Intent();
                 intent.putExtra("user",user);
                 setResult(RESULT_OK,intent);

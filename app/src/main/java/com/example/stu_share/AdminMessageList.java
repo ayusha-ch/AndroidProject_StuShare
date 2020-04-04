@@ -46,21 +46,17 @@ public class AdminMessageList extends AppCompatActivity {
     public Toolbar toolBar;
     Button btnLogout, btnHome;
     ListView msgListView;
-    private static User user;
+    private  User user;
     private static ArrayAdapter arrayAdapter_msg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_message_list);
-
-
         user=(User)getIntent().getSerializableExtra("user");
-
-
+        Log.i("USER",user.id+"id");
         ButterKnife.bind(this);
         toolBar.setTitle("Messages List");
         setSupportActionBar(toolBar);
-
 
         AdminDrawerUtil.getDrawer(this,toolBar);
 
@@ -108,8 +104,6 @@ public class AdminMessageList extends AppCompatActivity {
                 startActivityForResult(intent,2);
             }
         });
-
-
         getMsgList();
     }
     @Override
@@ -121,10 +115,10 @@ public class AdminMessageList extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
-    public static float x1,x2,y1,y2;
+    public  float x1,x2,y1,y2;
 
     //To allow swipe left or right gesure
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
+    public  boolean onTouchEvent(MotionEvent touchEvent, Context context){
         switch(touchEvent.getAction()){
             //Start point
             case MotionEvent.ACTION_DOWN:

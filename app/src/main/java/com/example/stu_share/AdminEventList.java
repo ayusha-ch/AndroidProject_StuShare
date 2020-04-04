@@ -3,7 +3,6 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,37 +11,25 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.os.AsyncTask;
-
-import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AdminEventList extends AppCompatActivity {
-    Button btnLogout,btnMsg;
     EventAdapter mAdapter;
     ListView listView;
-    private static User user;
-
-
+    public static User userAdm;
     @BindView(R.id.toolbar)
     Toolbar toolBar1;
     private String url1="https://w0044421.gblearn.com/stu_share/read_all_events.php";
@@ -50,54 +37,43 @@ public class AdminEventList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_list);
-
         ButterKnife.bind(this);
+        userAdm =(User)getIntent().getSerializableExtra("user");
+        Log.i("USERADMEVT",userAdm.id+"id");
         toolBar1.setTitle("Admin Events List");
         setSupportActionBar(toolBar1);
-
-
         AdminDrawerUtil.getDrawer(this,toolBar1);
-
-        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        BottomNavigationView navigation = findViewById(R.id.include4);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_adminEventList:
                         Intent intent = new Intent(getBaseContext(), AdminEventList.class);
-                        intent.putExtra("user",user);
+                        intent.putExtra("user",userAdm);
                         startActivity(intent);
                         break;
                     case R.id.action_message:
-                        Intent intent1 = new Intent(getBaseContext(), AdminMessageList.class);
-                        intent1.putExtra("user",user);
+                        Intent intent1 = new Intent(getApplicationContext(), AdminMessageList.class);
+                        intent1.putExtra("user",userAdm);
                         startActivity(intent1);
                         break;
                     case R.id.action_adminUserList:
                         Intent intent2 = new Intent(getBaseContext(), AdminUserList.class);
-                        intent2.putExtra("user",user);
+                        intent2.putExtra("user",userAdm);
                         startActivity(intent2);
                         break;
 
                     case R.id.action_profile:
                         Intent i= new Intent(getBaseContext(),MyProfile.class);
-                        i.putExtra("user",user);
+                        i.putExtra("user",userAdm);
                         startActivity(i);
                         break;
                 }
                 return false;
             }
         });
-
-
-
-
-
         downloadJSON(url1);
-
-
-        user=(User)getIntent().getSerializableExtra("user");
-
         listView = (ListView) findViewById(R.id.eventList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -108,12 +84,10 @@ public class AdminEventList extends AppCompatActivity {
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
                 Intent intent =new Intent(getBaseContext(), AdminEventDetail.class);
                 intent.putExtra("args",event2);
-                intent.putExtra("user",user);
+                intent.putExtra("user",userAdm);
                 startActivityForResult(intent,2);
-
             }
         });
-
     }
     @Override
     public void onResume() {
@@ -124,10 +98,8 @@ public class AdminEventList extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
-    public static float x1,x2,y1,y2;
-
-    //To allow swipe left or right gesure
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
+    public  float x1,x2,y1,y2;
+    public  boolean onTouchEvent(MotionEvent touchEvent, Context context){
         switch(touchEvent.getAction()){
             //Start point
             case MotionEvent.ACTION_DOWN:
@@ -140,13 +112,13 @@ public class AdminEventList extends AppCompatActivity {
                 y2 = touchEvent.getY();
                 if(x1 < x2){
                     Intent i = new Intent(context, AdminUserList.class);
-                    i.putExtra("user",user);
+                    i.putExtra("user",userAdm);
                     //Regular class call activity need use .setFlags method
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }else if(x1 >  x2){
                     Intent i = new Intent(context, MyProfile.class);
-                    i.putExtra("user",user);
+                    i.putExtra("user",userAdm);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }
@@ -158,18 +130,12 @@ public class AdminEventList extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
-
     private void downloadJSON(final String urlWebService) {
-
         class DownloadJSON extends AsyncTask<Void, Void, String> {
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
             }
-
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
@@ -180,8 +146,6 @@ public class AdminEventList extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
-
             @Override
             protected String doInBackground(Void... voids) {
                 try {
@@ -204,7 +168,6 @@ public class AdminEventList extends AppCompatActivity {
         DownloadJSON getJSON = new DownloadJSON();
         getJSON.execute();
     }
-
     private void loadIntoListView(String json) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         ArrayList<EventCoordinator.Event> eventL = new ArrayList<EventCoordinator.Event>();
@@ -212,34 +175,21 @@ public class AdminEventList extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             EventCoordinator.Event event1 = new EventCoordinator.Event();
-
             event1.setId( obj.getString("id"));
             event1.setOrgID(obj.getString("organizerId"));
             event1.setStatus(obj.getString("status"));
-
             event1.setStartDate(obj.getString("startDate"));
             event1.setStartTime(obj.getString("startTime"));
             event1.setEndDate(obj.getString("endDate"));
-
             event1.setEndTime(obj.getString("endTime"));
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
-
             eventL.add(event1);
-            //userShort[i] = user1.getFirstName() + " " + user1.getLastName();
-
-           // stocks[i] = user1.getFirstName() ;
-            //stocks[i] = obj.getString("title") + " " + obj.getString("detail");
-
         }
-//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, eventL);
-//        listView.setAdapter(arrayAdapter);
         mAdapter = new EventAdapter(this, eventL);
         listView.setAdapter(mAdapter);
     }
-
-
 }
 
 
