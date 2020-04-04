@@ -34,10 +34,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class EventDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg,btnAddCalendar;
+    private Button  btnJoin,btnContact1,btnMsg,btnAddCalendar;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -95,7 +98,11 @@ public class EventDetail extends AppCompatActivity {
         btnAddCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    addEvent(event);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         imageCheck=findViewById(R.id.imgChecked);
@@ -119,8 +126,6 @@ public class EventDetail extends AppCompatActivity {
         });
 
         btnJoin = findViewById(R.id.btnJoin);
-        btnLogout = findViewById(R.id.btnLogout2);
-        btnHome3 = findViewById(R.id.btnHome3);
         txtEvtTitle = findViewById(R.id.txtEventTitle);
         txtEvtDetail = findViewById(R.id.txtEvtDetail);
         txtStDate = findViewById(R.id.txtStDate);
@@ -152,18 +157,7 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-        btnHome3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnContact1=findViewById(R.id.btnContact);
         btnContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,14 +189,20 @@ public class EventDetail extends AppCompatActivity {
             }
         });
     }
-    public void addEvent(EventCoordinator.Event event) {
-        Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2012, 0, 19, 7, 30);
+    public void addEvent(EventCoordinator.Event event) throws ParseException {
+
+        String stDate = event.startDate+" "+event.startTime;
+        String edDate=event.endDate+" "+event.endTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
+        Date startDate = sdf.parse(stDate);
+        Date endDate = sdf.parse(edDate);
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
                 .putExtra(CalendarContract.Events.TITLE, event.eventTitle)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end);
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate.getTime())
+                .putExtra(CalendarContract.Events.DESCRIPTION, event.eventDetail)
+                .putExtra(Intent.EXTRA_EMAIL, event.orgEmail)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate.getTime());
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
