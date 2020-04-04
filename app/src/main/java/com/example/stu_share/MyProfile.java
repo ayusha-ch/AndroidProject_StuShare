@@ -6,20 +6,68 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.willy.ratingbar.RotationRatingBar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
+import butterknife.BindView;
+
+import butterknife.ButterKnife;
+
+import static com.example.stu_share.EventAdapter.eventList;
+import static com.example.stu_share.EventDetail.url_update;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MyProfile extends AppCompatActivity {
     Button btnHome4, btnLogout4, btnEdit;
     TextView txtFn,txtLn,txtEm,txtQ;
     private static User userTemp;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userTemp=(User)getIntent().getSerializableExtra("user");
         setContentView(R.layout.activity_profile_my_profile);
-        btnHome4 = findViewById(R.id.btnHome4);
-        btnLogout4 = findViewById(R.id.btnLogout4);
+
         btnEdit = findViewById(R.id.btnEdit);
         txtFn=findViewById(R.id.txtFName);
         txtLn=findViewById(R.id.txtLName);
@@ -35,41 +83,51 @@ public class MyProfile extends AppCompatActivity {
                 openEditProfile();
             }
         });
-        btnLogout4.setOnClickListener(new View.OnClickListener() {
+
+
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.profile));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                OpenCreateActivity();
             }
         });
-        btnHome4.setOnClickListener(new View.OnClickListener() {
+
+        DrawerUtil.getDrawer(this,toolBar);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_home:
+                        OpenMenuActivity();
+                        break;
+                    case R.id.action_message:
+                        Intent intent = new Intent(getBaseContext(), MessageList.class);
+                        intent.putExtra("user",userTemp);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myevents:
+                        openMyEventsActivity();
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",userTemp);
+                        startActivity(i);
+                        break;
+                }
+                return false;
             }
         });
     }
-    public void openEditProfile(){
-        Intent intent =new Intent(this, MyProfileEdit.class);
-        intent.putExtra("user",userTemp);
-        startActivity(intent);
-    }
-    public void OpenMenuActivity() {
-        if(userTemp.role.equals("admin")){
-            Intent intent = new Intent(this, AdminUserList.class);
-            intent.putExtra("user",userTemp);
-            startActivity(intent);
-        }else  if(userTemp.role.equals("alumni")){
-            Intent intent = new Intent(this, AlumnaiDashboard.class);
-            intent.putExtra("user",userTemp);
-            startActivity(intent);
-        }else{Intent intent = new Intent(this, EventList.class);
-            intent.putExtra("user",userTemp);
-            startActivity(intent);}
-    }
-    public void logout(){
-        Intent intent =new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
@@ -112,5 +170,45 @@ public class MyProfile extends AppCompatActivity {
                 break;
         }
         return false;
+    }
+
+
+    public void openEditProfile(){
+        Intent intent =new Intent(this, MyProfileEdit.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
+    }
+//    public void OpenMenuActivity() {
+//        if(userTemp.role.equals("admin")){
+//            Intent intent = new Intent(this, AdminUserList.class);
+//            intent.putExtra("user",userTemp);
+//            startActivity(intent);
+//        }else  if(userTemp.role.equals("alumni")){
+//            Intent intent = new Intent(this, AlumnaiDashboard.class);
+//            intent.putExtra("user",userTemp);
+//            startActivity(intent);
+//        }else{Intent intent = new Intent(this, EventList.class);
+//            intent.putExtra("user",userTemp);
+//            startActivity(intent);}
+//    }
+    public void logout(){
+        Intent intent =new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void OpenMenuActivity() {
+        Intent intent = new Intent(this, EventMenu.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
+    }
+    public void openMyEventsActivity(){
+        Intent intent =new Intent(this, EventMyEvents.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
+    }
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",userTemp);
+        startActivity(intent);
     }
 }

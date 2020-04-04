@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.android.support:support-annotations:28.0.0'
     //implementation files('libs/javax.mail.jar')
     //implementation 'javax.mail:mail:1.4.1'
-    implementation ('com.mikepenz:materialdrawer:5.9.5@aar') {
+    implementation('com.mikepenz:materialdrawer:5.9.5@aar') {
         transitive = true
         exclude group: 'com.android.support'
     }
@@ -45,6 +45,8 @@ dependencies {
     implementation files('lib/additionnal.jar')
     implementation files('lib/javax.mail.jar')
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
     implementation 'com.neberox.library:animatedstar:0.0.2'
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.0'
     implementation 'com.android.support:cardview-v7:28.0.0'

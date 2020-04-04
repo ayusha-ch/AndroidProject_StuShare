@@ -1,4 +1,5 @@
 <resources>
+    <string name="PastEventD">Past Event Details</string>
     <string name="app_name">Stu-Share</string>
     <string name="Logout">Logout</string>
     <string name="Home">Home</string>
@@ -29,10 +30,14 @@
     <string name="my_car_share">My Car Share</string>
     <string name="price">Price</string>
     <string name="profile">My Profile</string>
+    <string name="joined">Joined Events List</string>
+
     <string name="Price">Price of Book</string>
     <string name="Events">Join Available Events</string>
     <string name="create">Create a new Event</string>
     <string name="contact">Contact Us</string>
     <string name="upcoming">Upcoming Events</string>
+    <string name="eventJoinedDetail">Joined Event Details</string>
+    <string name="messageList">Message List</string>
 
 </resources>

@@ -9,7 +9,6 @@
     tools:context=".EventList">
 
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -18,10 +17,27 @@
         app:layout_collapseMode="pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></androidx.appcompat.widget.Toolbar>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/buttonImg"
+                android:layout_width="200px"
+                android:layout_height="150px"
+                android:foregroundGravity="right"
+                android:src="@drawable/ic_create" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
 
     <include
         android:id="@+id/sortSpinner"
@@ -36,11 +52,13 @@
         app:layout_constraintStart_toEndOf="@+id/txtSearch"
         app:layout_constraintTop_toTopOf="@+id/txtSearch" />
 
+
     <include
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
