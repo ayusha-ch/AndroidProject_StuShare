@@ -3,6 +3,8 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,8 +33,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventOwnDetail extends AppCompatActivity {
-    private Button btnLogout, btnHome, btnUpdate,btnTerminate;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+    private Button btnUpdate,btnTerminate;
     private EditText txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate;
     //DBHelper dbHelper = null;
     private User user;
@@ -39,6 +48,20 @@ public class EventOwnDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_own_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         btnUpdate=findViewById(R.id.btnUpdateOwn);
         btnTerminate=findViewById(R.id.btnTereminate);
         txtEvtTitle=findViewById(R.id.txtEventTitle);
@@ -113,22 +136,6 @@ public class EventOwnDetail extends AppCompatActivity {
 
                 Toast.makeText(getBaseContext(), "Event has been terminated from your account",
                         Toast.LENGTH_LONG).show();
-                OpenMenuActivity();
-            }
-        });
-
-        btnHome = findViewById(R.id.btnHome);
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 OpenMenuActivity();
             }
         });
