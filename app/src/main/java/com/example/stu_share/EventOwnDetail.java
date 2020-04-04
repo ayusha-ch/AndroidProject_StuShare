@@ -50,7 +50,7 @@ public class EventOwnDetail extends AppCompatActivity {
         final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
         Toast.makeText(getApplicationContext(),event.toString(),Toast.LENGTH_LONG).show();
         ButterKnife.bind(this);
-        toolBar.setTitle(getResources().getString(R.string.Events));
+        toolBar.setTitle("Owned Event Details");
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
         buttonImg.setOnClickListener(new View.OnClickListener() {

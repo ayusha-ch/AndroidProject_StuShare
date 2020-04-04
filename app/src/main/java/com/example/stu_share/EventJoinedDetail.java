@@ -48,6 +48,7 @@ public class EventJoinedDetail extends AppCompatActivity {
         setContentView(R.layout.activity_event_joined_detail);
 
         ButterKnife.bind(this);
+
         toolBar.setTitle(getResources().getString(R.string.eventJoinedDetail));
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
@@ -59,7 +60,7 @@ public class EventJoinedDetail extends AppCompatActivity {
             }
         });
 
-        DrawerUtil.getDrawer(this,toolBar);
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -88,6 +89,9 @@ public class EventJoinedDetail extends AppCompatActivity {
                 return false;
             }
         });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         btnDeReg=findViewById(R.id.btnDereg);
         txtEvtTitle=findViewById(R.id.txtEventTitle99);
         txtEvtDetail=findViewById(R.id.txtEvtDetail9);
