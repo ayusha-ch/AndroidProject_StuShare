@@ -3,6 +3,8 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -34,8 +36,14 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg;
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+    private Button btnJoin,btnContact1, btnMsg;
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -46,6 +54,20 @@ public class EventDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         user2=(User)getIntent().getSerializableExtra("user");
         final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         btnMsg=findViewById(R.id.btnMessage);
@@ -80,11 +102,11 @@ public class EventDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user2);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user2);
+                        startActivity(i);
+                        break;
                 }
                 return false;
             }
@@ -110,8 +132,6 @@ public class EventDetail extends AppCompatActivity {
         });
 
         btnJoin = findViewById(R.id.btnJoin);
-        btnLogout = findViewById(R.id.btnLogout2);
-        btnHome3 = findViewById(R.id.btnHome3);
         txtEvtTitle = findViewById(R.id.txtEventTitle);
         txtEvtDetail = findViewById(R.id.txtEvtDetail);
         txtStDate = findViewById(R.id.txtStDate);
@@ -143,18 +163,7 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-        btnHome3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnContact1=findViewById(R.id.btnContact);
         btnContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,6 +315,12 @@ public class EventDetail extends AppCompatActivity {
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user2);
         Log.d("TAG","Menu to MyEvent"+user2.id);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user2);
         startActivity(intent);
     }
 }
