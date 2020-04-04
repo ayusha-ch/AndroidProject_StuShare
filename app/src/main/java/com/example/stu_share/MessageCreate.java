@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.PrivateKey;
 
 public class MessageCreate extends AppCompatActivity {
     Button home,logout, btnSendMessage;
@@ -27,7 +28,7 @@ public class MessageCreate extends AppCompatActivity {
     private static final String TAG = "Create";
     private User userReg;
     private static String length;
-    private EventCoordinator.Event event1;
+    private MessageCoordinator.Message message;
 
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/createMessage.php";
     @Override
@@ -35,13 +36,12 @@ public class MessageCreate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         userReg=(User)getIntent().getSerializableExtra("user");
-        event1=(EventCoordinator.Event) getIntent().getSerializableExtra("event");
+        message=(MessageCoordinator.Message) getIntent().getSerializableExtra("message");
         txtTitle = findViewById(R.id.textMsgSubject);
-        String msgTitle="Re: About your events post:" +event1.eventTitle;
-        String msgBody="I just saw your post regarding:\n" +event1.toString()+"\n\n\n"+userReg.firstName+" "+userReg.lastName;
-        txtTitle.setText(msgTitle);
+
+        txtTitle.setText(message.title);
         txtDetails = findViewById(R.id.textMessageBody);
-        txtDetails.setText(msgBody);
+        txtDetails.setText(message.detail);
         btnSendMessage = findViewById(R.id.btnReply);
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,19 +56,17 @@ public class MessageCreate extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Message sent successfully!",Toast.LENGTH_LONG).show();
                     sendPost();
                     Intent intent = new Intent();
-                    intent.putExtra("event",event1);
                     intent.putExtra("user",userReg);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
             }
         });
-        Button btnCancel = findViewById(R.id.btnMsg_Delete);
+        Button btnCancel = findViewById(R.id.btnMsg_Delete1);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("event",event1);
                 intent.putExtra("user",userReg);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -96,7 +94,7 @@ public class MessageCreate extends AppCompatActivity {
                     jsonParam.put("email", userReg.email);
                     jsonParam.put("activationCode",MessageCreate.length);
                     jsonParam.put("messageCode", messageCode);
-                    jsonParam.put("receiver", event1.orgEmail);
+                    jsonParam.put("receiver", message.receiver_email);
 
 
                     Log.i("JSON", jsonParam.toString());

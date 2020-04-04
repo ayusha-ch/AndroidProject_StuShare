@@ -33,7 +33,7 @@ public class MessageList extends AppCompatActivity {
     Button msgHome, msgLogout;
     ListView messageList;
     private static User userTemp;
-    private ArrayAdapter arrayAdapter;
+    public static ArrayAdapter arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +50,7 @@ public class MessageList extends AppCompatActivity {
                 MessageCoordinator.Message message =(MessageCoordinator.Message) adapter.getItemAtPosition(position);
                 Intent intent =new Intent(getBaseContext(), MessageReceivedDetail.class);
                 intent.putExtra("message",message);
+                intent.putExtra("user",userTemp);
                 startActivityForResult(intent,1);
             }
         });
@@ -78,6 +79,12 @@ public class MessageList extends AppCompatActivity {
             }
 
         });
+    }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        getMsgList();
     }
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
