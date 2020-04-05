@@ -48,7 +48,6 @@ public class EventOwnDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_own_detail);
         final EventCoordinator.Event event=(EventCoordinator.Event)getIntent().getSerializableExtra("args");
-        Toast.makeText(getApplicationContext(),event.toString(),Toast.LENGTH_LONG).show();
         ButterKnife.bind(this);
         toolBar.setTitle("Owned Event Details");
         setSupportActionBar(toolBar);
@@ -68,7 +67,7 @@ public class EventOwnDetail extends AppCompatActivity {
         txtStTime=findViewById(R.id.txtStTime6);
         txtEndDate=findViewById(R.id.txtEndDate6);
         txtEndTime=findViewById(R.id.txtEndTime6);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include11);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override

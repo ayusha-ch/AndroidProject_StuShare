@@ -6,7 +6,7 @@
     if(empty($title)){
     $sql="SELECT * FROM event WHERE status LIKE 'active';";
     }else{
-	$sql = "SELECT * FROM  event WHERE title like '%$title%' AND status LIKE 'active' or detail like '%$title%' or eventCode like '%$title%';";}
+	$sql = "SELECT *,(SELECT COUNT(el.user_id) FROM event_liked el WHERE el.event_id = e.id) as sum,(SELECT COUNT(el2.user_id)  FROM event_liked el2 WHERE el2.event_id = e.id and el2.user_id='$userID') as isLike FROM  event e WHERE title like '%$title%' AND status LIKE 'active' or detail like '%$title%' or eventCode like '%$title%';";}
 
 // echo $sql;
 	if ($result = mysqli_query($con, $sql)){

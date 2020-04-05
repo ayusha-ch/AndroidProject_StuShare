@@ -210,6 +210,9 @@ public class EventListJoined extends AppCompatActivity {
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
+            event1.setRating(Float.parseFloat(obj.getString("rating")));
+            event1.setLiked(Integer.parseInt(obj.getString("isLike")));
+            event1.setLikeCount(Integer.parseInt(obj.getString("sum")));
             eventL.add(event1);
         }
         mAdapter = new EventAdapter(getApplicationContext(), eventL);
