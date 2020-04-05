@@ -53,6 +53,7 @@ public class MessageList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
+        userTemp=(User)getIntent().getSerializableExtra("user");
 
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.messageList));
@@ -65,11 +66,7 @@ public class MessageList extends AppCompatActivity {
 
             }
         });
-
-
-
         BottomNavigationView navigation = findViewById(R.id.navigation);
-
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -95,10 +92,7 @@ public class MessageList extends AppCompatActivity {
                 return false;
             }
         });
-
         DrawerUtil.getDrawer(this,toolBar);
-
-        userTemp=(User)getIntent().getSerializableExtra("user");
         messageList=findViewById(R.id.messageList);
         getMsgList();
         mAdapter = new MessageAdapter(this, MESSAGE_LIST);
@@ -111,19 +105,15 @@ public class MessageList extends AppCompatActivity {
                 Intent intent =new Intent(getBaseContext(), MessageReceivedDetail.class);
                 intent.putExtra("message",message);
                 intent.putExtra("user",userTemp);
-                startActivityForResult(intent,1);
+                //startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
-
-
-
     }
-
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
     public void getMsgList() {
-
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -135,10 +125,8 @@ public class MessageList extends AppCompatActivity {
                     conn.setRequestProperty("Accept","application/json");
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
-
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("userID", userTemp.id);
-
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
@@ -149,30 +137,31 @@ public class MessageList extends AppCompatActivity {
                     conn.connect();
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG" , conn.getResponseMessage());
-
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     DataInputStream is=new DataInputStream(conn.getInputStream());
-
-                    StringBuilder total = new StringBuilder();
+                    final StringBuilder total = new StringBuilder();
                     String line;
                     while ((line = in.readLine()) != null)
                     {
                         total.append(line).append('\n');
                     }
                     Log.d("TAG", "Server Response is: " + total.toString() + ": " );
-
-                    loadIntoListView(total.toString().trim());
-
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                loadIntoListView(total.toString().trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }});
                     conn.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
         thread.start();
-
     }
     private void loadIntoListView(final String json) throws JSONException {
         ArrayList<MessageCoordinator.Message> messageL = new ArrayList<MessageCoordinator.Message>();
@@ -185,7 +174,6 @@ public class MessageList extends AppCompatActivity {
                 try {
                     jsonArray = new JSONArray(json);
                     MESSAGE_LIST.clear();
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject obj = jsonArray.getJSONObject(i);
                         MessageCoordinator.Message message = new MessageCoordinator.Message();
@@ -198,19 +186,12 @@ public class MessageList extends AppCompatActivity {
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
-
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }});
         mAdapter = new MessageAdapter(this, MESSAGE_LIST);
         messageList.setAdapter(mAdapter);
-
-
     }
 
     public static float x1,x2,y1,y2;

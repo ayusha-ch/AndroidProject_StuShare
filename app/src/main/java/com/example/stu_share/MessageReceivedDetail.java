@@ -32,6 +32,7 @@ public class MessageReceivedDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_received_detail);
         user1=(User)getIntent().getSerializableExtra("user") ;
+        Log.i("MSGRDDetail",user1.email+"email!!!");
         message1=(MessageCoordinator.Message)getIntent().getSerializableExtra("message");
         msgT=findViewById(R.id.textMsgSubject);
         msgB=findViewById(R.id.textMessageBody);
