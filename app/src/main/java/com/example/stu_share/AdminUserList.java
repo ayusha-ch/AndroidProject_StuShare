@@ -2,39 +2,33 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-
-
-import static com.example.stu_share.EventList.user3;
 
 public class AdminUserList extends AppCompatActivity {
     Button btnLogout, btnHome;
@@ -44,23 +38,73 @@ public class AdminUserList extends AppCompatActivity {
     TextView txt;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-
+    SwipeRefreshLayout swipeLayout;
     public static List<User> userList;
+    private String url1="https://w0044421.gblearn.com/stu_share/read_all_users.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_list);
-
         user1=(User)getIntent().getSerializableExtra("user");
-
         ButterKnife.bind(this);
         toolBar.setTitle("Users List");
         setSupportActionBar(toolBar);
-
-
+        View myview=findViewById(R.id.masterView);
+        myview.setOnTouchListener(new View.OnTouchListener() {
+            float x1;
+            float x2;
+            float y1;
+            float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent touchEvent) {
+                switch(touchEvent.getAction()){
+                    //Start point
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = touchEvent.getX();
+                        Log.i("X1down",String.valueOf(x1));
+                        y1 = touchEvent.getY();
+                        break;
+                    //End point
+                    case MotionEvent.ACTION_UP:
+                        x2 = touchEvent.getX();
+                        y2 = touchEvent.getY();
+                        Log.i("X2UP",x2+"||"+x1);
+                        if(x2 - x1>150){
+                            Intent i = new Intent(getApplicationContext(), AdminEventList.class);
+                            i.putExtra("user",user1);
+                            //Regular class call activity need use .setFlags method
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }else if(x1 -  x2>150){
+                            Log.i("X1-X21",String.valueOf(x1));
+                            Log.i("X1-X22",String.valueOf(x2));
+                            Intent i = new Intent(getApplicationContext(), AdminMessageList.class);
+                            i.putExtra("user",user1);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
         AdminDrawerUtil.getDrawer(this,toolBar);
-
-        BottomNavigationView navigation = findViewById(R.id.navigation1);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadJSON(url1);
+                //Toast.makeText(getApplicationContext(), "Works!", Toast.LENGTH_LONG).show();
+                // To keep animation for 4 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000); // Delay in millis
+            }
+        });
+        BottomNavigationView navigation = findViewById(R.id.include6);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -92,7 +136,7 @@ public class AdminUserList extends AppCompatActivity {
         });
 
         listView = (ListView) findViewById(R.id.listUser);
-        downloadJSON("https://w0044421.gblearn.com/stu_share/read_all_users.php");
+        downloadJSON(url1);
 
 
 
@@ -111,39 +155,8 @@ public class AdminUserList extends AppCompatActivity {
             }
         });
     }
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
-    public static float x1,x2,y1,y2;
 
-    //To allow swipe left or right gesure
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){
-                    Intent i = new Intent(context, AdminMessageList.class);
-                    i.putExtra("user",user1);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }else if(x1 >  x2){
-                    Intent i = new Intent(context, AdminEventList.class);
-                    i.putExtra("user",user1);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }
+
     public void logout(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user",user1);

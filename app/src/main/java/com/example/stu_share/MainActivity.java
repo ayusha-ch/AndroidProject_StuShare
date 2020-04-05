@@ -134,9 +134,10 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("TAG", "Server Response is: " + total.toString() + ": " );
 
                     final User user1=jsonToUser(total.toString().trim(),user);
+
                     runOnUiThread(new Runnable() {
                     public void run() {
-                        if (user1 == null) {
+                        if (user1== null||txtPEm.getText().toString().isEmpty()) {
                             txtErr.setText("No such a user exists!");
                         } else if (!txtPPwd.getText().toString().equals(user1.password)) {
                             txtErr.setText("Wrong password provided!");
