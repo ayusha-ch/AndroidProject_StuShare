@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,9 +38,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 public class MessageList extends AppCompatActivity {
     ListView messageList;
+    MessageAdapter mAdapter;
     private static User userTemp;
     public static ArrayAdapter arrayAdapter;
     ImageView buttonImg;
@@ -62,7 +66,7 @@ public class MessageList extends AppCompatActivity {
             }
         });
 
-        DrawerUtil.getDrawer(this,toolBar);
+
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
 
@@ -92,12 +96,13 @@ public class MessageList extends AppCompatActivity {
             }
         });
 
+        DrawerUtil.getDrawer(this,toolBar);
 
         userTemp=(User)getIntent().getSerializableExtra("user");
         messageList=findViewById(R.id.messageList);
         getMsgList();
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
-        messageList.setAdapter(arrayAdapter);
+        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
+        messageList.setAdapter(mAdapter);
         messageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -114,12 +119,6 @@ public class MessageList extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onResume() {
-
-        super.onResume();
-        getMsgList();
-    }
     public boolean onTouchEvent(MotionEvent touchEvent){
         return onTouchEvent(touchEvent,getApplicationContext());
     }
@@ -176,14 +175,17 @@ public class MessageList extends AppCompatActivity {
 
     }
     private void loadIntoListView(final String json) throws JSONException {
+        ArrayList<MessageCoordinator.Message> messageL = new ArrayList<MessageCoordinator.Message>();
 
         runOnUiThread(new Runnable() {
             public void run()
             {
+
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(json);
                     MESSAGE_LIST.clear();
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject obj = jsonArray.getJSONObject(i);
                         MessageCoordinator.Message message = new MessageCoordinator.Message();
@@ -192,17 +194,22 @@ public class MessageList extends AppCompatActivity {
                         message.setSender_email(obj.getString("sender_id"));
                         message.setReceiver_email(obj.getString("receiver_id"));
                         message.setDetail(obj.getString("details"));
+                        message.setmImageDrawable(message);
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
 
-                    arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,MESSAGE_LIST);
-                    messageList.setAdapter(arrayAdapter);
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }});
+        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
+        messageList.setAdapter(mAdapter);
+
 
     }
 

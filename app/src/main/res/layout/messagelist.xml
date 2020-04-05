@@ -32,17 +32,14 @@
 
             <ImageView
                 android:id="@+id/imageView_poster"
-                android:layout_width="162dp"
-                android:layout_height="127dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:contentDescription="View Events Image"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
-
-
-            <TextView
+                <TextView
                 android:id="@+id/textView_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,52 +77,6 @@
                 app:layout_constraintStart_toStartOf="@+id/textView_name"
                 app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 
-            <ImageView
-                android:id="@+id/imgLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:contentDescription="Like/Thumbs up"
-                android:onClick="likeClick"
-                app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_thumbs_up" />
-
-            <com.willy.ratingbar.RotationRatingBar
-
-                android:id="@+id/ratingBar"
-                style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
-                android:layout_width="170dp"
-                android:layout_height="37dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#A50202"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:isIndicator="true"
-                android:max="5"
-                android:numStars="5"
-                android:rating="0"
-                android:stepSize="0.2"
-                android:theme="@style/RatingBar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageView_poster"
-                app:layout_constraintHeight_max="10dp"
-                app:layout_constraintHeight_min="wrap"
-                app:layout_constraintStart_toStartOf="@+id/imageView_poster"
-                app:layout_constraintTop_toBottomOf="@+id/imageView_poster" />
-
-            <TextView
-                android:id="@+id/likeCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:textColor="#D55E75"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imgLike"
-                app:layout_constraintStart_toEndOf="@+id/imgLike" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
