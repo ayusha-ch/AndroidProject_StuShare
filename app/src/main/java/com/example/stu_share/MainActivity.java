@@ -109,11 +109,8 @@ public class MainActivity extends AppCompatActivity {
                     conn.setRequestProperty("Accept","application/json");
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
-
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("email", txtPEm.getText().toString());
-
-
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(

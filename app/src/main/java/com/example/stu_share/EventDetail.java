@@ -178,9 +178,18 @@ public class EventDetail extends AppCompatActivity {
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),EmailActivity.class);
-                intent.putExtra("args",user2);
-                startActivity(intent);
+                String title="Re: About your posting: "+event.eventTitle;
+                String message="Hi, I just saw it in your posting : "+ event.eventDetail+"\n\n\n\n\n\n"+user2.firstName+" "+user2.lastName+"\n"+user2.email;
+                String recipientList = event.orgEmail;
+                String[] recipients = recipientList.split(",");
+                String subject = title;
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                intent.setType("message/rfc822");
+                startActivity(Intent.createChooser(intent, "Choose an email client"));
+
             }
         });
 
