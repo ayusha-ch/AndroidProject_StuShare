@@ -164,7 +164,7 @@ public class MessageList extends AppCompatActivity {
         thread.start();
     }
     private void loadIntoListView(final String json) throws JSONException {
-        ArrayList<MessageCoordinator.Message> messageL = new ArrayList<MessageCoordinator.Message>();
+
 
         runOnUiThread(new Runnable() {
             public void run()
@@ -182,16 +182,23 @@ public class MessageList extends AppCompatActivity {
                         message.setSender_email(obj.getString("sender_id"));
                         message.setReceiver_email(obj.getString("receiver_id"));
                         message.setDetail(obj.getString("details"));
-                        message.setmImageDrawable(message);
+
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
+
+                    mAdapter = new MessageAdapter(getApplicationContext(), MESSAGE_LIST);
+                    messageList.setAdapter(mAdapter);
+
+
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }});
-        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
-        messageList.setAdapter(mAdapter);
+
     }
 
     public static float x1,x2,y1,y2;
