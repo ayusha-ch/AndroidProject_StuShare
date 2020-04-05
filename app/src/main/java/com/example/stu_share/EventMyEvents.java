@@ -151,7 +151,7 @@ public class EventMyEvents extends AppCompatActivity {
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }else if(x1 >  x2){
-                    Intent i = new Intent(context, MyProfile.class);
+                    Intent i = new Intent(context, MessageList.class);
                     i.putExtra("user",user);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);

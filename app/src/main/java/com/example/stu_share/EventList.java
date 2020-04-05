@@ -86,7 +86,7 @@ public class EventList extends AppCompatActivity {
                             //Regular class call activity need use .setFlags method
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getApplicationContext().startActivity(i);
-                        }else if(x1 -  x2>50){
+                        }else if(x2 -  x1<50){
                             Log.i("X1-X21",String.valueOf(x1));
                             Log.i("X1-X22",String.valueOf(x2));
                             Intent i = new Intent(getApplicationContext(), EventMyEvents.class);

@@ -70,7 +70,7 @@ public class MyProfile extends AppCompatActivity {
                             if(userTemp.role.equals("admin")){
                                 cc = AdminEventList.class;
                             }else{
-                                cc=EventMyEvents.class;
+                                cc=EventList.class;
                             }
                             Intent i = new Intent(getApplicationContext(),cc );
                             i.putExtra("user",userTemp);

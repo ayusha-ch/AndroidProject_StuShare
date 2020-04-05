@@ -3,6 +3,7 @@ package com.example.stu_share;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,12 +51,66 @@ public class MessageList extends AppCompatActivity {
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+    SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
         userTemp=(User)getIntent().getSerializableExtra("user");
+        View myview=findViewById(R.id.masterView);
+        myview.setOnTouchListener(new View.OnTouchListener() {
+            float x1;
+            float x2;
+            float y1;
+            float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent touchEvent) {
+                switch(touchEvent.getAction()){
+                    //Start point
 
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = touchEvent.getX();
+                        Log.i("X1down",String.valueOf(x1));
+                        y1 = touchEvent.getY();
+                        break;
+                    //End point
+                    case MotionEvent.ACTION_UP:
+                        x2 = touchEvent.getX();
+                        y2 = touchEvent.getY();
+                        Class cc;
+                        if(x2-x1>50){
+                            cc=MyProfile.class;
+                            Intent i = new Intent(getApplicationContext(),cc );
+                            i.putExtra("user",userTemp);
+                            //Regular class call activity need use .setFlags method
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        else if(x2-x1<50){
+                            cc= EventMyEvents.class;
+                            Intent i = new Intent(getApplicationContext(), cc);
+                            i.putExtra("user",userTemp);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMsgList();
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.messageList));
         setSupportActionBar(toolBar);
@@ -110,9 +166,7 @@ public class MessageList extends AppCompatActivity {
             }
         });
     }
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
+
     public void getMsgList() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -201,38 +255,7 @@ public class MessageList extends AppCompatActivity {
 
     }
 
-    public static float x1,x2,y1,y2;
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                Class cc;
-                if(x1 < x2){
-                    cc=MyProfile.class;
-                    Intent i = new Intent(context,cc );
-                    i.putExtra("user",userTemp);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                else if(x1 >  x2){
-                    cc= EventList.class;
-                    Intent i = new Intent(context, cc);
-                    i.putExtra("user",userTemp);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }
+
 
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventList.class);
