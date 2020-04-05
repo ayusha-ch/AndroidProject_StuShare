@@ -227,10 +227,7 @@ public class EventList extends AppCompatActivity {
             ImageView likeClick= (ImageView)findViewById(R.id.imgLike);
             likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
             Toast.makeText(getApplicationContext(),"Liked",Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId()==R.id.favourite){
-            Toast.makeText(getApplicationContext(),"Faved!",Toast.LENGTH_SHORT).show();
-        }else{
+        } else{
             return false;
         }
         return true;
