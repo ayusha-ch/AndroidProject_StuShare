@@ -89,9 +89,17 @@ public class DrawerUtil {
                             intent.putExtra("user",user3);
                             view.getContext().startActivity(intent);
                         }
-                        else if (drawerItem.getIdentifier() == 4 && !(activity instanceof EmailActivity)) {
+                        else if (drawerItem.getIdentifier() == 4 && !(activity instanceof MessageCreate)) {
                             // load tournament screen
-                            Intent intent = new Intent(activity, EmailActivity.class);
+                            Intent intent = new Intent(activity, MessageCreate.class);
+                            MessageCoordinator.Message message=new MessageCoordinator.Message();
+                            message.title="Re: About the App";
+                            message.detail="Dear Admin";
+                            message.sender_email=user3.email;
+                            message.receiver_email="2";
+                            intent.putExtra("user",user3);
+                            intent.putExtra("id","admin");
+                            intent.putExtra("message",message);
                             intent.putExtra("user",user3);
                             view.getContext().startActivity(intent);
                         }

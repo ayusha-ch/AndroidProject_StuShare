@@ -2,6 +2,7 @@ package com.example.stu_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
@@ -29,6 +30,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.stu_share.EventAdapter.eventList;
 
 public class EventPastList extends AppCompatActivity {
@@ -36,10 +40,27 @@ public class EventPastList extends AppCompatActivity {
     ListView listView;
     EventAdapter mAdapter;
     private User user;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_past_list);
+
+        ButterKnife.bind(this);
+
+        toolBar.setTitle("Past Events");
+        setSupportActionBar(toolBar);
+        ImageView buttonImg;
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+
         user=(User)getIntent().getSerializableExtra("user");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include3);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,15 +80,17 @@ public class EventPastList extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user);
-//                        startActivity(i);
-//                        break;
-                }
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
+                        break;
+            }
                 return false;
             }
         });
+
+        DrawerUtil.getDrawer(this,toolBar);
         listView = (ListView) findViewById(R.id.listview);
         downloadJSON("https://w0044421.gblearn.com/stu_share/EventsView_PastEvents.php");
         Log.d("TAG","OwnedEvent"+user.id);
@@ -185,6 +208,12 @@ public class EventPastList extends AppCompatActivity {
     }
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventList.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

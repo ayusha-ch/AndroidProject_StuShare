@@ -57,6 +57,7 @@ public class EventList extends AppCompatActivity {
     SwipeRefreshLayout swipeLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+    private String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +105,7 @@ public class EventList extends AppCompatActivity {
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
-        final String url1="https://w0044421.gblearn.com/stu_share/EventView_Status_Active.php";
+
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
@@ -206,6 +207,11 @@ public class EventList extends AppCompatActivity {
                 startActivity(intent);  }
         });
         registerForContextMenu(listView);
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        downloadJSON(url1,user3,"");
     }
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {

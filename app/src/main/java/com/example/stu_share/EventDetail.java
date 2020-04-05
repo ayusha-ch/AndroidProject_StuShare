@@ -192,8 +192,8 @@ public class EventDetail extends AppCompatActivity {
                 MessageCoordinator.Message message=new MessageCoordinator.Message();
                 message.title="Re: About your events post:" +event.eventTitle;
                 message.detail="I just saw your post regarding:\n" +event.toString()+"\n\n\n"+user2.firstName+" "+user2.lastName;
-                message.sender_email=user2.email;
-                message.receiver_email="david@georgebrown.ca";
+                message.sender_email=user2.id;
+                message.receiver_email="2";
                 i.putExtra("user",user2);
                 i.putExtra("id","admin");
                 i.putExtra("message",message);
