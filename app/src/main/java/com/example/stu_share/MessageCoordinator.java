@@ -12,7 +12,7 @@ public class MessageCoordinator implements Serializable {
 
     public Message(int id, String title, String detail, String receiver_email, String sender_email, String type,  String status){
 
-        public Message(int id, String title, String detail, String receiver_email, String sender_email, String type,  String status) {
+
 
             this.id = id;
             this.title = title;
