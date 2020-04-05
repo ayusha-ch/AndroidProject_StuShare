@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,11 +35,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static java.util.Objects.isNull;
+
 public class EventCreate extends AppCompatActivity {
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     TimePickerDialog timePickerSt,timePickerEnd;
     Calendar calendar;
     int currentHour;
@@ -55,13 +68,26 @@ public class EventCreate extends AppCompatActivity {
     private EventCoordinator.Event event1;
     EditText txtStTime,txtEndTime;
     private User user;
-    Button btnCreate, btnHome, btnLogout;
+    Button btnCreate;
     //    DBHelper dbHelper = null;
     private static final String REGISTER_URL="https://w0044421.gblearn.com/stu_share/create_event.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.EventCreate));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -79,6 +105,12 @@ public class EventCreate extends AppCompatActivity {
                         break;
                     case R.id.action_myevents:
                         openMyEventsActivity();
+                        break;
+
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user);
+                        startActivity(i);
                         break;
                 }
                 return false;
@@ -138,7 +170,7 @@ public class EventCreate extends AppCompatActivity {
                 DatePickerDialog dialog = new DatePickerDialog(EventCreate.this,
                         android.R.style.Theme_DeviceDefault_Light_Dialog,
                         startDateSetListener, year, month, day);
-
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -148,11 +180,11 @@ public class EventCreate extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
+                view.setMinDate(System.currentTimeMillis());
                 String date = ""+year +month +dayOfMonth;
-                startDisplayDate.setText(date);
+                //startDisplayDate.setText(date);
                 endDisplayDate.setText(date);
-            }
-        };
+        }};
 
         endDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +197,7 @@ public class EventCreate extends AppCompatActivity {
                 DatePickerDialog dialog = new DatePickerDialog(EventCreate.this,
                         android.R.style.Theme_DeviceDefault_Light_Dialog,
                         endDateSetListener, year, month, day);
-
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -179,25 +211,23 @@ public class EventCreate extends AppCompatActivity {
                 endDisplayDate.setText(date);
             }
         };
-        btnLogout = findViewById(R.id.btnAlLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
         user=(User)getIntent().getSerializableExtra("user");
         final Calendar myCalendar = Calendar.getInstance();
         final Calendar myCalendar1 = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            final long today = System.currentTimeMillis() - 1000;
+
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
                 // TODO Auto-generated method stub
+                view.setMinDate(System.currentTimeMillis());
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
+
             }
             private void updateLabel() {
                 String myFormat = "yyyyMMdd";
@@ -217,15 +247,18 @@ public class EventCreate extends AppCompatActivity {
             }
         });
         final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
-
+            final long today = System.currentTimeMillis() - 1000;
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
                 // TODO Auto-generated method stub
+
+                view.setMinDate(System.currentTimeMillis());
                 myCalendar1.set(Calendar.YEAR, year);
                 myCalendar1.set(Calendar.MONTH, monthOfYear);
                 myCalendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
+
             }
             private void updateLabel() {
                 String myFormat = "yyyyMMdd";
@@ -247,19 +280,33 @@ public class EventCreate extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnCreate=findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            Date date = new Date();
+            String today=dateFormat.format(date);
+
             @Override
             public void onClick(View v) {
-             sendPost();
-                OpenMenuActivity();
+                try {
+                    if(dateFormat.parse(txtEndDate.getText().toString()).before(dateFormat.parse(today))||dateFormat.parse(txtStDate.getText().toString()).before(dateFormat.parse(today))){
+                        Toast.makeText(getApplicationContext(),"Sorry the date is ealier than today, Please correct!",Toast.LENGTH_LONG).show();
+                    }else if(txtEndDate.getText().toString().matches("")
+                            ||txtStDate.getText().toString().matches("")
+                            ||txtEndTime.getText().toString().matches("")
+                            ||txtStTime.getText().toString().matches("")){
+                        Toast.makeText(getApplicationContext(),"Some required fields are still empty!",Toast.LENGTH_LONG).show();
+                    }else if(dateFormat.parse(txtEndDate.getText().toString()).before(dateFormat.parse(txtStDate.getText().toString()))){
+                        Toast.makeText(getApplicationContext(),"End date can't be earlier than start date!",Toast.LENGTH_LONG).show();
+                    } else{
+                        sendPost();
+                        OpenMenuActivity();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -310,6 +357,7 @@ public class EventCreate extends AppCompatActivity {
                     {
                         total.append(line).append('\n');
                     }
+
                     Log.d("TAG", "Server Response is: " + total.toString() + ": " );
                     conn.disconnect();
                 } catch (Exception e) {
@@ -337,4 +385,16 @@ public class EventCreate extends AppCompatActivity {
         Log.d("TAG","Menu to MyEvent"+user.id);
         startActivity(intent);
     }
+
+    public void OpenEventList() {
+        Intent intent = new Intent(this, EventList.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
+        startActivity(intent); }
+
 }

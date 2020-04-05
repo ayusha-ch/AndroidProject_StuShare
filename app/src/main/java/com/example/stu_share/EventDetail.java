@@ -3,8 +3,11 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,9 +36,23 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class EventDetail extends AppCompatActivity {
-    private Button btnLogout, btnJoin,btnContact1, btnHome3,btnMsg;
+
+    private Button  btnJoin,btnContact1,btnMsg,btnAddCalendar;
+
+    ImageView buttonImg;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+
+
     private TextView txtEvtTitle, txtEvtDetail, txtStDate, txtStTime, txtEndTime, txtEndDate,txtEventC;
     private  User user2;
     private ImageView shareImage,imageCheck;
@@ -46,6 +63,20 @@ public class EventDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
+        DrawerUtil.getDrawer(this,toolBar);
+
         user2=(User)getIntent().getSerializableExtra("user");
         final EventCoordinator.Event event = (EventCoordinator.Event) getIntent().getSerializableExtra("args");
         btnMsg=findViewById(R.id.btnMessage);
@@ -80,13 +111,24 @@ public class EventDetail extends AppCompatActivity {
                         openMyEventsActivity();
                         break;
 
-//                    case R.id.action_profile:
-//                        Intent i= new Intent(getBaseContext(),MyProfile.class);
-//                        i.putExtra("user",user2);
-//                        startActivity(i);
-//                        break;
+                    case R.id.action_profile:
+                        Intent i= new Intent(getBaseContext(),MyProfile.class);
+                        i.putExtra("user",user2);
+                        startActivity(i);
+                        break;
                 }
                 return false;
+            }
+        });
+        btnAddCalendar=findViewById(R.id.btnCal);
+        btnAddCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    addEvent(event);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         imageCheck=findViewById(R.id.imgChecked);
@@ -110,8 +152,6 @@ public class EventDetail extends AppCompatActivity {
         });
 
         btnJoin = findViewById(R.id.btnJoin);
-        btnLogout = findViewById(R.id.btnLogout2);
-        btnHome3 = findViewById(R.id.btnHome3);
         txtEvtTitle = findViewById(R.id.txtEventTitle);
         txtEvtDetail = findViewById(R.id.txtEvtDetail);
         txtStDate = findViewById(R.id.txtStDate);
@@ -143,18 +183,7 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-        btnHome3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenMenuActivity();
-            }
-        });
+
         btnContact1=findViewById(R.id.btnContact);
         btnContact1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +192,8 @@ public class EventDetail extends AppCompatActivity {
                 MessageCoordinator.Message message=new MessageCoordinator.Message();
                 message.title="Re: About your events post:" +event.eventTitle;
                 message.detail="I just saw your post regarding:\n" +event.toString()+"\n\n\n"+user2.firstName+" "+user2.lastName;
-                message.sender_email=user2.email;
-                message.receiver_email="david@georgebrown.ca";
+                message.sender_email=user2.id;
+                message.receiver_email="2";
                 i.putExtra("user",user2);
                 i.putExtra("id","admin");
                 i.putExtra("message",message);
@@ -185,6 +214,24 @@ public class EventDetail extends AppCompatActivity {
                 startActivity(Intent.createChooser(share, "Share link!"));
             }
         });
+    }
+    public void addEvent(EventCoordinator.Event event) throws ParseException {
+
+        String stDate = event.startDate+" "+event.startTime;
+        String edDate=event.endDate+" "+event.endTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
+        Date startDate = sdf.parse(stDate);
+        Date endDate = sdf.parse(edDate);
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, event.eventTitle)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate.getTime())
+                .putExtra(CalendarContract.Events.DESCRIPTION, event.eventDetail)
+                .putExtra(Intent.EXTRA_EMAIL, event.orgEmail)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate.getTime());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
     public void updateRating(final String urlWebService, final User user, final EventCoordinator.Event event1,final Float rate) {
 
@@ -306,6 +353,12 @@ public class EventDetail extends AppCompatActivity {
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user2);
         Log.d("TAG","Menu to MyEvent"+user2.id);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user2);
         startActivity(intent);
     }
 }

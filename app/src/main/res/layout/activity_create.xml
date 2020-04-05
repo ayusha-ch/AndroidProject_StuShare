@@ -7,16 +7,33 @@
     android:background="@drawable/bkgimg"
     tools:context=".EventCreate">
 
-    <Button
-        android:id="@+id/btnHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
-        android:textStyle="bold"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#2F3C81"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/buttonImg"
+                android:layout_width="200px"
+                android:layout_height="150px"
+                android:foregroundGravity="right"
+                android:src="@drawable/ic_create" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/txtEndDate"
@@ -24,9 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:clickable="true"
         android:ems="10"
+        android:focusableInTouchMode="false"
         android:hint="Enter Date"
-        android:inputType="textPersonName"
+        android:inputType="none"
         android:textColor="#ECE9E5"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -58,9 +77,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:clickable="true"
         android:ems="10"
+        android:focusableInTouchMode="false"
         android:hint="Enter start time"
-        android:inputType="textPersonName"
+        android:inputType="none"
         android:textColor="#ECE9E5"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -86,17 +107,6 @@
         app:layout_constraintTop_toBottomOf="@+id/txtEndDate"
         app:layout_constraintVertical_bias="0.067" />
 
-    <Button
-        android:id="@+id/btnAlLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
@@ -108,12 +118,11 @@
         android:textColor="#ECE9E5"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAlLogout"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.014"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/textView21"
@@ -140,9 +149,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
+        android:clickable="true"
         android:ems="10"
         android:hint="Enter Start Date"
-        android:inputType="textPersonName"
         android:textColor="#ECE9E5"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -158,9 +167,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:clickable="true"
         android:ems="10"
+        android:focusableInTouchMode="false"
         android:hint="Enter start time"
-        android:inputType="textPersonName"
+        android:inputType="none"
         android:textColor="#ECE9E5"
         android:textSize="18sp"
         android:textStyle="bold"

@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,10 +47,14 @@ public class EventListJoined extends AppCompatActivity {
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+
+    private String url2="https://w0044421.gblearn.com/stu_share/EventsRegistered.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list_joined);
+
         user=(User)getIntent().getSerializableExtra("user");
         listView1 =  findViewById(R.id.listV1);
         ButterKnife.bind(this);
@@ -56,10 +64,13 @@ public class EventListJoined extends AppCompatActivity {
         buttonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OpenCreateActivity();
             }
         });
+
         DrawerUtil.getDrawer(this,toolBar);
-        downloadJSON("https://w0044421.gblearn.com/stu_share/EventsRegistered.php");
+
+        downloadJSON(url2);
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -67,7 +78,7 @@ public class EventListJoined extends AppCompatActivity {
             {
                 Log.i("POSITIONINJOINED",position+" clicked!");
                 EventCoordinator.Event event2=(EventCoordinator.Event) adapter.getItemAtPosition(position);
-                Intent intent =new Intent(getBaseContext(), EventListJoined.class);
+                Intent intent =new Intent(getBaseContext(), EventJoinedDetail.class);
                 intent.putExtra("args",event2);
                 intent.putExtra("user",user);
                 startActivity(intent);
@@ -89,6 +100,7 @@ public class EventListJoined extends AppCompatActivity {
                     case R.id.action_myevents:
                         openMyEventsActivity();
                         break;
+
                     case R.id.action_profile:
                         Intent i= new Intent(getBaseContext(),MyProfile.class);
                         i.putExtra("user",user);
@@ -98,6 +110,11 @@ public class EventListJoined extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        downloadJSON(url2);
     }
     private void downloadJSON(final String urlWebService) {
 
@@ -181,7 +198,6 @@ public class EventListJoined extends AppCompatActivity {
         }
         mAdapter = new EventAdapter(getApplicationContext(), eventL);
         listView1.setAdapter(mAdapter);
-        Log.i("MADAPTER",listView1.getAdapter().getItem(0).toString());
     }
 
     public void logout(){
@@ -191,11 +207,16 @@ public class EventListJoined extends AppCompatActivity {
     public void openMyEventsActivity(){
         Intent intent =new Intent(this, EventMyEvents.class);
         intent.putExtra("user",user);
-        Log.d("TAG","Menu to MyEvent"+user.id);
         startActivity(intent);
     }
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventList.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
+
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
         intent.putExtra("user",user);
         startActivity(intent);
     }

@@ -55,12 +55,10 @@ public class EventAdapter extends ArrayAdapter<EventCoordinator.Event> {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item,parent,false);
 
         final EventCoordinator.Event currentEvent = eventList.get(position);
-        Log.i("POSITION", currentEvent.toString());
         ImageView image = (ImageView)listItem.findViewById(R.id.imageView_poster);
         PicassoClient.downloadImage(mContext,currentEvent.getmImageDrawable(), image);
         TextView name = (TextView) listItem.findViewById(R.id.textView_name);
         name.setText(currentEvent.getEventTitle());
-        Log.i("POSITION", name.getText().toString());
         ImageView likeImage=(ImageView)listItem.findViewById(R.id.imgLike);
         if(currentEvent.isLiked()==0){
             likeImage.setImageResource(R.drawable.ic_thumbs_up);

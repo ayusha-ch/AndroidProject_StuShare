@@ -91,7 +91,7 @@ public class MessageCreate extends AppCompatActivity {
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("title", txtTitle.getText().toString());
                     jsonParam.put("details", txtDetails.getText().toString());
-                    jsonParam.put("email", userReg.email);
+                    jsonParam.put("email", userReg.id);
                     jsonParam.put("activationCode",MessageCreate.length);
                     jsonParam.put("messageCode", messageCode);
                     jsonParam.put("receiver", message.receiver_email);
