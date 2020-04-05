@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText txtPEm,txtPPwd;
     private TextView txtErr;
     private User user=new User();
-    private String userString;
     private View popV;
 
     @Override
@@ -144,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
                             txtErr.setText("No such a user exists!");
                         } else if (!txtPPwd.getText().toString().equals(user1.password)) {
                             txtErr.setText("Wrong password provided!");
+                        }else if (!user1.status.equals("active")) {
+                            txtErr.setText("Acount status abnormal!");
                         }
                         else if(user1.role.equals("admin")){
                             Intent i=new Intent(getBaseContext(), AdminEventList.class);
