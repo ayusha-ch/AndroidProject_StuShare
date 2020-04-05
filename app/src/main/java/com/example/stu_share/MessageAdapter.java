@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,13 @@ public class MessageAdapter extends ArrayAdapter<MessageCoordinator.Message> {
         ImageView image = (ImageView)listItem.findViewById(R.id.imageView_poster);
         //\
         //PicassoClient.downloadImage(mContext,currentMessage.getmImageDrawable(), image);
-        image.setImageDrawable(currentMessage.getmImageDrawable());
+        String firstLetter = String.valueOf(currentMessage.getDetail().charAt(0));
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(Math.floor(Math.random()));
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(firstLetter, color);
+
+        image.setImageDrawable(drawable);
 
         TextView name = (TextView) listItem.findViewById(R.id.textView_name);
         name.setText(currentMessage.getTitle());

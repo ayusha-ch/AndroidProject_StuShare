@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -42,11 +43,14 @@ import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 public class AdminMessageList extends AppCompatActivity {
 
 
-    @BindView(R.id.toolbar)
-    public Toolbar toolBar;
+
     Button btnLogout, btnHome;
     ListView msgListView;
+    MessageAdapter mAdapter;
     private  User user;
+
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     private static ArrayAdapter arrayAdapter_msg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +95,10 @@ public class AdminMessageList extends AppCompatActivity {
             }
         });
         msgListView=findViewById(R.id.adminMessageList);
-        arrayAdapter_msg= new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
-        msgListView.setAdapter(arrayAdapter_msg);
+//        arrayAdapter_msg= new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
+//        msgListView.setAdapter(arrayAdapter_msg);
+        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
+        msgListView.setAdapter(mAdapter);
         msgListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -199,6 +205,7 @@ public class AdminMessageList extends AppCompatActivity {
     }
     private void loadIntoListView(final String json) throws JSONException {
 
+
         runOnUiThread(new Runnable() {
             public void run()
             {
@@ -214,12 +221,13 @@ public class AdminMessageList extends AppCompatActivity {
                         message.setSender_email(obj.getString("sender_id"));
                         message.setReceiver_email(obj.getString("receiver_id"));
                         message.setDetail(obj.getString("details"));
+
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
 
-                    arrayAdapter_msg = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,MESSAGE_LIST);
-                    msgListView.setAdapter(arrayAdapter_msg);
+                    mAdapter = new MessageAdapter(getApplicationContext(), MESSAGE_LIST);
+                    msgListView.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
