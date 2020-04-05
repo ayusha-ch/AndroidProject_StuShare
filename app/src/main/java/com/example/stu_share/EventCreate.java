@@ -297,8 +297,9 @@ public class EventCreate extends AppCompatActivity {
                             ||txtEndTime.getText().toString().matches("")
                             ||txtStTime.getText().toString().matches("")){
                         Toast.makeText(getApplicationContext(),"Some required fields are still empty!",Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    }else if(dateFormat.parse(txtEndDate.getText().toString()).before(dateFormat.parse(txtStDate.getText().toString()))){
+                        Toast.makeText(getApplicationContext(),"End date can't be earlier than start date!",Toast.LENGTH_LONG).show();
+                    } else{
                         sendPost();
                         OpenMenuActivity();
                     }
