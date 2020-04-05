@@ -3,9 +3,12 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -33,6 +36,7 @@ public class AdminEventList extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolBar1;
     private String url1="https://w0044421.gblearn.com/stu_share/read_all_events.php";
+    SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,21 @@ public class AdminEventList extends AppCompatActivity {
         toolBar1.setTitle("Admin Events List");
         setSupportActionBar(toolBar1);
         AdminDrawerUtil.getDrawer(this,toolBar1);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadJSON(url1);
+                //Toast.makeText(getApplicationContext(), "Works!", Toast.LENGTH_LONG).show();
+                // To keep animation for 4 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000); // Delay in millis
+            }
+        });
         BottomNavigationView navigation = findViewById(R.id.include4);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

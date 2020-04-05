@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,7 +25,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.willy.ratingbar.RotationRatingBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -102,10 +99,7 @@ public class EventList extends AppCompatActivity {
                 return true;
             }
         });
-
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
-
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
@@ -115,8 +109,8 @@ public class EventList extends AppCompatActivity {
                 OpenCreateActivity();
             }
         });
-
         DrawerUtil.getDrawer(this,toolBar);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
