@@ -3,6 +3,8 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -11,6 +13,7 @@ import butterknife.ButterKnife;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -34,6 +37,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -42,25 +46,79 @@ import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
 public class AdminMessageList extends AppCompatActivity {
 
 
-    @BindView(R.id.toolbar)
-    public Toolbar toolBar;
+
     Button btnLogout, btnHome;
     ListView msgListView;
+    MessageAdapter mAdapter;
     private  User user;
+    SwipeRefreshLayout swipeLayout;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
     private static ArrayAdapter arrayAdapter_msg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_message_list);
         user=(User)getIntent().getSerializableExtra("user");
-        Log.i("USER",user.id+"id");
         ButterKnife.bind(this);
         toolBar.setTitle("Messages List");
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMsgList();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
         setSupportActionBar(toolBar);
-
         AdminDrawerUtil.getDrawer(this,toolBar);
+        View myview=findViewById(R.id.masterView);
+        myview.setOnTouchListener(new View.OnTouchListener() {
+            float x1;
+            float x2;
+            float y1;
+            float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent touchEvent) {
+                switch(touchEvent.getAction()){
+                    //Start point
 
-        BottomNavigationView navigation = findViewById(R.id.navigation1);
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = touchEvent.getX();
+                        Log.i("X1down",String.valueOf(x1));
+                        y1 = touchEvent.getY();
+                        break;
+                    //End point
+                    case MotionEvent.ACTION_UP:
+                        x2 = touchEvent.getX();
+                        y2 = touchEvent.getY();
+                        if(x2 - x1>50){
+                            Intent i = new Intent(getApplicationContext(), AdminUserList.class);
+                            i.putExtra("user",user);
+                            //Regular class call activity need use .setFlags method
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }else if(x1 -  x2>50){
+                            Log.i("X1-X21",String.valueOf(x1));
+                            Log.i("X1-X22",String.valueOf(x2));
+                            Intent i = new Intent(getApplicationContext(), MyProfile.class);
+                            i.putExtra("user",user);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+
+        BottomNavigationView navigation = findViewById(R.id.include2);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -91,8 +149,8 @@ public class AdminMessageList extends AppCompatActivity {
             }
         });
         msgListView=findViewById(R.id.adminMessageList);
-        arrayAdapter_msg= new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
-        msgListView.setAdapter(arrayAdapter_msg);
+        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
+        msgListView.setAdapter(mAdapter);
         msgListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -112,39 +170,6 @@ public class AdminMessageList extends AppCompatActivity {
         getMsgList();
     }
 
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
-    public  float x1,x2,y1,y2;
-
-    //To allow swipe left or right gesure
-    public  boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){
-                    Intent i = new Intent(context, MyProfile.class);
-                    i.putExtra("user",user);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }else if(x1 >  x2){
-                    Intent i = new Intent(context, AdminUserList.class);
-                    i.putExtra("user",user);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }
     public void getMsgList() {
 
         Thread thread = new Thread(new Runnable() {
@@ -199,6 +224,7 @@ public class AdminMessageList extends AppCompatActivity {
     }
     private void loadIntoListView(final String json) throws JSONException {
 
+
         runOnUiThread(new Runnable() {
             public void run()
             {
@@ -214,12 +240,13 @@ public class AdminMessageList extends AppCompatActivity {
                         message.setSender_email(obj.getString("sender_id"));
                         message.setReceiver_email(obj.getString("receiver_id"));
                         message.setDetail(obj.getString("details"));
+
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
 
-                    arrayAdapter_msg = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,MESSAGE_LIST);
-                    msgListView.setAdapter(arrayAdapter_msg);
+                    mAdapter = new MessageAdapter(getApplicationContext(), MESSAGE_LIST);
+                    msgListView.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

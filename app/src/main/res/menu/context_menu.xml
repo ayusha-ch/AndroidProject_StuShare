@@ -8,8 +8,4 @@
         android:id="@+id/like"
         android:icon="@drawable/corner_round"
         android:title="Like it!" />
-    <item
-        android:id="@+id/favourite"
-        android:icon="@drawable/corner_round"
-        android:title="Fav it!" />
 </menu>

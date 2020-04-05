@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,13 +44,14 @@ public class EventPastList extends AppCompatActivity {
     private User user;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+    SwipeRefreshLayout swipeLayout;
+    String url1="https://w0044421.gblearn.com/stu_share/EventsView_PastEvents.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_past_list);
-
+        user=(User)getIntent().getSerializableExtra("user");
         ButterKnife.bind(this);
-
         toolBar.setTitle("Past Events");
         setSupportActionBar(toolBar);
         ImageView buttonImg;
@@ -59,9 +62,6 @@ public class EventPastList extends AppCompatActivity {
                 OpenCreateActivity();
             }
         });
-
-
-        user=(User)getIntent().getSerializableExtra("user");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.include3);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,7 +72,6 @@ public class EventPastList extends AppCompatActivity {
                         break;
                     case R.id.action_message:
                         Intent intent = new Intent(getBaseContext(), MessageList.class);
-//              intent.putExtra("args", userReg);
                         intent.putExtra("user",user);
                         startActivity(intent);
                         break;
@@ -90,9 +89,23 @@ public class EventPastList extends AppCompatActivity {
             }
         });
 
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadJSON(url1);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
         DrawerUtil.getDrawer(this,toolBar);
         listView = (ListView) findViewById(R.id.listview);
-        downloadJSON("https://w0044421.gblearn.com/stu_share/EventsView_PastEvents.php");
+        downloadJSON(url1);
         Log.d("TAG","OwnedEvent"+user.id);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -190,6 +203,9 @@ public class EventPastList extends AppCompatActivity {
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
+            event1.setRating(Float.parseFloat(obj.getString("rating")));
+            event1.setLiked(Integer.parseInt(obj.getString("isLike")));
+            event1.setLikeCount(Integer.parseInt(obj.getString("sum")));
             eventL.add(event1);
         }
         mAdapter = new EventAdapter(this, eventL);

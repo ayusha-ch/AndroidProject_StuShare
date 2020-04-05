@@ -3,10 +3,12 @@ package com.example.stu_share;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +49,7 @@ public class EventListJoined extends AppCompatActivity {
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
-
+    SwipeRefreshLayout swipeLayout;
     private String url2="https://w0044421.gblearn.com/stu_share/EventsRegistered.php";
 
     @Override
@@ -68,6 +70,20 @@ public class EventListJoined extends AppCompatActivity {
             }
         });
 
+        swipeLayout = findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadJSON(url2);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
         DrawerUtil.getDrawer(this,toolBar);
 
         downloadJSON(url2);
@@ -194,6 +210,9 @@ public class EventListJoined extends AppCompatActivity {
             event1.setEventTitle(obj.getString("title"));
             event1.setEventDetail(obj.getString("detail"));
             event1.setmImageDrawable((obj.getString("imagePath")));
+            event1.setRating(Float.parseFloat(obj.getString("rating")));
+            event1.setLiked(Integer.parseInt(obj.getString("isLike")));
+            event1.setLikeCount(Integer.parseInt(obj.getString("sum")));
             eventL.add(event1);
         }
         mAdapter = new EventAdapter(getApplicationContext(), eventL);

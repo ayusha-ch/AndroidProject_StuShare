@@ -71,6 +71,7 @@ public class EventAdapter extends ArrayAdapter<EventCoordinator.Event> {
         TextView detail = (TextView) listItem.findViewById(R.id.textView_release);
         detail.setText(currentEvent.getEventDetail());
         final RotationRatingBar rtBar=listItem.findViewById(R.id.ratingBar);
+        Log.i("RATING",currentEvent.getRating()+"");
         rtBar.setRating(currentEvent.getRating());
         rtBar.setIsIndicator(true);
         rtBar.setClickable(false);

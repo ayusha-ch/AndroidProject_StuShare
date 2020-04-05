@@ -200,6 +200,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView61" />
 
     <include
+        android:id="@+id/include11"
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

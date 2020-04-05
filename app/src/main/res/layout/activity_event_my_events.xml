@@ -2,30 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/masterView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bkgimg"
+    android:backgroundTint="#72FFFFFF"
     tools:context=".EventMyEvents"
     tools:layout_editor_absoluteY="81dp">
 
-
-
-    <Button
-        android:id="@+id/btnReg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Registered Events"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOwnedEvents" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -49,94 +33,101 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
 
 
-
             android:src="@drawable/ic_create" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <Button
         android:id="@+id/btnDeAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_width="175dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/roundbtn"
+        android:backgroundTint="#ED5D5D"
+        android:drawableTop="@drawable/ic_past"
         android:text="Past Events"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <Button
-        android:id="@+id/btnOwnedEvents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Owned Events"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDeAct" />
+        app:layout_constraintStart_toEndOf="@+id/btnOwnedEvents"
+        app:layout_constraintTop_toBottomOf="@+id/btnReg" />
 
     <Button
         android:id="@+id/btnCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Create Event"
+        android:layout_width="203dp"
+        android:layout_height="177dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="86dp"
+        android:background="@drawable/roundbtn"
+        android:backgroundTint="#75D1DD"
+        android:drawableTop="@drawable/ic_create11"
+        android:text="Create Events"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnJoinEvt" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:text="My Events"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="#ECE9E5"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout2" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDeAct" />
 
     <Button
         android:id="@+id/btnJoinEvt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
+        style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+        android:layout_width="173dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="22dp"
+        android:background="@drawable/roundbtn"
+        android:backgroundTint="#EDACC2"
+        android:drawableTop="@drawable/ic_join1"
         android:text="Join Event"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnReg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnReg" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/btnReg"
+        style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+        android:layout_width="173dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/roundbtn"
+        android:backgroundTint="#FFC107"
+        android:drawableTop="@drawable/ic_upcom"
+        android:text="Registered Events"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnJoinEvt"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/btnOwnedEvents"
+        android:layout_width="180dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="22dp"
+        android:background="@drawable/roundbtn"
+        android:backgroundTint="#4CAF50"
+        android:drawableTop="@drawable/ic_owned1"
+        android:text="My Owned Events"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeAct"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnJoinEvt" />
+
+
     <include
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"

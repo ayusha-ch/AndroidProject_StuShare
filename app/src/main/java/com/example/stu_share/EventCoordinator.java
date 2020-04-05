@@ -34,8 +34,6 @@ public class EventCoordinator {
         public  String endTime;
         public  String eventTitle;
         public  String eventDetail;
-
-
         public String eventCode;
         public Float rating=0.00f;
         public String mImageDrawable;

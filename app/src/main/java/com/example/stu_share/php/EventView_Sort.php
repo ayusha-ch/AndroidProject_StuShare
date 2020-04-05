@@ -16,7 +16,8 @@
     else if(strcmp($title,"Start Date")==0){
                $title="startDate";
                }
-	$sql = "SELECT e.*,(SELECT COUNT(el.user_id) FROM event_liked el WHERE el.event_id = e.id) as sum,(SELECT COUNT(el2.user_id) FROM event_liked el2 WHERE el2.event_id = e.id and el2.user_id=2) as isLike FROM  event e WHERE status LIKE 'active' and endDate > '$today' ORDER BY $title ;";}
+	$sql = "SELECT e.*,(SELECT COUNT(el.user_id) FROM event_liked el WHERE el.event_id = e.id) as sum,(SELECT COUNT(el2.user_id) FROM event_liked el2 WHERE el2.event_id = e.id and el2.user_id=2) as isLike FROM  event e WHERE status LIKE 'active' and endDate > '$today' ORDER BY $title ;";
+	}
 
 //echo $sql.'sort';
 	if ($result = mysqli_query($con, $sql)){

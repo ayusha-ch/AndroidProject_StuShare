@@ -8,18 +8,39 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class EventMyEvents extends AppCompatActivity {
     private Button  btnOwnedEvents, btnPstEvt,btnJoin,btnCreateEvent,btnHome, btnLogout,btnReg;
     private static User user;
+    @BindView(R.id.toolbar)
+    public Toolbar toolBar;
+    ImageView buttonImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_my_events);
+
+        ButterKnife.bind(this);
+        toolBar.setTitle(getResources().getString(R.string.Events));
+        setSupportActionBar(toolBar);
+        buttonImg = findViewById(R.id.buttonImg) ;
+        buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateActivity();
+            }
+        });
+
         user=(User)getIntent().getSerializableExtra("user");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,6 +68,7 @@ public class EventMyEvents extends AppCompatActivity {
                 return false;
             }
         });
+        DrawerUtil.getDrawer(this,toolBar);
 
         btnCreateEvent=findViewById(R.id.btnCreate);
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +173,7 @@ public class EventMyEvents extends AppCompatActivity {
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }else if(x1 >  x2){
-                    Intent i = new Intent(context, MyProfile.class);
+                    Intent i = new Intent(context, MessageList.class);
                     i.putExtra("user",user);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
@@ -160,4 +182,10 @@ public class EventMyEvents extends AppCompatActivity {
         }
         return false;
     }
+    public void OpenCreateActivity() {
+        Intent intent = new Intent(this, EventCreateDescription.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
+    }
 }
+

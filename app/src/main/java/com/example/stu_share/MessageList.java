@@ -3,6 +3,7 @@ package com.example.stu_share;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,9 +14,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,19 +40,77 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.stu_share.MessageCoordinator.MESSAGE_LIST;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 public class MessageList extends AppCompatActivity {
     ListView messageList;
+    MessageAdapter mAdapter;
     private static User userTemp;
     public static ArrayAdapter arrayAdapter;
     ImageView buttonImg;
     @BindView(R.id.toolbar)
     public Toolbar toolBar;
+    SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
+        userTemp=(User)getIntent().getSerializableExtra("user");
+        View myview=findViewById(R.id.masterView);
+        myview.setOnTouchListener(new View.OnTouchListener() {
+            float x1;
+            float x2;
+            float y1;
+            float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent touchEvent) {
+                switch(touchEvent.getAction()){
+                    //Start point
 
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = touchEvent.getX();
+                        Log.i("X1down",String.valueOf(x1));
+                        y1 = touchEvent.getY();
+                        break;
+                    //End point
+                    case MotionEvent.ACTION_UP:
+                        x2 = touchEvent.getX();
+                        y2 = touchEvent.getY();
+                        Class cc;
+                        if(x2-x1>50){
+                            cc=MyProfile.class;
+                            Intent i = new Intent(getApplicationContext(),cc );
+                            i.putExtra("user",userTemp);
+                            //Regular class call activity need use .setFlags method
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        else if(x2-x1<50){
+                            cc= EventMyEvents.class;
+                            Intent i = new Intent(getApplicationContext(), cc);
+                            i.putExtra("user",userTemp);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(i);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMsgList();
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
         ButterKnife.bind(this);
         toolBar.setTitle(getResources().getString(R.string.messageList));
         setSupportActionBar(toolBar);
@@ -61,11 +122,7 @@ public class MessageList extends AppCompatActivity {
 
             }
         });
-
-        DrawerUtil.getDrawer(this,toolBar);
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-
+        BottomNavigationView navigation = findViewById(R.id.include7);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -91,13 +148,11 @@ public class MessageList extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        userTemp=(User)getIntent().getSerializableExtra("user");
+        DrawerUtil.getDrawer(this,toolBar);
         messageList=findViewById(R.id.messageList);
         getMsgList();
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,MESSAGE_LIST);
-        messageList.setAdapter(arrayAdapter);
+        mAdapter = new MessageAdapter(this, MESSAGE_LIST);
+        messageList.setAdapter(mAdapter);
         messageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -106,25 +161,13 @@ public class MessageList extends AppCompatActivity {
                 Intent intent =new Intent(getBaseContext(), MessageReceivedDetail.class);
                 intent.putExtra("message",message);
                 intent.putExtra("user",userTemp);
-                startActivityForResult(intent,1);
+                //startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
-
-
-
     }
 
-    @Override
-    public void onResume() {
-
-        super.onResume();
-        getMsgList();
-    }
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        return onTouchEvent(touchEvent,getApplicationContext());
-    }
     public void getMsgList() {
-
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -136,10 +179,8 @@ public class MessageList extends AppCompatActivity {
                     conn.setRequestProperty("Accept","application/json");
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
-
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("userID", userTemp.id);
-
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
@@ -150,36 +191,39 @@ public class MessageList extends AppCompatActivity {
                     conn.connect();
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG" , conn.getResponseMessage());
-
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     DataInputStream is=new DataInputStream(conn.getInputStream());
-
-                    StringBuilder total = new StringBuilder();
+                    final StringBuilder total = new StringBuilder();
                     String line;
                     while ((line = in.readLine()) != null)
                     {
                         total.append(line).append('\n');
                     }
                     Log.d("TAG", "Server Response is: " + total.toString() + ": " );
-
-                    loadIntoListView(total.toString().trim());
-
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                loadIntoListView(total.toString().trim());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }});
                     conn.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
         thread.start();
-
     }
     private void loadIntoListView(final String json) throws JSONException {
+
 
         runOnUiThread(new Runnable() {
             public void run()
             {
+
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(json);
@@ -192,52 +236,26 @@ public class MessageList extends AppCompatActivity {
                         message.setSender_email(obj.getString("sender_id"));
                         message.setReceiver_email(obj.getString("receiver_id"));
                         message.setDetail(obj.getString("details"));
+
                         MESSAGE_LIST.add(message);
                         Log.i("MSGLIST",MESSAGE_LIST.get(i).toString());
                     }
 
-                    arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,MESSAGE_LIST);
-                    messageList.setAdapter(arrayAdapter);
+                    mAdapter = new MessageAdapter(getApplicationContext(), MESSAGE_LIST);
+                    messageList.setAdapter(mAdapter);
+
+
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }});
 
     }
 
-    public static float x1,x2,y1,y2;
-    public static boolean onTouchEvent(MotionEvent touchEvent, Context context){
-        switch(touchEvent.getAction()){
-            //Start point
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            //End point
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                Class cc;
-                if(x1 < x2){
-                    cc=MyProfile.class;
-                    Intent i = new Intent(context,cc );
-                    i.putExtra("user",userTemp);
-                    //Regular class call activity need use .setFlags method
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                else if(x1 >  x2){
-                    cc= EventList.class;
-                    Intent i = new Intent(context, cc);
-                    i.putExtra("user",userTemp);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }
+
 
     public void OpenMenuActivity() {
         Intent intent = new Intent(this, EventList.class);

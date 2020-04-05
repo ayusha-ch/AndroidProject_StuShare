@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,7 +25,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.willy.ratingbar.RotationRatingBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -83,13 +80,13 @@ public class EventList extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         x2 = touchEvent.getX();
                         y2 = touchEvent.getY();
-                        if(x2 - x1>30){
+                        if(x2 - x1>50){
                             Intent i = new Intent(getApplicationContext(), MyProfile.class);
                             i.putExtra("user",user3);
                             //Regular class call activity need use .setFlags method
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getApplicationContext().startActivity(i);
-                        }else if(x1 -  x2>30){
+                        }else if(x2 -  x1<50){
                             Log.i("X1-X21",String.valueOf(x1));
                             Log.i("X1-X22",String.valueOf(x2));
                             Intent i = new Intent(getApplicationContext(), EventMyEvents.class);
@@ -102,10 +99,7 @@ public class EventList extends AppCompatActivity {
                 return true;
             }
         });
-
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         ButterKnife.bind(this);
-
         toolBar.setTitle(getResources().getString(R.string.Events));
         setSupportActionBar(toolBar);
         buttonImg = findViewById(R.id.buttonImg) ;
@@ -115,8 +109,8 @@ public class EventList extends AppCompatActivity {
                 OpenCreateActivity();
             }
         });
-
         DrawerUtil.getDrawer(this,toolBar);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -233,10 +227,7 @@ public class EventList extends AppCompatActivity {
             ImageView likeClick= (ImageView)findViewById(R.id.imgLike);
             likeClick.setImageResource(R.drawable.ic_thumbs_up_red);
             Toast.makeText(getApplicationContext(),"Liked",Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId()==R.id.favourite){
-            Toast.makeText(getApplicationContext(),"Faved!",Toast.LENGTH_SHORT).show();
-        }else{
+        } else{
             return false;
         }
         return true;
